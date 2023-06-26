@@ -10,21 +10,21 @@
       <type>std::shared_ptr&lt; tatami::Matrix&lt; Data_, Index_ &gt; &gt;</type>
       <name>load_matrix</name>
       <anchorfile>namespacetatami__mtx.html</anchorfile>
-      <anchor>aa59a3cfc30f8477e646daed98d8634d6</anchor>
+      <anchor>a1fcd906f47d590820de01603952ccaf7</anchor>
       <arglist>(byteme::Reader &amp;reader)</arglist>
     </member>
     <member kind="function">
-      <type>std::shared_ptr&lt; tatami::Matrix&lt; T, IDX &gt; &gt;</type>
+      <type>std::shared_ptr&lt; tatami::Matrix&lt; Data_, Index_ &gt; &gt;</type>
       <name>load_matrix_from_file</name>
       <anchorfile>namespacetatami__mtx.html</anchorfile>
-      <anchor>ab4a355d1721420584c106036810f1081</anchor>
+      <anchor>a8cd56411bf744e4c29e13813f4e65129</anchor>
       <arglist>(const char *filepath, int compression=0, size_t bufsize=65536)</arglist>
     </member>
     <member kind="function">
-      <type>std::shared_ptr&lt; tatami::Matrix&lt; T, IDX &gt; &gt;</type>
+      <type>std::shared_ptr&lt; tatami::Matrix&lt; Data_, Index_ &gt; &gt;</type>
       <name>load_matrix_from_buffer</name>
       <anchorfile>namespacetatami__mtx.html</anchorfile>
-      <anchor>aaed31ab69c8928820d342317e84a2bfa</anchor>
+      <anchor>a6f1e70abb78e9ac7f13a6e437527f4f1</anchor>
       <arglist>(const unsigned char *buffer, size_t n, int compression=0, size_t bufsize=65536)</arglist>
     </member>
   </compound>
@@ -46,21 +46,21 @@
       <type>std::shared_ptr&lt; tatami::Matrix&lt; Data_, Index_ &gt; &gt;</type>
       <name>load_matrix</name>
       <anchorfile>namespacetatami__mtx.html</anchorfile>
-      <anchor>aa59a3cfc30f8477e646daed98d8634d6</anchor>
+      <anchor>a1fcd906f47d590820de01603952ccaf7</anchor>
       <arglist>(byteme::Reader &amp;reader)</arglist>
     </member>
     <member kind="function">
-      <type>std::shared_ptr&lt; tatami::Matrix&lt; T, IDX &gt; &gt;</type>
+      <type>std::shared_ptr&lt; tatami::Matrix&lt; Data_, Index_ &gt; &gt;</type>
       <name>load_matrix_from_file</name>
       <anchorfile>namespacetatami__mtx.html</anchorfile>
-      <anchor>ab4a355d1721420584c106036810f1081</anchor>
+      <anchor>a8cd56411bf744e4c29e13813f4e65129</anchor>
       <arglist>(const char *filepath, int compression=0, size_t bufsize=65536)</arglist>
     </member>
     <member kind="function">
-      <type>std::shared_ptr&lt; tatami::Matrix&lt; T, IDX &gt; &gt;</type>
+      <type>std::shared_ptr&lt; tatami::Matrix&lt; Data_, Index_ &gt; &gt;</type>
       <name>load_matrix_from_buffer</name>
       <anchorfile>namespacetatami__mtx.html</anchorfile>
-      <anchor>aaed31ab69c8928820d342317e84a2bfa</anchor>
+      <anchor>a6f1e70abb78e9ac7f13a6e437527f4f1</anchor>
       <arglist>(const unsigned char *buffer, size_t n, int compression=0, size_t bufsize=65536)</arglist>
     </member>
   </compound>

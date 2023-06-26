@@ -89,8 +89,8 @@ $(function() {
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="structtatami__mtx_1_1Automatic.html">   20</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structtatami__mtx_1_1Automatic.html">Automatic</a> {};</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> row_, <span class="keyword">typename</span> Data_, <span class="keyword">typename</span> Index_, <span class="keyword">typename</span> StoredData_, <span class="keyword">typename</span> StoredIndex_&gt;</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>std::shared_ptr&lt;tatami::Matrix&lt;Data_, Index_&gt; &gt; load_sparse_matrix_basic(eminem::Parser&amp; parser, eminem::Field field, <span class="keywordtype">size_t</span> NR, <span class="keywordtype">size_t</span> NC, <span class="keywordtype">size_t</span> NL) {</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> row_, <span class="keyword">typename</span> Data_, <span class="keyword">typename</span> Index_, <span class="keyword">typename</span> StoredData_, <span class="keyword">typename</span> StoredIndex_, <span class="keyword">typename</span> Parser_&gt;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>std::shared_ptr&lt;tatami::Matrix&lt;Data_, Index_&gt; &gt; load_sparse_matrix_basic(Parser_&amp; parser, eminem::Field field, <span class="keywordtype">size_t</span> NR, <span class="keywordtype">size_t</span> NC, <span class="keywordtype">size_t</span> NL) {</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    std::vector&lt;StoredIndex_&gt; rows, columns;</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    rows.reserve(NL), columns.reserve(NL);</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    std::vector&lt;StoredData_&gt; values;</div>
@@ -117,7 +117,7 @@ $(function() {
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keyword">auto</span> ptr = tatami::compress_sparse_triplets&lt;row_&gt;(NR, NC, values, rows, columns);</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    std::vector&lt;StoredIndex_&gt; indices;</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordflow">if</span> <span class="keyword">constexpr</span>(row_) {</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        indices.swap(columns)</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        indices.swap(columns);</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    } <span class="keywordflow">else</span> {</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        indices.swap(rows);</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    }</div>
@@ -129,8 +129,8 @@ $(function() {
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    );</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>}</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> row_, <span class="keyword">typename</span> Data_, <span class="keyword">typename</span> Index_, <span class="keyword">typename</span> StoredData_, <span class="keyword">typename</span> StoredIndex_&gt;</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>std::shared_ptr&lt;tatami::Matrix&lt;Data_, Index_&gt; &gt; load_sparse_matrix_data(eminem::Parser&amp; parser, eminem::Field field, <span class="keywordtype">size_t</span> NR, <span class="keywordtype">size_t</span> NC, <span class="keywordtype">size_t</span> NL) {</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> row_, <span class="keyword">typename</span> Data_, <span class="keyword">typename</span> Index_, <span class="keyword">typename</span> StoredData_, <span class="keyword">typename</span> StoredIndex_, <span class="keyword">typename</span> Parser_&gt;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>std::shared_ptr&lt;tatami::Matrix&lt;Data_, Index_&gt; &gt; load_sparse_matrix_data(Parser_&amp; parser, eminem::Field field, <span class="keywordtype">size_t</span> NR, <span class="keywordtype">size_t</span> NC, <span class="keywordtype">size_t</span> NL) {</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keywordflow">if</span> <span class="keyword">constexpr</span>(std::is_same&lt;StoredData_, Automatic&gt;::value) {</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        <span class="keywordflow">if</span> (field == eminem::Field::REAL || field == eminem::Field::DOUBLE) {</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>            <span class="keywordflow">return</span> load_sparse_matrix_basic&lt;row_, Data_, Index_, double, StoredIndex_&gt;(parser, field, NR, NC, NL);</div>
@@ -143,8 +143,8 @@ $(function() {
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        <span class="keywordflow">return</span> load_sparse_matrix_basic&lt;row_, Data_, Index_, StoredData_, StoredIndex_&gt;(parser, field, NR, NC, NL);</div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    }</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>}</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> row_, <span class="keyword">typename</span> Data_, <span class="keyword">typename</span> Index_, <span class="keyword">typename</span> StoredData_&gt;</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>std::shared_ptr&lt;tatami::Matrix&lt;Data_, Index_&gt; &gt; load_dense_matrix_basic(eminem::Parser&amp; parser, eminem::Field field, <span class="keywordtype">size_t</span> NR, <span class="keywordtype">size_t</span> NC) {</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> row_, <span class="keyword">typename</span> Data_, <span class="keyword">typename</span> Index_, <span class="keyword">typename</span> StoredData_, <span class="keyword">typename</span> Parser_&gt;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>std::shared_ptr&lt;tatami::Matrix&lt;Data_, Index_&gt; &gt; load_dense_matrix_basic(Parser_&amp; parser, eminem::Field field, <span class="keywordtype">size_t</span> NR, <span class="keywordtype">size_t</span> NC) {</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    std::vector&lt;StoredData_&gt; values;</div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <span class="keywordflow">if</span> <span class="keyword">constexpr</span>(row_) {</div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        values.resize(NR * NC);</div>
@@ -178,96 +178,97 @@ $(function() {
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        <span class="keyword">new</span> <a class="code hl_classRef" href="https://tatami-inc.github.io/tatami/classtatami_1_1DenseMatrix.html">tatami::DenseMatrix&lt;row_, Data_, Index_, decltype(values)&gt;</a>(NR, NC, std::move(values))</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    );</div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>}</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span><span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> row_, <span class="keyword">typename</span> Data_, <span class="keyword">typename</span> Index_, <span class="keyword">typename</span> StoredData_ = Automatic, <span class="keyword">typename</span> StoredIndex_ = Automatic&gt;</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno"><a class="line" href="namespacetatami__mtx.html#aa59a3cfc30f8477e646daed98d8634d6">  144</a></span>std::shared_ptr&lt;tatami::Matrix&lt;Data_, Index_&gt; &gt; <a class="code hl_function" href="namespacetatami__mtx.html#aa59a3cfc30f8477e646daed98d8634d6">load_matrix</a>(byteme::Reader&amp; reader) {</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    eminem::Parser parser(reader);</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    parser.scan_preamble();</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span> </div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; banner = parser.get_banner();</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>    <span class="keyword">auto</span> field = banner.field;</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    <span class="keywordtype">size_t</span> NR = parser.get_nrows(), NC = parser.get_ncols(), NL = parser.get_nlines();</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    <span class="keywordflow">if</span> (banner.format == eminem::Format::COORDINATE) {</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>        <span class="keywordflow">if</span> <span class="keyword">constexpr</span>(std::is_same&lt;StoredIndex_, Automatic&gt;::value) {</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>            <span class="comment">// Automatically choosing a smaller integer type, if it fits.</span></div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>            <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> limit8 = std::numeric_limits&lt;uint8_t&gt;::max(), limit16 = std::numeric_limits&lt;uint16_t&gt;::max();</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>            <span class="keywordflow">if</span> (NR &lt;= limit8 &amp;&amp; NC &lt;= limit8) {</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>                <span class="keywordflow">return</span> load_sparse_matrix_data&lt;row_, Data_, Index_, StoredData_, uint8_t&gt;(parser, field, NR, NC, NL);</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>            } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (NR &lt;= limit16 &amp;&amp; NC &lt;= limit16) {</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>                <span class="keywordflow">return</span> load_sparse_matrix_data&lt;row_, Data_, Index_, StoredData_, uint16_t&gt;(parser, field, NR, NC, NL);</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>            } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>                <span class="keywordflow">return</span> load_sparse_matrix_data&lt;row_, Data_, Index_, StoredData_, int&gt;(parser, field, NR, NC, NL);</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>            }</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span> </div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>            <span class="keywordflow">return</span> load_sparse_matrix_data&lt;row_, Data_, Index_, StoredData_, StoredIndex_&gt;(parser, field, NR, NC, NL);</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>        }</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> </div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>        <span class="keywordflow">if</span> <span class="keyword">constexpr</span>(std::is_same&lt;StoredData_, Automatic&gt;::value) {</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>            <span class="keywordflow">if</span> (field == eminem::Field::REAL || field == eminem::Field::DOUBLE) {</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>                <span class="keywordflow">return</span> load_dense_matrix_basic&lt;row_, Data_, Index_, double&gt;(parser, field, field, NR, NC, NL);</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>            }</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>            <span class="keywordflow">if</span> (field != eminem::Field::INTEGER) {</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>                <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;unsupported Matrix Market field type&quot;</span>);</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>            }</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>            <span class="keywordflow">return</span> load_dense_matrix_basic&lt;row_, Data_, Index_, int&gt;(parser, field, field, NR, NC, NL);</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span> </div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>            <span class="keywordflow">return</span> load_dense_matrix_basic&lt;row_, Data_, Index_, StoredData_&gt;(parser, field, field, NR, NC, NL);</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>        }</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    }</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>}</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span> </div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span><span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> row_, <span class="keyword">typename</span> Data_, <span class="keyword">typename</span> Index_, <span class="keyword">typename</span> StoredData_ = Automatic, <span class="keyword">typename</span> StoredIndex_ = Automatic&gt;</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno"><a class="line" href="namespacetatami__mtx.html#ab4a355d1721420584c106036810f1081">  203</a></span>std::shared_ptr&lt;tatami::Matrix&lt;T, IDX&gt; &gt; <a class="code hl_function" href="namespacetatami__mtx.html#ab4a355d1721420584c106036810f1081">load_matrix_from_file</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * filepath, <span class="keywordtype">int</span> compression = 0, <span class="keywordtype">size_t</span> bufsize = 65536) {</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>    <span class="keywordflow">if</span> (compression != 0) {</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span><span class="preprocessor">#if __has_include(&quot;zlib.h&quot;</span>)</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;tatami not compiled with support for non-zero &#39;compression&#39;&quot;</span>);</div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>        <span class="keywordflow">if</span> (compression == -1) {</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>            byteme::SomeFileReader reader(filepath, bufsize);</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>            <span class="keywordflow">return</span> load_matrix&lt;row_, Data_, Index_, StoredData_, StoredIndex_&gt;(reader);</div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>       } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (compression == 1) {</div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>            byteme::GzipFileReader reader(filepath, bufsize);</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>            <span class="keywordflow">return</span> load_matrix&lt;row_, Data_, Index_, StoredData_, StoredIndex_&gt;(reader);</div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>        }</div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>    }</div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span> </div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>    byteme::RawFileReader reader(filepath, bufsize);</div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>    <span class="keywordflow">return</span> load_matrix&lt;row_, Data_, Index_, StoredData_, StoredIndex_&gt;(reader);</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>}</div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span> </div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span><span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> row_, <span class="keyword">typename</span> Data_, <span class="keyword">typename</span> Index_, <span class="keyword">typename</span> StoredData_ = Automatic, <span class="keyword">typename</span> StoredIndex_ = Automatic&gt;</div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno"><a class="line" href="namespacetatami__mtx.html#aaed31ab69c8928820d342317e84a2bfa">  242</a></span>std::shared_ptr&lt;tatami::Matrix&lt;T, IDX&gt; &gt; <a class="code hl_function" href="namespacetatami__mtx.html#aaed31ab69c8928820d342317e84a2bfa">load_matrix_from_buffer</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> * buffer, <span class="keywordtype">size_t</span> n, <span class="keywordtype">int</span> compression = 0, <span class="keywordtype">size_t</span> bufsize = 65536) {</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>    <span class="keywordflow">if</span> (compression != 0) {</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span><span class="preprocessor">#if __has_include(&quot;zlib.h&quot;</span>)</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;tatami not compiled with support for non-zero &#39;compression&#39;&quot;</span>);</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>        <span class="keywordflow">if</span> (compression == -1) {</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>            byteme::SomeBufferReader reader(buffer, n, bufsize);</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>            <span class="keywordflow">return</span> load_matrix&lt;row_, Data_, Index_, StoredData_, StoredIndex_&gt;(reader);</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (compression == 1) {</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>            byteme::ZlibBufferReader reader(buffer, n, 3, bufsize);</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>            <span class="keywordflow">return</span> load_matrix&lt;row_, Data_, Index_, StoredData_, StoredIndex_&gt;(reader);</div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>        }</div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>    }</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span> </div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>    byteme::RawBufferReader reader(buffer, n);</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>    <span class="keywordflow">return</span> load_matrix&lt;row_, Data_, Index_, StoredData_, StoredIndex_&gt;(reader);</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>}</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> row_, <span class="keyword">typename</span> Data_, <span class="keyword">typename</span> Index_, <span class="keyword">typename</span> StoredData_ = Automatic, <span class="keyword">typename</span> StoredIndex_ = Automatic, <span class="keywordtype">bool</span> parallel_ = false&gt;</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno"><a class="line" href="namespacetatami__mtx.html#a1fcd906f47d590820de01603952ccaf7">  145</a></span>std::shared_ptr&lt;tatami::Matrix&lt;Data_, Index_&gt; &gt; <a class="code hl_function" href="namespacetatami__mtx.html#a1fcd906f47d590820de01603952ccaf7">load_matrix</a>(byteme::Reader&amp; reader) {</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    eminem::Parser&lt;parallel_&gt; parser(&amp;reader);</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    parser.scan_preamble();</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> </div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; banner = parser.get_banner();</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    <span class="keyword">auto</span> field = banner.field;</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    <span class="keywordtype">size_t</span> NR = parser.get_nrows(), NC = parser.get_ncols(), NL = parser.get_nlines();</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span> </div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    <span class="keywordflow">if</span> (banner.format == eminem::Format::COORDINATE) {</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>        <span class="keywordflow">if</span> <span class="keyword">constexpr</span>(std::is_same&lt;StoredIndex_, Automatic&gt;::value) {</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>            <span class="comment">// Automatically choosing a smaller integer type, if it fits.</span></div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>            <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> limit8 = std::numeric_limits&lt;uint8_t&gt;::max(), limit16 = std::numeric_limits&lt;uint16_t&gt;::max();</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>            <span class="keywordflow">if</span> (NR &lt;= limit8 &amp;&amp; NC &lt;= limit8) {</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>                <span class="keywordflow">return</span> load_sparse_matrix_data&lt;row_, Data_, Index_, StoredData_, uint8_t&gt;(parser, field, NR, NC, NL);</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>            } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (NR &lt;= limit16 &amp;&amp; NC &lt;= limit16) {</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>                <span class="keywordflow">return</span> load_sparse_matrix_data&lt;row_, Data_, Index_, StoredData_, uint16_t&gt;(parser, field, NR, NC, NL);</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>            } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>                <span class="keywordflow">return</span> load_sparse_matrix_data&lt;row_, Data_, Index_, StoredData_, int&gt;(parser, field, NR, NC, NL);</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>            }</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span> </div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>            <span class="keywordflow">return</span> load_sparse_matrix_data&lt;row_, Data_, Index_, StoredData_, StoredIndex_&gt;(parser, field, NR, NC, NL);</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>        }</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>        <span class="keywordflow">if</span> <span class="keyword">constexpr</span>(std::is_same&lt;StoredData_, Automatic&gt;::value) {</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>            <span class="keywordflow">if</span> (field == eminem::Field::REAL || field == eminem::Field::DOUBLE) {</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>                <span class="keywordflow">return</span> load_dense_matrix_basic&lt;row_, Data_, Index_, double&gt;(parser, field, NR, NC);</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>            }</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>            <span class="keywordflow">if</span> (field != eminem::Field::INTEGER) {</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>                <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;unsupported Matrix Market field type&quot;</span>);</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>            }</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>            <span class="keywordflow">return</span> load_dense_matrix_basic&lt;row_, Data_, Index_, int&gt;(parser, field, NR, NC);</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span> </div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>            <span class="keywordflow">return</span> load_dense_matrix_basic&lt;row_, Data_, Index_, StoredData_&gt;(parser, field, NR, NC);</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>        }</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    }</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>}</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span> </div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span><span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> row_, <span class="keyword">typename</span> Data_, <span class="keyword">typename</span> Index_, <span class="keywordtype">bool</span> parallel_ = false, <span class="keyword">typename</span> StoredData_ = Automatic, <span class="keyword">typename</span> StoredIndex_ = Automatic&gt;</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno"><a class="line" href="namespacetatami__mtx.html#a8cd56411bf744e4c29e13813f4e65129">  206</a></span>std::shared_ptr&lt;tatami::Matrix&lt;Data_, Index_&gt; &gt; <a class="code hl_function" href="namespacetatami__mtx.html#a8cd56411bf744e4c29e13813f4e65129">load_matrix_from_file</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * filepath, <span class="keywordtype">int</span> compression = 0, <span class="keywordtype">size_t</span> bufsize = 65536) {</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>    <span class="keywordflow">if</span> (compression != 0) {</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span><span class="preprocessor">#if __has_include(&quot;zlib.h&quot;</span>)</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;tatami not compiled with support for non-zero &#39;compression&#39;&quot;</span>);</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>        <span class="keywordflow">if</span> (compression == -1) {</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>            byteme::SomeFileReader reader(filepath, bufsize);</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>            <span class="keywordflow">return</span> load_matrix&lt;row_, Data_, Index_, StoredData_, StoredIndex_, parallel_&gt;(reader);</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>       } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (compression == 1) {</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>            byteme::GzipFileReader reader(filepath, bufsize);</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>            <span class="keywordflow">return</span> load_matrix&lt;row_, Data_, Index_, StoredData_, StoredIndex_, parallel_&gt;(reader);</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>        }</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>    }</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span> </div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>    byteme::RawFileReader reader(filepath, bufsize);</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>    <span class="keywordflow">return</span> load_matrix&lt;row_, Data_, Index_, StoredData_, StoredIndex_, parallel_&gt;(reader);</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>}</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span> </div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span><span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> row_, <span class="keyword">typename</span> Data_, <span class="keyword">typename</span> Index_, <span class="keyword">typename</span> StoredData_ = Automatic, <span class="keyword">typename</span> StoredIndex_ = Automatic, <span class="keywordtype">bool</span> parallel_ = false&gt;</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno"><a class="line" href="namespacetatami__mtx.html#a6f1e70abb78e9ac7f13a6e437527f4f1">  246</a></span>std::shared_ptr&lt;tatami::Matrix&lt;Data_, Index_&gt; &gt; <a class="code hl_function" href="namespacetatami__mtx.html#a6f1e70abb78e9ac7f13a6e437527f4f1">load_matrix_from_buffer</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> * buffer, <span class="keywordtype">size_t</span> n, <span class="keywordtype">int</span> compression = 0, <span class="keywordtype">size_t</span> bufsize = 65536) {</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    <span class="keywordflow">if</span> (compression != 0) {</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span><span class="preprocessor">#if __has_include(&quot;zlib.h&quot;</span>)</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;tatami not compiled with support for non-zero &#39;compression&#39;&quot;</span>);</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>        <span class="keywordflow">if</span> (compression == -1) {</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>            byteme::SomeBufferReader reader(buffer, n, bufsize);</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>            <span class="keywordflow">return</span> load_matrix&lt;row_, Data_, Index_, StoredData_, StoredIndex_, parallel_&gt;(reader);</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (compression == 1) {</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>            byteme::ZlibBufferReader reader(buffer, n, 3, bufsize);</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>            <span class="keywordflow">return</span> load_matrix&lt;row_, Data_, Index_, StoredData_, StoredIndex_, parallel_&gt;(reader);</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>        }</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    }</div>
 <div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span> </div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>}</div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span> </div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>    byteme::RawBufferReader reader(buffer, n);</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>    <span class="keywordflow">return</span> load_matrix&lt;row_, Data_, Index_, StoredData_, StoredIndex_, parallel_&gt;(reader);</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>}</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span> </div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>}</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span> </div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclasstatami_1_1CompressedSparseMatrix_html"><div class="ttname"><a href="https://tatami-inc.github.io/tatami/classtatami_1_1CompressedSparseMatrix.html">tatami::CompressedSparseMatrix</a></div></div>
 <div class="ttc" id="aclasstatami_1_1DenseMatrix_html"><div class="ttname"><a href="https://tatami-inc.github.io/tatami/classtatami_1_1DenseMatrix.html">tatami::DenseMatrix</a></div></div>
 <div class="ttc" id="anamespacetatami__mtx_html"><div class="ttname"><a href="namespacetatami__mtx.html">tatami_mtx</a></div><div class="ttdoc">Read tatami matrices from Matrix Market files.</div><div class="ttdef"><b>Definition</b> load_matrix.hpp:13</div></div>
-<div class="ttc" id="anamespacetatami__mtx_html_aa59a3cfc30f8477e646daed98d8634d6"><div class="ttname"><a href="namespacetatami__mtx.html#aa59a3cfc30f8477e646daed98d8634d6">tatami_mtx::load_matrix</a></div><div class="ttdeci">std::shared_ptr&lt; tatami::Matrix&lt; Data_, Index_ &gt; &gt; load_matrix(byteme::Reader &amp;reader)</div><div class="ttdef"><b>Definition</b> load_matrix.hpp:144</div></div>
-<div class="ttc" id="anamespacetatami__mtx_html_aaed31ab69c8928820d342317e84a2bfa"><div class="ttname"><a href="namespacetatami__mtx.html#aaed31ab69c8928820d342317e84a2bfa">tatami_mtx::load_matrix_from_buffer</a></div><div class="ttdeci">std::shared_ptr&lt; tatami::Matrix&lt; T, IDX &gt; &gt; load_matrix_from_buffer(const unsigned char *buffer, size_t n, int compression=0, size_t bufsize=65536)</div><div class="ttdef"><b>Definition</b> load_matrix.hpp:242</div></div>
-<div class="ttc" id="anamespacetatami__mtx_html_ab4a355d1721420584c106036810f1081"><div class="ttname"><a href="namespacetatami__mtx.html#ab4a355d1721420584c106036810f1081">tatami_mtx::load_matrix_from_file</a></div><div class="ttdeci">std::shared_ptr&lt; tatami::Matrix&lt; T, IDX &gt; &gt; load_matrix_from_file(const char *filepath, int compression=0, size_t bufsize=65536)</div><div class="ttdef"><b>Definition</b> load_matrix.hpp:203</div></div>
+<div class="ttc" id="anamespacetatami__mtx_html_a1fcd906f47d590820de01603952ccaf7"><div class="ttname"><a href="namespacetatami__mtx.html#a1fcd906f47d590820de01603952ccaf7">tatami_mtx::load_matrix</a></div><div class="ttdeci">std::shared_ptr&lt; tatami::Matrix&lt; Data_, Index_ &gt; &gt; load_matrix(byteme::Reader &amp;reader)</div><div class="ttdef"><b>Definition</b> load_matrix.hpp:145</div></div>
+<div class="ttc" id="anamespacetatami__mtx_html_a6f1e70abb78e9ac7f13a6e437527f4f1"><div class="ttname"><a href="namespacetatami__mtx.html#a6f1e70abb78e9ac7f13a6e437527f4f1">tatami_mtx::load_matrix_from_buffer</a></div><div class="ttdeci">std::shared_ptr&lt; tatami::Matrix&lt; Data_, Index_ &gt; &gt; load_matrix_from_buffer(const unsigned char *buffer, size_t n, int compression=0, size_t bufsize=65536)</div><div class="ttdef"><b>Definition</b> load_matrix.hpp:246</div></div>
+<div class="ttc" id="anamespacetatami__mtx_html_a8cd56411bf744e4c29e13813f4e65129"><div class="ttname"><a href="namespacetatami__mtx.html#a8cd56411bf744e4c29e13813f4e65129">tatami_mtx::load_matrix_from_file</a></div><div class="ttdeci">std::shared_ptr&lt; tatami::Matrix&lt; Data_, Index_ &gt; &gt; load_matrix_from_file(const char *filepath, int compression=0, size_t bufsize=65536)</div><div class="ttdef"><b>Definition</b> load_matrix.hpp:206</div></div>
 <div class="ttc" id="astructtatami__mtx_1_1Automatic_html"><div class="ttname"><a href="structtatami__mtx_1_1Automatic.html">tatami_mtx::Automatic</a></div><div class="ttdoc">Enable automatic type determination.</div><div class="ttdef"><b>Definition</b> load_matrix.hpp:20</div></div>
 <div class="ttc" id="atatami_8hpp_html"><div class="ttname"><a href="https://tatami-inc.github.io/tatami/tatami_8hpp.html">tatami.hpp</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
