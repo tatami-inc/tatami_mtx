@@ -22,8 +22,8 @@ struct Automatic {};
 /**
  * @cond
  */
-template<bool row_, typename Data_, typename Index_, typename StoredData_, typename StoredIndex_>
-std::shared_ptr<tatami::Matrix<Data_, Index_> > load_sparse_matrix_basic(eminem::Parser& parser, eminem::Field field, size_t NR, size_t NC, size_t NL) {
+template<bool row_, typename Data_, typename Index_, typename StoredData_, typename StoredIndex_, typename Parser_>
+std::shared_ptr<tatami::Matrix<Data_, Index_> > load_sparse_matrix_basic(Parser_& parser, eminem::Field field, size_t NR, size_t NC, size_t NL) {
     std::vector<StoredIndex_> rows, columns;
     rows.reserve(NL), columns.reserve(NL);
     std::vector<StoredData_> values;
@@ -50,7 +50,7 @@ std::shared_ptr<tatami::Matrix<Data_, Index_> > load_sparse_matrix_basic(eminem:
     auto ptr = tatami::compress_sparse_triplets<row_>(NR, NC, values, rows, columns);
     std::vector<StoredIndex_> indices;
     if constexpr(row_) {
-        indices.swap(columns)
+        indices.swap(columns);
     } else {
         indices.swap(rows);
     }
@@ -62,8 +62,8 @@ std::shared_ptr<tatami::Matrix<Data_, Index_> > load_sparse_matrix_basic(eminem:
     );
 }
 
-template<bool row_, typename Data_, typename Index_, typename StoredData_, typename StoredIndex_>
-std::shared_ptr<tatami::Matrix<Data_, Index_> > load_sparse_matrix_data(eminem::Parser& parser, eminem::Field field, size_t NR, size_t NC, size_t NL) {
+template<bool row_, typename Data_, typename Index_, typename StoredData_, typename StoredIndex_, typename Parser_>
+std::shared_ptr<tatami::Matrix<Data_, Index_> > load_sparse_matrix_data(Parser_& parser, eminem::Field field, size_t NR, size_t NC, size_t NL) {
     if constexpr(std::is_same<StoredData_, Automatic>::value) {
         if (field == eminem::Field::REAL || field == eminem::Field::DOUBLE) {
             return load_sparse_matrix_basic<row_, Data_, Index_, double, StoredIndex_>(parser, field, NR, NC, NL);
@@ -83,8 +83,8 @@ std::shared_ptr<tatami::Matrix<Data_, Index_> > load_sparse_matrix_data(eminem::
 /**
  * @cond
  */
-template<bool row_, typename Data_, typename Index_, typename StoredData_>
-std::shared_ptr<tatami::Matrix<Data_, Index_> > load_dense_matrix_basic(eminem::Parser& parser, eminem::Field field, size_t NR, size_t NC) {
+template<bool row_, typename Data_, typename Index_, typename StoredData_, typename Parser_>
+std::shared_ptr<tatami::Matrix<Data_, Index_> > load_dense_matrix_basic(Parser_& parser, eminem::Field field, size_t NR, size_t NC) {
     std::vector<StoredData_> values;
     if constexpr(row_) {
         values.resize(NR * NC);
@@ -135,14 +135,15 @@ std::shared_ptr<tatami::Matrix<Data_, Index_> > load_dense_matrix_basic(eminem::
  * If set to `Automatic`, it defaults to `double` for real/double fields and `int` for integer fields.
  * @tparam StoredIndex_ Index data type that is stored in memory for sparse matrices.
  * If set to `Automatic`, it defaults to `uint8_t` if no dimension is greater than 255; `uint16_t` if no dimension is greater than 65536; and `int` otherwise.
+ * @tparam parallel_ Whether to parallelize the loading and parsing.
  *
  * @param reader A `byteme::Reader` instance containing bytes from a Matrix Market file.
  *
  * @return Pointer to a `tatami::Matrix` instance containing data from the Matrix Market file.
  */
-template<bool row_, typename Data_, typename Index_, typename StoredData_ = Automatic, typename StoredIndex_ = Automatic>
+template<bool row_, typename Data_, typename Index_, typename StoredData_ = Automatic, typename StoredIndex_ = Automatic, bool parallel_ = false>
 std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix(byteme::Reader& reader) {
-    eminem::Parser parser(reader);
+    eminem::Parser<parallel_> parser(&reader);
     parser.scan_preamble();
 
     const auto& banner = parser.get_banner();
@@ -153,6 +154,7 @@ std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix(byteme::Reader& read
         if constexpr(std::is_same<StoredIndex_, Automatic>::value) {
             // Automatically choosing a smaller integer type, if it fits.
             constexpr size_t limit8 = std::numeric_limits<uint8_t>::max(), limit16 = std::numeric_limits<uint16_t>::max();
+
             if (NR <= limit8 && NC <= limit8) {
                 return load_sparse_matrix_data<row_, Data_, Index_, StoredData_, uint8_t>(parser, field, NR, NC, NL);
             } else if (NR <= limit16 && NC <= limit16) {
@@ -168,15 +170,15 @@ std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix(byteme::Reader& read
     } else {
         if constexpr(std::is_same<StoredData_, Automatic>::value) {
             if (field == eminem::Field::REAL || field == eminem::Field::DOUBLE) {
-                return load_dense_matrix_basic<row_, Data_, Index_, double>(parser, field, field, NR, NC, NL);
+                return load_dense_matrix_basic<row_, Data_, Index_, double>(parser, field, NR, NC);
             }
             if (field != eminem::Field::INTEGER) {
                 throw std::runtime_error("unsupported Matrix Market field type");
             }
-            return load_dense_matrix_basic<row_, Data_, Index_, int>(parser, field, field, NR, NC, NL);
+            return load_dense_matrix_basic<row_, Data_, Index_, int>(parser, field, NR, NC);
 
         } else {
-            return load_dense_matrix_basic<row_, Data_, Index_, StoredData_>(parser, field, field, NR, NC, NL);
+            return load_dense_matrix_basic<row_, Data_, Index_, StoredData_>(parser, field, NR, NC);
         }
     }
 }
@@ -189,6 +191,7 @@ std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix(byteme::Reader& read
  * @tparam Index_ Integer index type for the `tatami::Matrix` interface.
  * @tparam StoredData_ Matrix data type that is stored in memory, see `load_matrix()` for details.
  * @tparam StoredIndex_ Index data type that is stored in memory for sparse matrices,  see `load_matrix()` for details.
+ * @tparam parallel_ Whether to parallelize the loading and parsing.
  *
  * @param filepath Path to a Matrix Market file.
  * The file should contain non-negative integer data in the coordinate format.
@@ -199,24 +202,24 @@ std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix(byteme::Reader& read
  *
  * @return Pointer to a `tatami::Matrix` instance containing data from the Matrix Market file.
  */
-template<bool row_, typename Data_, typename Index_, typename StoredData_ = Automatic, typename StoredIndex_ = Automatic>
-std::shared_ptr<tatami::Matrix<T, IDX> > load_matrix_from_file(const char * filepath, int compression = 0, size_t bufsize = 65536) {
+template<bool row_, typename Data_, typename Index_, bool parallel_ = false, typename StoredData_ = Automatic, typename StoredIndex_ = Automatic>
+std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_file(const char * filepath, int compression = 0, size_t bufsize = 65536) {
     if (compression != 0) {
 #if __has_include("zlib.h")
         throw std::runtime_error("tatami not compiled with support for non-zero 'compression'");
 #else
         if (compression == -1) {
             byteme::SomeFileReader reader(filepath, bufsize);
-            return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_>(reader);
+            return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_, parallel_>(reader);
        } else if (compression == 1) {
             byteme::GzipFileReader reader(filepath, bufsize);
-            return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_>(reader);
+            return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_, parallel_>(reader);
         }
 #endif
     }
 
     byteme::RawFileReader reader(filepath, bufsize);
-    return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_>(reader);
+    return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_, parallel_>(reader);
 }
 
 /**
@@ -227,6 +230,7 @@ std::shared_ptr<tatami::Matrix<T, IDX> > load_matrix_from_file(const char * file
  * @tparam Index_ Integer index type for the `tatami::Matrix` interface.
  * @tparam StoredData_ Matrix data type that is stored in memory, see `load_matrix()` for details.
  * @tparam StoredIndex_ Index data type that is stored in memory for sparse matrices,  see `load_matrix()` for details.
+ * @tparam parallel_ Whether to parallelize the loading and parsing.
  *
  * @param buffer Array containing the contents of a Matrix Market file.
  * The file should contain non-negative integer data in the coordinate format.
@@ -238,24 +242,24 @@ std::shared_ptr<tatami::Matrix<T, IDX> > load_matrix_from_file(const char * file
  * 
  * @return Pointer to a `tatami::Matrix` instance containing data from the Matrix Market file.
  */
-template<bool row_, typename Data_, typename Index_, typename StoredData_ = Automatic, typename StoredIndex_ = Automatic>
-std::shared_ptr<tatami::Matrix<T, IDX> > load_matrix_from_buffer(const unsigned char * buffer, size_t n, int compression = 0, size_t bufsize = 65536) {
+template<bool row_, typename Data_, typename Index_, typename StoredData_ = Automatic, typename StoredIndex_ = Automatic, bool parallel_ = false>
+std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_buffer(const unsigned char * buffer, size_t n, int compression = 0, size_t bufsize = 65536) {
     if (compression != 0) {
 #if __has_include("zlib.h")
         throw std::runtime_error("tatami not compiled with support for non-zero 'compression'");
 #else
         if (compression == -1) {
             byteme::SomeBufferReader reader(buffer, n, bufsize);
-            return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_>(reader);
+            return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_, parallel_>(reader);
         } else if (compression == 1) {
             byteme::ZlibBufferReader reader(buffer, n, 3, bufsize);
-            return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_>(reader);
+            return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_, parallel_>(reader);
         }
 #endif
     }
 
     byteme::RawBufferReader reader(buffer, n);
-    return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_>(reader);
+    return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_, parallel_>(reader);
 }
 
 }
