@@ -1,5 +1,9 @@
 # Create `tatami` matrices from Matrix Market files
 
+![Unit tests](https://github.com/tatami-inc/tatami_mtx/actions/workflows/run-tests.yaml/badge.svg)
+![Documentation](https://github.com/tatami-inc/tatami_mtx/actions/workflows/doxygenate.yaml/badge.svg)
+[![Codecov](https://codecov.io/gh/tatami-inc/tatami_mtx/branch/master/graph/badge.svg?token=Z189ORCLLR)](https://codecov.io/gh/tatami-inc/tatami_mtx)
+
 ## Overview
 
 Pretty much as it says on the tin.
