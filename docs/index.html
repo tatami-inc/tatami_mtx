@@ -74,7 +74,44 @@ $(function() {
   <div class="headertitle"><div class="title">Create <code>tatami</code> matrices from Matrix Market files </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="md__2github_2workspace_2README"></a> Pretty much as it says on the tin. This provides one-line wrappers around the <a href="https://github.com/tatami-inc/eminem"><b>eminem</b></a> parser to enable quick creation of <a href="https://github.com/tatami-inc/tatami"><b>tatami</b></a> matrices from Matrix Market files. </p>
+<div class="textblock"><p><a class="anchor" id="md__2github_2workspace_2README"></a> </p><h1>Overview</h1>
+<p>Pretty much as it says on the tin. This provides one-line wrappers around the <a href="https://github.com/tatami-inc/eminem"><b>eminem</b></a> parser to enable quick creation of <a href="https://github.com/tatami-inc/tatami"><b>tatami</b></a> matrices from Matrix Market files.</p>
+<h1>Quick start</h1>
+<p>The <code>load_matrix_from_file()</code> function will create a <code><a class="elRef" href="https://tatami-inc.github.io/tatami/classtatami_1_1Matrix.html">tatami::Matrix</a></code> from a Matrix Market file:</p>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="tatami__mtx_8hpp.html">tatami_mtx/tatami_mtx.hpp</a>&quot;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">auto</span> mat = tatami_mtx::load_matrix_from_file&lt;false, double, int&gt;(<span class="stringliteral">&quot;some_matrix.mtx&quot;</span>);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// If compiled with Zlib support:</span></div>
+<div class="line"><span class="keyword">auto</span> mat2 = tatami_mtx::load_matrix_from_file&lt;false, double, int&gt;(<span class="stringliteral">&quot;some_matrix.mtx.gz&quot;</span>, 1);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// If the compression is unknown:</span></div>
+<div class="line"><span class="keyword">auto</span> mat3 = tatami_mtx::load_matrix_from_file&lt;false, double, int&gt;(<span class="stringliteral">&quot;some_matrix.mtx.??&quot;</span>, -1);</div>
+<div class="ttc" id="atatami__mtx_8hpp_html"><div class="ttname"><a href="tatami__mtx_8hpp.html">tatami_mtx.hpp</a></div><div class="ttdoc">Umbrella header for the tatami_mtx library.</div></div>
+</div><!-- fragment --><p>This will return a compressed sparse column matrix for coordinate formats and a column-major dense matrix for array formats. If the first template argument is <code>true</code>, row-based matrices are returned instead.</p>
+<p>The next template arguments control the interface and storage types - for example, the above call will return a <code><a class="elRef" href="https://tatami-inc.github.io/tatami/classtatami_1_1Matrix.html">tatami::Matrix</a>&lt;double, int&gt;</code> interface The storage types are automatically chosen based on the Matrix Market field (for data) and the size of the matrix (for indices). Users can customize these by passing the desired types directly:</p>
+<div class="fragment"><div class="line"><span class="keyword">auto</span> mat2 = tatami_mtx::load_matrix_from_file&lt;false, double, int, int32_t, uint16_t&gt;(<span class="stringliteral">&quot;some_matrix.mtx&quot;</span>);</div>
+</div><!-- fragment --><h1>Building projects</h1>
+<p>If you're using CMake, you just need to add something like this to your <code>CMakeLists.txt</code>:</p>
+<div class="fragment"><div class="line">include(FetchContent)</div>
+<div class="line"> </div>
+<div class="line">FetchContent_Declare(</div>
+<div class="line">  tatami_mtx</div>
+<div class="line">  GIT_REPOSITORY https://github.com/tatami-inc/tatami_mtx</div>
+<div class="line">  GIT_TAG master # or any version of interest </div>
+<div class="line">)</div>
+<div class="line"> </div>
+<div class="line">FetchContent_MakeAvailable(tatami_mtx)</div>
+</div><!-- fragment --><p>Then you can link to <b><a class="el" href="namespacetatami__mtx.html" title="Read tatami matrices from Matrix Market files.">tatami_mtx</a></b> to make the headers available during compilation:</p>
+<div class="fragment"><div class="line"># For executables:</div>
+<div class="line">target_link_libraries(myexe tatami_mtx)</div>
+<div class="line"> </div>
+<div class="line"># For libaries</div>
+<div class="line">target_link_libraries(mylib INTERFACE tatami_mtx)</div>
+</div><!-- fragment --><p>To enable support for Gzip-compressed files, additional linking is required to the Zlib libraries:</p>
+<div class="fragment"><div class="line">find_package(ZLIB)</div>
+<div class="line">target_link_libraries(myexe ZLIB::ZLIB)</div>
+</div><!-- fragment --><p>If you're not using CMake, the simple approach is to just copy the files - either directly or with Git submodules - and include their path during compilation with, e.g., GCC's <code>-I</code>. You'll also need to add the <a href="https://github.com/LTLA/byteme"><b>byteme</b></a> and <a href="https://github.com/tatami-inc/eminem"><b>eminem</b></a> libraries to the compiler's search path. </p>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 <!-- start footer part -->
