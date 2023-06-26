@@ -10,12 +10,9 @@ FetchContent_MakeAvailable(googletest)
 
 enable_testing()
 
-# Test HDF5 capabilities.
-find_package(HDF5 COMPONENTS C CXX REQUIRED)
-add_executable(
-    libtest 
-    src/load_matrix.cpp
-)
+add_executable(libtest src/load_matrix.cpp)
+
+target_link_libraries(libtest gtest_main tatami_mtx)
 
 include(CheckIncludeFiles)
 check_include_files(filesystem HAVE_CXX_FS)
@@ -28,6 +25,9 @@ if(CODE_COVERAGE AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     target_compile_options(libtest PRIVATE -O0 -g --coverage)
     target_link_options(libtest PRIVATE --coverage)
 endif()
+
+find_package(ZLIB)
+target_link_libraries(libtest ZLIB::ZLIB)
 
 # Making the tests discoverable.
 include(GoogleTest)

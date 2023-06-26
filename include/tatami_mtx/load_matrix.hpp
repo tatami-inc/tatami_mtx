@@ -95,7 +95,7 @@ std::shared_ptr<tatami::Matrix<Data_, Index_> > load_dense_matrix_basic(Parser_&
     if (field == eminem::Field::INTEGER) {
         parser.scan_integer([&](size_t r, size_t c, int v) -> void {
             if constexpr(row_) {
-                values[r * NC + c] = v;
+                values[(r - 1) * NC + (c - 1)] = v;
             } else {
                 values.push_back(v); // Matrix Market ARRAY format is already column-major
             }
@@ -104,7 +104,7 @@ std::shared_ptr<tatami::Matrix<Data_, Index_> > load_dense_matrix_basic(Parser_&
     } else if (field == eminem::Field::REAL || field == eminem::Field::DOUBLE) {
         parser.scan_real([&](size_t r, size_t c, double v) -> void {
             if constexpr(row_) {
-                values[r * NC + c] = v;
+                values[(r - 1) * NC + (c - 1)] = v;
             } else {
                 values.push_back(v);
             }
@@ -206,8 +206,6 @@ template<bool row_, typename Data_, typename Index_, bool parallel_ = false, typ
 std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_file(const char * filepath, int compression = 0, size_t bufsize = 65536) {
     if (compression != 0) {
 #if __has_include("zlib.h")
-        throw std::runtime_error("tatami not compiled with support for non-zero 'compression'");
-#else
         if (compression == -1) {
             byteme::SomeFileReader reader(filepath, bufsize);
             return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_, parallel_>(reader);
@@ -215,6 +213,8 @@ std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_file(const char
             byteme::GzipFileReader reader(filepath, bufsize);
             return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_, parallel_>(reader);
         }
+#else
+        throw std::runtime_error("tatami not compiled with support for non-zero 'compression'");
 #endif
     }
 
@@ -246,8 +246,6 @@ template<bool row_, typename Data_, typename Index_, typename StoredData_ = Auto
 std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_buffer(const unsigned char * buffer, size_t n, int compression = 0, size_t bufsize = 65536) {
     if (compression != 0) {
 #if __has_include("zlib.h")
-        throw std::runtime_error("tatami not compiled with support for non-zero 'compression'");
-#else
         if (compression == -1) {
             byteme::SomeBufferReader reader(buffer, n, bufsize);
             return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_, parallel_>(reader);
@@ -255,6 +253,8 @@ std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_buffer(const un
             byteme::ZlibBufferReader reader(buffer, n, 3, bufsize);
             return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_, parallel_>(reader);
         }
+#else
+        throw std::runtime_error("tatami not compiled with support for non-zero 'compression'");
 #endif
     }
 
