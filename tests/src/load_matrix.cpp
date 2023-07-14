@@ -258,7 +258,7 @@ TEST_F(LoadMatrixInputTest, GzipFile) {
 class LoadMatrixIndexTest : public LoadMatrixTestMethods<int>, public ::testing::Test {};
 
 TEST_F(LoadMatrixIndexTest, Index8) {
-    initialize(1000, 240, 210); // allow automatic 8-bit representation
+    initialize(1000, 240, 210); // allow automatic 8-bit representation of row indices for CSC matrix.
 
     byteme::RawBufferWriter writer;
     write_coordinate(writer);
@@ -302,8 +302,8 @@ TEST_F(LoadMatrixIndexTest, Index32) {
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
-    auto out = tatami_mtx::load_matrix_from_buffer<true, double, int>(buffer.data(), buffer.size());
-    EXPECT_TRUE(out->prefer_rows());
+    auto out = tatami_mtx::load_matrix_from_buffer<false, double, int>(buffer.data(), buffer.size());
+    EXPECT_FALSE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
 
     auto owrk = out->dense_column();
@@ -321,7 +321,68 @@ TEST_F(LoadMatrixIndexTest, IndexCustom) {
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
-    auto out = tatami_mtx::load_matrix_from_buffer<true, double, int, tatami_mtx::Automatic, uint32_t>(buffer.data(), buffer.size());
+    auto out = tatami_mtx::load_matrix_from_buffer<false, double, int, tatami_mtx::Automatic, uint32_t>(buffer.data(), buffer.size());
+    EXPECT_FALSE(out->prefer_rows());
+    EXPECT_TRUE(out->sparse());
+
+    auto owrk = out->dense_column();
+    auto rwrk = ref->dense_column();
+    for (size_t i = 0; i < NC; ++i) {
+        auto stuff = owrk->fetch(i);
+        EXPECT_EQ(stuff, rwrk->fetch(i));
+    }
+}
+
+/*********************************************
+ *** Checking temporary index type choices ***
+ *********************************************/
+
+TEST_F(LoadMatrixIndexTest, TempIndex8) {
+    initialize(2000, 10, 2000); // use 8-bit temporary indices for CSR matrix.
+
+    byteme::RawBufferWriter writer;
+    write_coordinate(writer);
+    const auto& buffer = writer.output;
+
+    auto out = tatami_mtx::load_matrix_from_buffer<true, double, int>(buffer.data(), buffer.size());
+    EXPECT_TRUE(out->prefer_rows());
+    EXPECT_TRUE(out->sparse());
+
+    auto owrk = out->dense_column();
+    auto rwrk = ref->dense_column();
+    for (size_t i = 0; i < NC; ++i) {
+        auto stuff = owrk->fetch(i);
+        EXPECT_EQ(stuff, rwrk->fetch(i));
+    }
+}
+
+TEST_F(LoadMatrixIndexTest, TempIndex16) {
+    initialize(2001, 1000, 200); // automatically use 16-bit indices.
+
+    byteme::RawBufferWriter writer;
+    write_coordinate(writer);
+    const auto& buffer = writer.output;
+
+    auto out = tatami_mtx::load_matrix_from_buffer<true, double, int>(buffer.data(), buffer.size());
+    EXPECT_TRUE(out->prefer_rows());
+    EXPECT_TRUE(out->sparse());
+
+    auto owrk = out->dense_column();
+    auto rwrk = ref->dense_column();
+    for (size_t i = 0; i < NC; ++i) {
+        auto stuff = owrk->fetch(i);
+        EXPECT_EQ(stuff, rwrk->fetch(i));
+    }
+}
+
+TEST_F(LoadMatrixIndexTest, TempIndex32) {
+    initialize(2002, 100000, 2); // automatically use 32-bit indices.
+
+    byteme::RawBufferWriter writer;
+    write_coordinate(writer);
+    const auto& buffer = writer.output;
+
+    auto out = tatami_mtx::load_matrix_from_buffer<true, double, int>(buffer.data(), buffer.size());
     EXPECT_TRUE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
 

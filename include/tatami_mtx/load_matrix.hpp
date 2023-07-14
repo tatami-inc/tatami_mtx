@@ -22,9 +22,10 @@ struct Automatic {};
 /**
  * @cond
  */
-template<bool row_, typename Data_, typename Index_, typename StoredData_, typename StoredIndex_, typename Parser_>
+template<bool row_, typename Data_, typename Index_, typename StoredData_, typename StoredIndex_, typename TempIndex_, typename Parser_>
 std::shared_ptr<tatami::Matrix<Data_, Index_> > load_sparse_matrix_basic(Parser_& parser, eminem::Field field, size_t NR, size_t NC, size_t NL) {
-    std::vector<StoredIndex_> rows, columns;
+    std::vector<typename std::conditional<row_, TempIndex_, StoredIndex_>::type> rows;
+    std::vector<typename std::conditional<!row_, TempIndex_, StoredIndex_>::type> columns;
     rows.reserve(NL), columns.reserve(NL);
     std::vector<StoredData_> values;
     values.reserve(NL);
@@ -62,18 +63,38 @@ std::shared_ptr<tatami::Matrix<Data_, Index_> > load_sparse_matrix_basic(Parser_
     );
 }
 
-template<bool row_, typename Data_, typename Index_, typename StoredData_, typename StoredIndex_, typename Parser_>
+template<bool row_, typename Data_, typename Index_, typename StoredData_, typename StoredIndex_, typename TempIndex_, typename Parser_>
 std::shared_ptr<tatami::Matrix<Data_, Index_> > load_sparse_matrix_data(Parser_& parser, eminem::Field field, size_t NR, size_t NC, size_t NL) {
     if constexpr(std::is_same<StoredData_, Automatic>::value) {
         if (field == eminem::Field::REAL || field == eminem::Field::DOUBLE) {
-            return load_sparse_matrix_basic<row_, Data_, Index_, double, StoredIndex_>(parser, field, NR, NC, NL);
+            return load_sparse_matrix_basic<row_, Data_, Index_, double, StoredIndex_, TempIndex_>(parser, field, NR, NC, NL);
         }
         if (field != eminem::Field::INTEGER) {
             throw std::runtime_error("unsupported Matrix Market field type");
         }
-        return load_sparse_matrix_basic<row_, Data_, Index_, int, StoredIndex_>(parser, field, NR, NC, NL);
+        return load_sparse_matrix_basic<row_, Data_, Index_, int, StoredIndex_, TempIndex_>(parser, field, NR, NC, NL);
     } else {
-        return load_sparse_matrix_basic<row_, Data_, Index_, StoredData_, StoredIndex_>(parser, field, NR, NC, NL);
+        return load_sparse_matrix_basic<row_, Data_, Index_, StoredData_, StoredIndex_, TempIndex_>(parser, field, NR, NC, NL);
+    }
+}
+
+template<bool row_, typename Data_, typename Index_, typename StoredData_, typename StoredIndex_, typename TempIndex_, typename Parser_>
+std::shared_ptr<tatami::Matrix<Data_, Index_> > load_sparse_matrix_index(Parser_& parser, eminem::Field field, size_t NR, size_t NC, size_t NL) {
+    if constexpr(std::is_same<StoredIndex_, Automatic>::value) {
+        // Automatically choosing a smaller integer type, if it fits.
+        constexpr size_t limit8 = std::numeric_limits<uint8_t>::max(), limit16 = std::numeric_limits<uint16_t>::max();
+        size_t target = (row_ ? NC : NR);
+
+        if (target <= limit8) {
+            return load_sparse_matrix_data<row_, Data_, Index_, StoredData_, uint8_t, TempIndex_>(parser, field, NR, NC, NL);
+        } else if (target <= limit16) {
+            return load_sparse_matrix_data<row_, Data_, Index_, StoredData_, uint16_t, TempIndex_>(parser, field, NR, NC, NL);
+        } else {
+            return load_sparse_matrix_data<row_, Data_, Index_, StoredData_, uint32_t, TempIndex_>(parser, field, NR, NC, NL);
+        }
+
+    } else {
+        return load_sparse_matrix_data<row_, Data_, Index_, StoredData_, StoredIndex_, TempIndex_>(parser, field, NR, NC, NL);
     }
 }
 /**
@@ -151,20 +172,16 @@ std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix(byteme::Reader& read
     size_t NR = parser.get_nrows(), NC = parser.get_ncols(), NL = parser.get_nlines();
 
     if (banner.format == eminem::Format::COORDINATE) {
-        if constexpr(std::is_same<StoredIndex_, Automatic>::value) {
-            // Automatically choosing a smaller integer type, if it fits.
-            constexpr size_t limit8 = std::numeric_limits<uint8_t>::max(), limit16 = std::numeric_limits<uint16_t>::max();
+        // Automatically choosing a smaller integer type for the temporary index.
+        constexpr size_t limit8 = std::numeric_limits<uint8_t>::max(), limit16 = std::numeric_limits<uint16_t>::max();
+        auto primary = (row_ ? NR : NC);
 
-            if (NR <= limit8 && NC <= limit8) {
-                return load_sparse_matrix_data<row_, Data_, Index_, StoredData_, uint8_t>(parser, field, NR, NC, NL);
-            } else if (NR <= limit16 && NC <= limit16) {
-                return load_sparse_matrix_data<row_, Data_, Index_, StoredData_, uint16_t>(parser, field, NR, NC, NL);
-            } else {
-                return load_sparse_matrix_data<row_, Data_, Index_, StoredData_, int>(parser, field, NR, NC, NL);
-            }
-
+        if (primary <= limit8) {
+            return load_sparse_matrix_index<row_, Data_, Index_, StoredData_, StoredIndex_, uint8_t>(parser, field, NR, NC, NL);
+        } else if (primary <= limit16) {
+            return load_sparse_matrix_index<row_, Data_, Index_, StoredData_, StoredIndex_, uint16_t>(parser, field, NR, NC, NL);
         } else {
-            return load_sparse_matrix_data<row_, Data_, Index_, StoredData_, StoredIndex_>(parser, field, NR, NC, NL);
+            return load_sparse_matrix_index<row_, Data_, Index_, StoredData_, StoredIndex_, uint32_t>(parser, field, NR, NC, NL);
         }
 
     } else {
