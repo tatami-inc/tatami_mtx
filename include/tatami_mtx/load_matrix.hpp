@@ -201,7 +201,7 @@ std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix(byteme::Reader& read
 }
 
 /**
- * Load a `tatami::Matrix` from a (possibly Gzip-compressed) Matrix Market file, see `load_matrix()` for details.
+ * Load a `tatami::Matrix` from a Matrix Market text file, see `load_matrix()` for details.
  *
  * @tparam row_ Whether to produce a row-based matrix, see `load_matrix()` for details.
  * @tparam Data_ Data type for the `tatami::Matrix` interface.
@@ -211,36 +211,20 @@ std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix(byteme::Reader& read
  * @tparam parallel_ Whether to parallelize the loading and parsing.
  *
  * @param filepath Path to a Matrix Market file.
- * The file should contain non-negative integer data in the coordinate format.
- * @param compression Compression method for the file - no compression (0) or Gzip compression (1).
- * If set to -1, the function will automatically guess the compression based on magic numbers.
- * Note that non-zero values are only supported if Zlib is available.
  * @param bufsize Size of the buffer (in bytes) to use when reading from file. 
  *
  * @return Pointer to a `tatami::Matrix` instance containing data from the Matrix Market file.
  */
 template<bool row_, typename Data_, typename Index_, bool parallel_ = false, typename StoredData_ = Automatic, typename StoredIndex_ = Automatic>
-std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_file(const char * filepath, int compression = 0, size_t bufsize = 65536) {
-    if (compression != 0) {
-#if __has_include("zlib.h")
-        if (compression == -1) {
-            byteme::SomeFileReader reader(filepath, bufsize);
-            return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_, parallel_>(reader);
-       } else if (compression == 1) {
-            byteme::GzipFileReader reader(filepath, bufsize);
-            return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_, parallel_>(reader);
-        }
-#else
-        throw std::runtime_error("tatami not compiled with support for non-zero 'compression'");
-#endif
-    }
-
+std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_text_file(const char * filepath, int compression = 0, size_t bufsize = 65536) {
     byteme::RawFileReader reader(filepath, bufsize);
     return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_, parallel_>(reader);
 }
 
+#if __has_include("zlib.h")
+
 /**
- * Load a `tatami::Matrix` from a buffer containing a (possibly Gzip-compressed) Matrix Market file, see `load_matrix()` for details.
+ * Load a `tatami::Matrix` from a Gzip-compressed Matrix Market file, see `load_matrix()` for details.
  *
  * @tparam row_ Whether to produce a row-based matrix, see `load_matrix()` for details.
  * @tparam Data_ Data type for the `tatami::Matrix` interface.
@@ -249,35 +233,109 @@ std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_file(const char
  * @tparam StoredIndex_ Index data type that is stored in memory for sparse matrices,  see `load_matrix()` for details.
  * @tparam parallel_ Whether to parallelize the loading and parsing.
  *
- * @param buffer Array containing the contents of a Matrix Market file.
- * The file should contain non-negative integer data in the coordinate format.
+ * @param filepath Path to a Matrix Market file.
+ * @param bufsize Size of the buffer (in bytes) to use when reading from file. 
+ *
+ * @return Pointer to a `tatami::Matrix` instance containing data from the Matrix Market file.
+ */
+template<bool row_, typename Data_, typename Index_, bool parallel_ = false, typename StoredData_ = Automatic, typename StoredIndex_ = Automatic>
+std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_gzip_file(const char * filepath, size_t bufsize = 65536) {
+    byteme::GzipFileReader reader(filepath, bufsize);
+    return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_, parallel_>(reader);
+}
+
+/**
+ * Load a `tatami::Matrix` from a possibly Gzip-compressed Matrix Market file, see `load_matrix()` for details.
+ *
+ * @tparam row_ Whether to produce a row-based matrix, see `load_matrix()` for details.
+ * @tparam Data_ Data type for the `tatami::Matrix` interface.
+ * @tparam Index_ Integer index type for the `tatami::Matrix` interface.
+ * @tparam StoredData_ Matrix data type that is stored in memory, see `load_matrix()` for details.
+ * @tparam StoredIndex_ Index data type that is stored in memory for sparse matrices,  see `load_matrix()` for details.
+ * @tparam parallel_ Whether to parallelize the loading and parsing.
+ *
+ * @param filepath Path to a Matrix Market file.
+ * @param bufsize Size of the buffer (in bytes) to use when reading from file. 
+ *
+ * @return Pointer to a `tatami::Matrix` instance containing data from the Matrix Market file.
+ */
+template<bool row_, typename Data_, typename Index_, bool parallel_ = false, typename StoredData_ = Automatic, typename StoredIndex_ = Automatic>
+std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_some_file(const char * filepath, size_t bufsize = 65536) {
+    byteme::SomeFileReader reader(filepath, bufsize);
+    return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_, parallel_>(reader);
+}
+
+#endif
+
+/**
+ * Load a `tatami::Matrix` from a buffer containing a Matrix Market file, see `load_matrix()` for details.
+ *
+ * @tparam row_ Whether to produce a row-based matrix, see `load_matrix()` for details.
+ * @tparam Data_ Data type for the `tatami::Matrix` interface.
+ * @tparam Index_ Integer index type for the `tatami::Matrix` interface.
+ * @tparam StoredData_ Matrix data type that is stored in memory, see `load_matrix()` for details.
+ * @tparam StoredIndex_ Index data type that is stored in memory for sparse matrices,  see `load_matrix()` for details.
+ * @tparam parallel_ Whether to parallelize the loading and parsing.
+ *
+ * @param buffer Array containing the contents of an uncompressed Matrix Market file.
  * @param n Length of the array.
- * @param compression Compression method for the file contents - no compression (0) or Gzip/Zlib compression (1).
- * If set to -1, the function will automatically guess the compression based on magic numbers.
- * Note that non-zero values are only supported if Zlib is available.
  * @param bufsize Size of the buffer (in bytes) to use when decompressing the file contents.
  * 
  * @return Pointer to a `tatami::Matrix` instance containing data from the Matrix Market file.
  */
 template<bool row_, typename Data_, typename Index_, typename StoredData_ = Automatic, typename StoredIndex_ = Automatic, bool parallel_ = false>
-std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_buffer(const unsigned char * buffer, size_t n, int compression = 0, size_t bufsize = 65536) {
-    if (compression != 0) {
-#if __has_include("zlib.h")
-        if (compression == -1) {
-            byteme::SomeBufferReader reader(buffer, n, bufsize);
-            return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_, parallel_>(reader);
-        } else if (compression == 1) {
-            byteme::ZlibBufferReader reader(buffer, n, 3, bufsize);
-            return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_, parallel_>(reader);
-        }
-#else
-        throw std::runtime_error("tatami not compiled with support for non-zero 'compression'");
-#endif
-    }
-
+std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_text_buffer(const unsigned char * buffer, size_t n, size_t bufsize = 65536) {
     byteme::RawBufferReader reader(buffer, n);
     return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_, parallel_>(reader);
 }
+
+#if __has_include("zlib.h")
+
+/**
+ * Load a `tatami::Matrix` from a buffer containing a Gzip/Zlib-compressed Matrix Market file, see `load_matrix()` for details.
+ *
+ * @tparam row_ Whether to produce a row-based matrix, see `load_matrix()` for details.
+ * @tparam Data_ Data type for the `tatami::Matrix` interface.
+ * @tparam Index_ Integer index type for the `tatami::Matrix` interface.
+ * @tparam StoredData_ Matrix data type that is stored in memory, see `load_matrix()` for details.
+ * @tparam StoredIndex_ Index data type that is stored in memory for sparse matrices,  see `load_matrix()` for details.
+ * @tparam parallel_ Whether to parallelize the loading and parsing.
+ *
+ * @param buffer Array containing the contents of a Matrix Market file after Gzip/Zlib compression.
+ * @param n Length of the array.
+ * @param bufsize Size of the buffer (in bytes) to use when decompressing the file contents.
+ * 
+ * @return Pointer to a `tatami::Matrix` instance containing data from the Matrix Market file.
+ */
+template<bool row_, typename Data_, typename Index_, typename StoredData_ = Automatic, typename StoredIndex_ = Automatic, bool parallel_ = false>
+std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_zlib_buffer(const unsigned char * buffer, size_t n, int compression = 0, size_t bufsize = 65536) {
+    byteme::ZlibBufferReader reader(buffer, n, 3, bufsize);
+    return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_, parallel_>(reader);
+}
+
+/**
+ * Load a `tatami::Matrix` from a buffer containing a possibly Gzip/Zlib-compressed Matrix Market file, see `load_matrix()` for details.
+ *
+ * @tparam row_ Whether to produce a row-based matrix, see `load_matrix()` for details.
+ * @tparam Data_ Data type for the `tatami::Matrix` interface.
+ * @tparam Index_ Integer index type for the `tatami::Matrix` interface.
+ * @tparam StoredData_ Matrix data type that is stored in memory, see `load_matrix()` for details.
+ * @tparam StoredIndex_ Index data type that is stored in memory for sparse matrices,  see `load_matrix()` for details.
+ * @tparam parallel_ Whether to parallelize the loading and parsing.
+ *
+ * @param buffer Array containing the contents of a Matrix Market file, possibly after Gzip/Zlib compression.
+ * @param n Length of the array.
+ * @param bufsize Size of the buffer (in bytes) to use when decompressing the file contents.
+ * 
+ * @return Pointer to a `tatami::Matrix` instance containing data from the Matrix Market file.
+ */
+template<bool row_, typename Data_, typename Index_, typename StoredData_ = Automatic, typename StoredIndex_ = Automatic, bool parallel_ = false>
+std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_some_buffer(const unsigned char * buffer, size_t n, size_t bufsize = 65536) {
+    byteme::SomeBufferReader reader(buffer, n);
+    return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_, parallel_>(reader);
+}
+
+#endif
 
 }
 

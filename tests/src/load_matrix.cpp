@@ -116,7 +116,7 @@ TEST_F(LoadMatrixInputTest, SimpleBuffer) {
 
     // Uncompressed.
     {
-        auto out = tatami_mtx::load_matrix_from_buffer<false, double, int>(buffer.data(), buffer.size(), /* compression = */ 0);
+        auto out = tatami_mtx::load_matrix_from_text_buffer<false, double, int>(buffer.data(), buffer.size());
         EXPECT_FALSE(out->prefer_rows());
         EXPECT_TRUE(out->sparse());
 
@@ -130,7 +130,7 @@ TEST_F(LoadMatrixInputTest, SimpleBuffer) {
 
     // Automatic.
     {
-        auto out = tatami_mtx::load_matrix_from_buffer<false, double, int>(buffer.data(), buffer.size(), /* compression = */ -1);
+        auto out = tatami_mtx::load_matrix_from_some_buffer<false, double, int>(buffer.data(), buffer.size());
         EXPECT_FALSE(out->prefer_rows());
         EXPECT_TRUE(out->sparse());
 
@@ -152,7 +152,7 @@ TEST_F(LoadMatrixInputTest, SimpleText) {
 
     // Uncompressed.
     {
-        auto out = tatami_mtx::load_matrix_from_file<true, double, int>(path.c_str(), /* compression = */ 0);
+        auto out = tatami_mtx::load_matrix_from_text_file<true, double, int>(path.c_str());
         EXPECT_TRUE(out->prefer_rows());
         EXPECT_TRUE(out->sparse());
 
@@ -166,7 +166,7 @@ TEST_F(LoadMatrixInputTest, SimpleText) {
 
     // Automatic.
     {
-        auto out = tatami_mtx::load_matrix_from_file<true, double, int>(path.c_str(), /* compression = */ -1);
+        auto out = tatami_mtx::load_matrix_from_some_file<true, double, int>(path.c_str());
         EXPECT_TRUE(out->prefer_rows());
         EXPECT_TRUE(out->sparse());
 
@@ -188,7 +188,7 @@ TEST_F(LoadMatrixInputTest, ZlibBuffer) {
 
     // Compressed.
     {
-        auto out = tatami_mtx::load_matrix_from_buffer<false, double, int>(buffer.data(), buffer.size(), /* compression = */ 1);
+        auto out = tatami_mtx::load_matrix_from_zlib_buffer<false, double, int>(buffer.data(), buffer.size());
         EXPECT_FALSE(out->prefer_rows());
         EXPECT_TRUE(out->sparse());
 
@@ -202,7 +202,7 @@ TEST_F(LoadMatrixInputTest, ZlibBuffer) {
 
     // Automatic.
     {
-        auto out = tatami_mtx::load_matrix_from_buffer<false, double, int>(buffer.data(), buffer.size(), /* compression = */ -1);
+        auto out = tatami_mtx::load_matrix_from_some_buffer<false, double, int>(buffer.data(), buffer.size());
         EXPECT_FALSE(out->prefer_rows());
         EXPECT_TRUE(out->sparse());
 
@@ -224,7 +224,7 @@ TEST_F(LoadMatrixInputTest, GzipFile) {
 
     // Compressed.
     {
-        auto out = tatami_mtx::load_matrix_from_file<true, double, int>(path.c_str(), /* compression = */ 1);
+        auto out = tatami_mtx::load_matrix_from_gzip_file<true, double, int>(path.c_str());
         EXPECT_TRUE(out->prefer_rows());
         EXPECT_TRUE(out->sparse());
 
@@ -238,7 +238,7 @@ TEST_F(LoadMatrixInputTest, GzipFile) {
 
     // Automatic.
     {
-        auto out = tatami_mtx::load_matrix_from_file<true, double, int>(path.c_str(), /* compression = */ -1);
+        auto out = tatami_mtx::load_matrix_from_some_file<true, double, int>(path.c_str());
         EXPECT_TRUE(out->prefer_rows());
         EXPECT_TRUE(out->sparse());
 
@@ -264,7 +264,7 @@ TEST_F(LoadMatrixIndexTest, Index8) {
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
-    auto out = tatami_mtx::load_matrix_from_buffer<false, double, int>(buffer.data(), buffer.size());
+    auto out = tatami_mtx::load_matrix_from_text_buffer<false, double, int>(buffer.data(), buffer.size());
     EXPECT_FALSE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
 
@@ -283,7 +283,7 @@ TEST_F(LoadMatrixIndexTest, Index16) {
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
-    auto out = tatami_mtx::load_matrix_from_buffer<false, double, int>(buffer.data(), buffer.size());
+    auto out = tatami_mtx::load_matrix_from_text_buffer<false, double, int>(buffer.data(), buffer.size());
     EXPECT_FALSE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
 
@@ -302,7 +302,7 @@ TEST_F(LoadMatrixIndexTest, Index32) {
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
-    auto out = tatami_mtx::load_matrix_from_buffer<false, double, int>(buffer.data(), buffer.size());
+    auto out = tatami_mtx::load_matrix_from_text_buffer<false, double, int>(buffer.data(), buffer.size());
     EXPECT_FALSE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
 
@@ -321,7 +321,7 @@ TEST_F(LoadMatrixIndexTest, IndexCustom) {
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
-    auto out = tatami_mtx::load_matrix_from_buffer<false, double, int, tatami_mtx::Automatic, uint32_t>(buffer.data(), buffer.size());
+    auto out = tatami_mtx::load_matrix_from_text_buffer<false, double, int, tatami_mtx::Automatic, uint32_t>(buffer.data(), buffer.size());
     EXPECT_FALSE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
 
@@ -344,7 +344,7 @@ TEST_F(LoadMatrixIndexTest, TempIndex8) {
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
-    auto out = tatami_mtx::load_matrix_from_buffer<true, double, int>(buffer.data(), buffer.size());
+    auto out = tatami_mtx::load_matrix_from_text_buffer<true, double, int>(buffer.data(), buffer.size());
     EXPECT_TRUE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
 
@@ -363,7 +363,7 @@ TEST_F(LoadMatrixIndexTest, TempIndex16) {
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
-    auto out = tatami_mtx::load_matrix_from_buffer<true, double, int>(buffer.data(), buffer.size());
+    auto out = tatami_mtx::load_matrix_from_text_buffer<true, double, int>(buffer.data(), buffer.size());
     EXPECT_TRUE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
 
@@ -382,7 +382,7 @@ TEST_F(LoadMatrixIndexTest, TempIndex32) {
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
-    auto out = tatami_mtx::load_matrix_from_buffer<true, double, int>(buffer.data(), buffer.size());
+    auto out = tatami_mtx::load_matrix_from_text_buffer<true, double, int>(buffer.data(), buffer.size());
     EXPECT_TRUE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
 
@@ -407,7 +407,7 @@ TEST_F(LoadMatrixIntegerTypeTest, CoordinateAutomatic) {
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
-    auto out = tatami_mtx::load_matrix_from_buffer<true, double, int>(buffer.data(), buffer.size());
+    auto out = tatami_mtx::load_matrix_from_text_buffer<true, double, int>(buffer.data(), buffer.size());
     EXPECT_TRUE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
 
@@ -426,7 +426,7 @@ TEST_F(LoadMatrixIntegerTypeTest, CoordinateCustom) {
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
-    auto out = tatami_mtx::load_matrix_from_buffer<false, double, int, int32_t>(buffer.data(), buffer.size());
+    auto out = tatami_mtx::load_matrix_from_text_buffer<false, double, int, int32_t>(buffer.data(), buffer.size());
     EXPECT_FALSE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
 
@@ -445,7 +445,7 @@ TEST_F(LoadMatrixIntegerTypeTest, ArrayAutomatic) {
     write_array(writer);
     const auto& buffer = writer.output;
 
-    auto out = tatami_mtx::load_matrix_from_buffer<true, double, int>(buffer.data(), buffer.size());
+    auto out = tatami_mtx::load_matrix_from_text_buffer<true, double, int>(buffer.data(), buffer.size());
     EXPECT_TRUE(out->prefer_rows());
     EXPECT_FALSE(out->sparse());
 
@@ -464,7 +464,7 @@ TEST_F(LoadMatrixIntegerTypeTest, ArrayCustom) {
     write_array(writer);
     const auto& buffer = writer.output;
 
-    auto out = tatami_mtx::load_matrix_from_buffer<false, double, int, int32_t>(buffer.data(), buffer.size());
+    auto out = tatami_mtx::load_matrix_from_text_buffer<false, double, int, int32_t>(buffer.data(), buffer.size());
     EXPECT_FALSE(out->prefer_rows());
     EXPECT_FALSE(out->sparse());
 
@@ -489,7 +489,7 @@ TEST_F(LoadMatrixFloatTypeTest, CoordinateAutomatic) {
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
-    auto out = tatami_mtx::load_matrix_from_buffer<true, double, int>(buffer.data(), buffer.size());
+    auto out = tatami_mtx::load_matrix_from_text_buffer<true, double, int>(buffer.data(), buffer.size());
     EXPECT_TRUE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
 
@@ -508,7 +508,7 @@ TEST_F(LoadMatrixFloatTypeTest, CoordinateCustom) {
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
-    auto out = tatami_mtx::load_matrix_from_buffer<false, double, int, double>(buffer.data(), buffer.size());
+    auto out = tatami_mtx::load_matrix_from_text_buffer<false, double, int, double>(buffer.data(), buffer.size());
     EXPECT_FALSE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
 
@@ -527,7 +527,7 @@ TEST_F(LoadMatrixFloatTypeTest, ArrayAutomatic) {
     write_array(writer);
     const auto& buffer = writer.output;
 
-    auto out = tatami_mtx::load_matrix_from_buffer<true, double, int>(buffer.data(), buffer.size());
+    auto out = tatami_mtx::load_matrix_from_text_buffer<true, double, int>(buffer.data(), buffer.size());
     EXPECT_TRUE(out->prefer_rows());
     EXPECT_FALSE(out->sparse());
 
@@ -546,7 +546,7 @@ TEST_F(LoadMatrixFloatTypeTest, ArrayCustom) {
     write_array(writer);
     const auto& buffer = writer.output;
 
-    auto out = tatami_mtx::load_matrix_from_buffer<false, double, int, double>(buffer.data(), buffer.size());
+    auto out = tatami_mtx::load_matrix_from_text_buffer<false, double, int, double>(buffer.data(), buffer.size());
     EXPECT_FALSE(out->prefer_rows());
     EXPECT_FALSE(out->sparse());
 
