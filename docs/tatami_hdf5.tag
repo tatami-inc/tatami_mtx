@@ -68,6 +68,6 @@
     <name>index</name>
     <title>Create &lt;tt&gt;tatami&lt;/tt&gt; matrices from Matrix Market files</title>
     <filename>index.html</filename>
-    <docanchor file="index.html">md__2github_2workspace_2README</docanchor>
+    <docanchor file="index.html" title="Create `tatami` matrices from Matrix Market files">md__2github_2workspace_2README</docanchor>
   </compound>
 </tagfile>
