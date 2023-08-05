@@ -41,7 +41,6 @@ if(TATAMI_MTX_TESTS)
     if(BUILD_TESTING)
         add_subdirectory(tests)
     endif() 
-    add_subdirectory(perf)
 endif()
 
 # Installing for find_package.
