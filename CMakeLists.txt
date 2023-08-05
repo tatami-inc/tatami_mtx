@@ -26,7 +26,7 @@ include(GNUInstallDirs)
 target_include_directories(tatami_mtx
     INTERFACE
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
-    "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/tatami_mtx>"
+    "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/tatami_tatami_mtx>"
 )
 
 # Building the test-related machinery, if we are compiling this library directly.
@@ -47,7 +47,7 @@ endif()
 include(CMakePackageConfigHelpers)
 
 install(DIRECTORY include/
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/tatami_mtx)
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/tatami_tatami_mtx)
 
 install(TARGETS tatami_mtx 
     EXPORT tatami_mtxTargets)
