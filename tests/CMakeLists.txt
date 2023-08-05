@@ -6,6 +6,10 @@ FetchContent_Declare(
 
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+
+# Avoid installing GoogleTest when installing this project.
+option(INSTALL_GTEST "Enable installation of googletest." OFF)
+
 FetchContent_MakeAvailable(googletest)
 
 enable_testing()
@@ -25,9 +29,6 @@ if(CODE_COVERAGE AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     target_compile_options(libtest PRIVATE -O0 -g --coverage)
     target_link_options(libtest PRIVATE --coverage)
 endif()
-
-find_package(ZLIB)
-target_link_libraries(libtest ZLIB::ZLIB)
 
 # Making the tests discoverable.
 include(GoogleTest)

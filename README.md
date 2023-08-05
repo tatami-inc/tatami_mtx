@@ -47,6 +47,8 @@ Check out the [reference documentation](https://tatami-inc.github.io/tatami_mtx)
 
 ## Building projects
 
+### CMake with `FetchContent`
+
 If you're using CMake, you just need to add something like this to your `CMakeLists.txt`:
 
 ```cmake
@@ -71,12 +73,30 @@ target_link_libraries(myexe tatami_mtx)
 target_link_libraries(mylib INTERFACE tatami_mtx)
 ```
 
-To enable support for Gzip-compressed files, additional linking is required to the Zlib libraries:
+### CMake using `find_package()`
 
-```cmake
-find_package(ZLIB)
-target_link_libraries(myexe ZLIB::ZLIB)
+You can install the library by cloning a suitable version of this repository and running the following commands:
+
+```sh
+mkdir build && cd build
+cmake .. -DTATAMI_MTX_TESTS=OFF
+cmake --build . --target install
 ```
 
-If you're not using CMake, the simple approach is to just copy the files - either directly or with Git submodules - and include their path during compilation with, e.g., GCC's `-I`.
-You'll also need to add the [**byteme**](https://github.com/LTLA/byteme) and [**eminem**](https://github.com/tatami-inc/eminem) libraries to the compiler's search path.
+Then you can use `find_package()` as usual:
+
+```cmake
+find_package(tatami_tatami_mtx CONFIG REQUIRED)
+target_link_libraries(mylib INTERFACE tatami::tatami_mtx)
+```
+
+### Manual
+
+If you're not using CMake, the simple approach is to just copy the files the `include/` subdirectory -
+either directly or with Git submodules - and include their path during compilation with, e.g., GCC's `-I`.
+You'll also need to link to the following libraries:
+
+- [**tatami**](https://github.com/tatami-inc/tatami)
+- [**eminem**](https://github.com/tatami-inc/eminem) 
+- [**byteme**](https://github.com/LTLA/byteme)
+- Zlib
