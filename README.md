@@ -94,9 +94,5 @@ target_link_libraries(mylib INTERFACE tatami::tatami_mtx)
 
 If you're not using CMake, the simple approach is to just copy the files the `include/` subdirectory -
 either directly or with Git submodules - and include their path during compilation with, e.g., GCC's `-I`.
-You'll also need to link to the following libraries:
+You'll also need to link to the [**tatami**](https://github.com/tatami-inc/tatami) and [**eminem**](https://github.com/tatami-inc/eminem) libraries (and their dependencies).
 
-- [**tatami**](https://github.com/tatami-inc/tatami)
-- [**eminem**](https://github.com/tatami-inc/eminem) 
-- [**byteme**](https://github.com/LTLA/byteme)
-- Zlib
