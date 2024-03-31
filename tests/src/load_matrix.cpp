@@ -3,6 +3,8 @@
 #include "byteme/byteme.hpp"
 #include "byteme/temp_file_path.hpp"
 #include "eminem/eminem.hpp"
+#include "tatami_test/tatami_test.hpp"
+
 #include "tatami_mtx/tatami_mtx.hpp"
 
 #include <limits>
@@ -87,8 +89,9 @@ protected:
         stream.write(std::to_string(NC));
 
         auto ext = ref->dense_column();
+        std::vector<double> buffer(NR);
         for (size_t c = 0; c < NC; ++c) {
-            auto col = ext->fetch(c);
+            auto col = ext->fetch(c, buffer.data());
             for (size_t r = 0; r < NR; ++r) {
                 stream.write('\n');
                 stream.write(std::to_string(static_cast<T>(col[r])));
@@ -119,13 +122,8 @@ TEST_F(LoadMatrixInputTest, SimpleBuffer) {
         auto out = tatami_mtx::load_matrix_from_text_buffer<false, double, int>(buffer.data(), buffer.size());
         EXPECT_FALSE(out->prefer_rows());
         EXPECT_TRUE(out->sparse());
-
-        auto owrk = out->dense_column();
-        auto rwrk = ref->dense_column();
-        for (size_t i = 0; i < NC; ++i) {
-            auto stuff = owrk->fetch(i);
-            EXPECT_EQ(stuff, rwrk->fetch(i));
-        }
+        tatami_test::test_simple_row_access(out.get(), ref.get());
+        tatami_test::test_simple_column_access(out.get(), ref.get());
     }
 
     // Automatic.
@@ -133,13 +131,8 @@ TEST_F(LoadMatrixInputTest, SimpleBuffer) {
         auto out = tatami_mtx::load_matrix_from_some_buffer<false, double, int>(buffer.data(), buffer.size());
         EXPECT_FALSE(out->prefer_rows());
         EXPECT_TRUE(out->sparse());
-
-        auto owrk = out->dense_column();
-        auto rwrk = ref->dense_column();
-        for (size_t i = 0; i < NC; ++i) {
-            auto stuff = owrk->fetch(i);
-            EXPECT_EQ(stuff, rwrk->fetch(i));
-        }
+        tatami_test::test_simple_row_access(out.get(), ref.get());
+        tatami_test::test_simple_column_access(out.get(), ref.get());
     }
 }
 
@@ -155,13 +148,8 @@ TEST_F(LoadMatrixInputTest, SimpleText) {
         auto out = tatami_mtx::load_matrix_from_text_file<true, double, int>(path.c_str());
         EXPECT_TRUE(out->prefer_rows());
         EXPECT_TRUE(out->sparse());
-
-        auto owrk = out->dense_column();
-        auto rwrk = ref->dense_column();
-        for (size_t i = 0; i < NC; ++i) {
-            auto stuff = owrk->fetch(i);
-            EXPECT_EQ(stuff, rwrk->fetch(i));
-        }
+        tatami_test::test_simple_row_access(out.get(), ref.get());
+        tatami_test::test_simple_column_access(out.get(), ref.get());
     }
 
     // Automatic.
@@ -169,13 +157,8 @@ TEST_F(LoadMatrixInputTest, SimpleText) {
         auto out = tatami_mtx::load_matrix_from_some_file<true, double, int>(path.c_str());
         EXPECT_TRUE(out->prefer_rows());
         EXPECT_TRUE(out->sparse());
-
-        auto owrk = out->dense_column();
-        auto rwrk = ref->dense_column();
-        for (size_t i = 0; i < NC; ++i) {
-            auto stuff = owrk->fetch(i);
-            EXPECT_EQ(stuff, rwrk->fetch(i));
-        }
+        tatami_test::test_simple_row_access(out.get(), ref.get());
+        tatami_test::test_simple_column_access(out.get(), ref.get());
     }
 }
 
@@ -191,13 +174,8 @@ TEST_F(LoadMatrixInputTest, ZlibBuffer) {
         auto out = tatami_mtx::load_matrix_from_zlib_buffer<false, double, int>(buffer.data(), buffer.size());
         EXPECT_FALSE(out->prefer_rows());
         EXPECT_TRUE(out->sparse());
-
-        auto owrk = out->dense_column();
-        auto rwrk = ref->dense_column();
-        for (size_t i = 0; i < NC; ++i) {
-            auto stuff = owrk->fetch(i);
-            EXPECT_EQ(stuff, rwrk->fetch(i));
-        }
+        tatami_test::test_simple_row_access(out.get(), ref.get());
+        tatami_test::test_simple_column_access(out.get(), ref.get());
     }
 
     // Automatic.
@@ -205,13 +183,8 @@ TEST_F(LoadMatrixInputTest, ZlibBuffer) {
         auto out = tatami_mtx::load_matrix_from_some_buffer<false, double, int>(buffer.data(), buffer.size());
         EXPECT_FALSE(out->prefer_rows());
         EXPECT_TRUE(out->sparse());
-
-        auto owrk = out->dense_column();
-        auto rwrk = ref->dense_column();
-        for (size_t i = 0; i < NC; ++i) {
-            auto stuff = owrk->fetch(i);
-            EXPECT_EQ(stuff, rwrk->fetch(i));
-        }
+        tatami_test::test_simple_row_access(out.get(), ref.get());
+        tatami_test::test_simple_column_access(out.get(), ref.get());
     }
 }
 
@@ -227,13 +200,8 @@ TEST_F(LoadMatrixInputTest, GzipFile) {
         auto out = tatami_mtx::load_matrix_from_gzip_file<true, double, int>(path.c_str());
         EXPECT_TRUE(out->prefer_rows());
         EXPECT_TRUE(out->sparse());
-
-        auto owrk = out->dense_column();
-        auto rwrk = ref->dense_column();
-        for (size_t i = 0; i < NC; ++i) {
-            auto stuff = owrk->fetch(i);
-            EXPECT_EQ(stuff, rwrk->fetch(i));
-        }
+        tatami_test::test_simple_row_access(out.get(), ref.get());
+        tatami_test::test_simple_column_access(out.get(), ref.get());
     }
 
     // Automatic.
@@ -241,13 +209,8 @@ TEST_F(LoadMatrixInputTest, GzipFile) {
         auto out = tatami_mtx::load_matrix_from_some_file<true, double, int>(path.c_str());
         EXPECT_TRUE(out->prefer_rows());
         EXPECT_TRUE(out->sparse());
-
-        auto owrk = out->dense_column();
-        auto rwrk = ref->dense_column();
-        for (size_t i = 0; i < NC; ++i) {
-            auto stuff = owrk->fetch(i);
-            EXPECT_EQ(stuff, rwrk->fetch(i));
-        }
+        tatami_test::test_simple_row_access(out.get(), ref.get());
+        tatami_test::test_simple_column_access(out.get(), ref.get());
     }
 }
 
@@ -267,13 +230,8 @@ TEST_F(LoadMatrixIndexTest, Index8) {
     auto out = tatami_mtx::load_matrix_from_text_buffer<false, double, int>(buffer.data(), buffer.size());
     EXPECT_FALSE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
-
-    auto owrk = out->dense_column();
-    auto rwrk = ref->dense_column();
-    for (size_t i = 0; i < NC; ++i) {
-        auto stuff = owrk->fetch(i);
-        EXPECT_EQ(stuff, rwrk->fetch(i));
-    }
+    tatami_test::test_simple_row_access(out.get(), ref.get());
+    tatami_test::test_simple_column_access(out.get(), ref.get());
 }
 
 TEST_F(LoadMatrixIndexTest, Index16) {
@@ -286,13 +244,8 @@ TEST_F(LoadMatrixIndexTest, Index16) {
     auto out = tatami_mtx::load_matrix_from_text_buffer<false, double, int>(buffer.data(), buffer.size());
     EXPECT_FALSE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
-
-    auto owrk = out->dense_column();
-    auto rwrk = ref->dense_column();
-    for (size_t i = 0; i < NC; ++i) {
-        auto stuff = owrk->fetch(i);
-        EXPECT_EQ(stuff, rwrk->fetch(i));
-    }
+    tatami_test::test_simple_row_access(out.get(), ref.get());
+    tatami_test::test_simple_column_access(out.get(), ref.get());
 }
 
 TEST_F(LoadMatrixIndexTest, Index32) {
@@ -305,13 +258,8 @@ TEST_F(LoadMatrixIndexTest, Index32) {
     auto out = tatami_mtx::load_matrix_from_text_buffer<false, double, int>(buffer.data(), buffer.size());
     EXPECT_FALSE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
-
-    auto owrk = out->dense_column();
-    auto rwrk = ref->dense_column();
-    for (size_t i = 0; i < NC; ++i) {
-        auto stuff = owrk->fetch(i);
-        EXPECT_EQ(stuff, rwrk->fetch(i));
-    }
+    tatami_test::test_simple_row_access(out.get(), ref.get());
+    tatami_test::test_simple_column_access(out.get(), ref.get());
 }
 
 TEST_F(LoadMatrixIndexTest, IndexCustom) {
@@ -324,13 +272,8 @@ TEST_F(LoadMatrixIndexTest, IndexCustom) {
     auto out = tatami_mtx::load_matrix_from_text_buffer<false, double, int, tatami_mtx::Automatic, uint32_t>(buffer.data(), buffer.size());
     EXPECT_FALSE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
-
-    auto owrk = out->dense_column();
-    auto rwrk = ref->dense_column();
-    for (size_t i = 0; i < NC; ++i) {
-        auto stuff = owrk->fetch(i);
-        EXPECT_EQ(stuff, rwrk->fetch(i));
-    }
+    tatami_test::test_simple_row_access(out.get(), ref.get());
+    tatami_test::test_simple_column_access(out.get(), ref.get());
 }
 
 /*********************************************
@@ -347,13 +290,8 @@ TEST_F(LoadMatrixIndexTest, TempIndex8) {
     auto out = tatami_mtx::load_matrix_from_text_buffer<true, double, int>(buffer.data(), buffer.size());
     EXPECT_TRUE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
-
-    auto owrk = out->dense_column();
-    auto rwrk = ref->dense_column();
-    for (size_t i = 0; i < NC; ++i) {
-        auto stuff = owrk->fetch(i);
-        EXPECT_EQ(stuff, rwrk->fetch(i));
-    }
+    tatami_test::test_simple_row_access(out.get(), ref.get());
+    tatami_test::test_simple_column_access(out.get(), ref.get());
 }
 
 TEST_F(LoadMatrixIndexTest, TempIndex16) {
@@ -366,13 +304,8 @@ TEST_F(LoadMatrixIndexTest, TempIndex16) {
     auto out = tatami_mtx::load_matrix_from_text_buffer<true, double, int>(buffer.data(), buffer.size());
     EXPECT_TRUE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
-
-    auto owrk = out->dense_column();
-    auto rwrk = ref->dense_column();
-    for (size_t i = 0; i < NC; ++i) {
-        auto stuff = owrk->fetch(i);
-        EXPECT_EQ(stuff, rwrk->fetch(i));
-    }
+    tatami_test::test_simple_row_access(out.get(), ref.get());
+    tatami_test::test_simple_column_access(out.get(), ref.get());
 }
 
 TEST_F(LoadMatrixIndexTest, TempIndex32) {
@@ -385,13 +318,8 @@ TEST_F(LoadMatrixIndexTest, TempIndex32) {
     auto out = tatami_mtx::load_matrix_from_text_buffer<true, double, int>(buffer.data(), buffer.size());
     EXPECT_TRUE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
-
-    auto owrk = out->dense_column();
-    auto rwrk = ref->dense_column();
-    for (size_t i = 0; i < NC; ++i) {
-        auto stuff = owrk->fetch(i);
-        EXPECT_EQ(stuff, rwrk->fetch(i));
-    }
+    tatami_test::test_simple_row_access(out.get(), ref.get());
+    tatami_test::test_simple_column_access(out.get(), ref.get());
 }
 
 /******************************************
@@ -410,13 +338,8 @@ TEST_F(LoadMatrixIntegerTypeTest, CoordinateAutomatic) {
     auto out = tatami_mtx::load_matrix_from_text_buffer<true, double, int>(buffer.data(), buffer.size());
     EXPECT_TRUE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
-
-    auto owrk = out->dense_column();
-    auto rwrk = ref->dense_column();
-    for (size_t i = 0; i < NC; ++i) {
-        auto stuff = owrk->fetch(i);
-        EXPECT_EQ(stuff, rwrk->fetch(i));
-    }
+    tatami_test::test_simple_row_access(out.get(), ref.get());
+    tatami_test::test_simple_column_access(out.get(), ref.get());
 }
 
 TEST_F(LoadMatrixIntegerTypeTest, CoordinateCustom) {
@@ -429,13 +352,8 @@ TEST_F(LoadMatrixIntegerTypeTest, CoordinateCustom) {
     auto out = tatami_mtx::load_matrix_from_text_buffer<false, double, int, int32_t>(buffer.data(), buffer.size());
     EXPECT_FALSE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
-
-    auto owrk = out->dense_column();
-    auto rwrk = ref->dense_column();
-    for (size_t i = 0; i < NC; ++i) {
-        auto stuff = owrk->fetch(i);
-        EXPECT_EQ(stuff, rwrk->fetch(i));
-    }
+    tatami_test::test_simple_row_access(out.get(), ref.get());
+    tatami_test::test_simple_column_access(out.get(), ref.get());
 }
 
 TEST_F(LoadMatrixIntegerTypeTest, ArrayAutomatic) {
@@ -448,13 +366,8 @@ TEST_F(LoadMatrixIntegerTypeTest, ArrayAutomatic) {
     auto out = tatami_mtx::load_matrix_from_text_buffer<true, double, int>(buffer.data(), buffer.size());
     EXPECT_TRUE(out->prefer_rows());
     EXPECT_FALSE(out->sparse());
-
-    auto owrk = out->dense_column();
-    auto rwrk = ref->dense_column();
-    for (size_t i = 0; i < NC; ++i) {
-        auto stuff = owrk->fetch(i);
-        EXPECT_EQ(stuff, rwrk->fetch(i));
-    }
+    tatami_test::test_simple_row_access(out.get(), ref.get());
+    tatami_test::test_simple_column_access(out.get(), ref.get());
 }
 
 TEST_F(LoadMatrixIntegerTypeTest, ArrayCustom) {
@@ -467,13 +380,8 @@ TEST_F(LoadMatrixIntegerTypeTest, ArrayCustom) {
     auto out = tatami_mtx::load_matrix_from_text_buffer<false, double, int, int32_t>(buffer.data(), buffer.size());
     EXPECT_FALSE(out->prefer_rows());
     EXPECT_FALSE(out->sparse());
-
-    auto owrk = out->dense_column();
-    auto rwrk = ref->dense_column();
-    for (size_t i = 0; i < NC; ++i) {
-        auto stuff = owrk->fetch(i);
-        EXPECT_EQ(stuff, rwrk->fetch(i));
-    }
+    tatami_test::test_simple_row_access(out.get(), ref.get());
+    tatami_test::test_simple_column_access(out.get(), ref.get());
 }
 
 /****************************************
@@ -492,13 +400,8 @@ TEST_F(LoadMatrixFloatTypeTest, CoordinateAutomatic) {
     auto out = tatami_mtx::load_matrix_from_text_buffer<true, double, int>(buffer.data(), buffer.size());
     EXPECT_TRUE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
-
-    auto owrk = out->dense_column();
-    auto rwrk = ref->dense_column();
-    for (size_t i = 0; i < NC; ++i) {
-        auto stuff = owrk->fetch(i);
-        EXPECT_EQ(stuff, rwrk->fetch(i));
-    }
+    tatami_test::test_simple_row_access(out.get(), ref.get());
+    tatami_test::test_simple_column_access(out.get(), ref.get());
 }
 
 TEST_F(LoadMatrixFloatTypeTest, CoordinateCustom) {
@@ -511,13 +414,8 @@ TEST_F(LoadMatrixFloatTypeTest, CoordinateCustom) {
     auto out = tatami_mtx::load_matrix_from_text_buffer<false, double, int, double>(buffer.data(), buffer.size());
     EXPECT_FALSE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
-
-    auto owrk = out->dense_column();
-    auto rwrk = ref->dense_column();
-    for (size_t i = 0; i < NC; ++i) {
-        auto stuff = owrk->fetch(i);
-        EXPECT_EQ(stuff, rwrk->fetch(i));
-    }
+    tatami_test::test_simple_row_access(out.get(), ref.get());
+    tatami_test::test_simple_column_access(out.get(), ref.get());
 }
 
 TEST_F(LoadMatrixFloatTypeTest, ArrayAutomatic) {
@@ -530,13 +428,8 @@ TEST_F(LoadMatrixFloatTypeTest, ArrayAutomatic) {
     auto out = tatami_mtx::load_matrix_from_text_buffer<true, double, int>(buffer.data(), buffer.size());
     EXPECT_TRUE(out->prefer_rows());
     EXPECT_FALSE(out->sparse());
-
-    auto owrk = out->dense_column();
-    auto rwrk = ref->dense_column();
-    for (size_t i = 0; i < NC; ++i) {
-        auto stuff = owrk->fetch(i);
-        EXPECT_EQ(stuff, rwrk->fetch(i));
-    }
+    tatami_test::test_simple_row_access(out.get(), ref.get());
+    tatami_test::test_simple_column_access(out.get(), ref.get());
 }
 
 TEST_F(LoadMatrixFloatTypeTest, ArrayCustom) {
@@ -549,11 +442,6 @@ TEST_F(LoadMatrixFloatTypeTest, ArrayCustom) {
     auto out = tatami_mtx::load_matrix_from_text_buffer<false, double, int, double>(buffer.data(), buffer.size());
     EXPECT_FALSE(out->prefer_rows());
     EXPECT_FALSE(out->sparse());
-
-    auto owrk = out->dense_column();
-    auto rwrk = ref->dense_column();
-    for (size_t i = 0; i < NC; ++i) {
-        auto stuff = owrk->fetch(i);
-        EXPECT_EQ(stuff, rwrk->fetch(i));
-    }
+    tatami_test::test_simple_row_access(out.get(), ref.get());
+    tatami_test::test_simple_column_access(out.get(), ref.get());
 }

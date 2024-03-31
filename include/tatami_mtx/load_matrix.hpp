@@ -216,7 +216,7 @@ std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix(byteme::Reader& read
  * @return Pointer to a `tatami::Matrix` instance containing data from the Matrix Market file.
  */
 template<bool row_, typename Data_, typename Index_, bool parallel_ = false, typename StoredData_ = Automatic, typename StoredIndex_ = Automatic>
-std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_text_file(const char * filepath, int compression = 0, size_t bufsize = 65536) {
+std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_text_file(const char * filepath, size_t bufsize = 65536) {
     byteme::RawFileReader reader(filepath, bufsize);
     return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_, parallel_>(reader);
 }
@@ -279,12 +279,11 @@ std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_some_file(const
  *
  * @param buffer Array containing the contents of an uncompressed Matrix Market file.
  * @param n Length of the array.
- * @param bufsize Size of the buffer (in bytes) to use when decompressing the file contents.
  * 
  * @return Pointer to a `tatami::Matrix` instance containing data from the Matrix Market file.
  */
 template<bool row_, typename Data_, typename Index_, typename StoredData_ = Automatic, typename StoredIndex_ = Automatic, bool parallel_ = false>
-std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_text_buffer(const unsigned char * buffer, size_t n, size_t bufsize = 65536) {
+std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_text_buffer(const unsigned char * buffer, size_t n) {
     byteme::RawBufferReader reader(buffer, n);
     return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_, parallel_>(reader);
 }
@@ -303,13 +302,15 @@ std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_text_buffer(con
  *
  * @param buffer Array containing the contents of a Matrix Market file after Gzip/Zlib compression.
  * @param n Length of the array.
+ * @param compression Compression of the stream - DEFLATE (0), Zlib (1) or Gzip (2).
+ * Default of 3 will auto-detect between Zlib and Gzip based on the headers.
  * @param bufsize Size of the buffer (in bytes) to use when decompressing the file contents.
  * 
  * @return Pointer to a `tatami::Matrix` instance containing data from the Matrix Market file.
  */
 template<bool row_, typename Data_, typename Index_, typename StoredData_ = Automatic, typename StoredIndex_ = Automatic, bool parallel_ = false>
-std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_zlib_buffer(const unsigned char * buffer, size_t n, int compression = 0, size_t bufsize = 65536) {
-    byteme::ZlibBufferReader reader(buffer, n, 3, bufsize);
+std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_zlib_buffer(const unsigned char * buffer, size_t n, int compression = 3, size_t bufsize = 65536) {
+    byteme::ZlibBufferReader reader(buffer, n, compression, bufsize);
     return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_, parallel_>(reader);
 }
 
@@ -331,7 +332,7 @@ std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_zlib_buffer(con
  */
 template<bool row_, typename Data_, typename Index_, typename StoredData_ = Automatic, typename StoredIndex_ = Automatic, bool parallel_ = false>
 std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_some_buffer(const unsigned char * buffer, size_t n, size_t bufsize = 65536) {
-    byteme::SomeBufferReader reader(buffer, n);
+    byteme::SomeBufferReader reader(buffer, n, bufsize);
     return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_, parallel_>(reader);
 }
 
