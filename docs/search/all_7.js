@@ -1,11 +1,6 @@
 var searchData=
 [
-  ['load_5fmatrix_0',['load_matrix',['../namespacetatami__mtx.html#a1fcd906f47d590820de01603952ccaf7',1,'tatami_mtx']]],
-  ['load_5fmatrix_2ehpp_1',['load_matrix.hpp',['../load__matrix_8hpp.html',1,'']]],
-  ['load_5fmatrix_5ffrom_5fgzip_5ffile_2',['load_matrix_from_gzip_file',['../namespacetatami__mtx.html#a808dd149a800b5a44942aa9512493569',1,'tatami_mtx']]],
-  ['load_5fmatrix_5ffrom_5fsome_5fbuffer_3',['load_matrix_from_some_buffer',['../namespacetatami__mtx.html#a6ec7f430bbe0be60bad1fd153885a4d2',1,'tatami_mtx']]],
-  ['load_5fmatrix_5ffrom_5fsome_5ffile_4',['load_matrix_from_some_file',['../namespacetatami__mtx.html#a1ac3e44af971b422abe83649126500ae',1,'tatami_mtx']]],
-  ['load_5fmatrix_5ffrom_5ftext_5fbuffer_5',['load_matrix_from_text_buffer',['../namespacetatami__mtx.html#aff65454320479c6923b24457bef24eb9',1,'tatami_mtx']]],
-  ['load_5fmatrix_5ffrom_5ftext_5ffile_6',['load_matrix_from_text_file',['../namespacetatami__mtx.html#a1dee73bfab76b328de9e18f0e02b35ab',1,'tatami_mtx']]],
-  ['load_5fmatrix_5ffrom_5fzlib_5fbuffer_7',['load_matrix_from_zlib_buffer',['../namespacetatami__mtx.html#a037e400b7ce118a67a5bcf26bfb76e11',1,'tatami_mtx']]]
+  ['has_5fdata_0',['has_data',['https://tatami-inc.github.io/tatami/structtatami_1_1has__data.html',1,'tatami']]],
+  ['has_5fdata_2ehpp_1',['has_data.hpp',['https://tatami-inc.github.io/tatami/has__data_8hpp.html',1,'']]],
+  ['has_5fdata_3c_20t_2c_20v_2c_20decltype_28_28void_29_20std_3a_3adeclval_3c_20v_20_3e_28_29_2edata_28_29_2c_200_29_3e_2',['has_data&lt; T, V, decltype((void) std::declval&lt; V &gt;().data(), 0)&gt;',['https://tatami-inc.github.io/tatami/structtatami_1_1has__data_3_01T_00_01V_00_01decltype_07_07void_08_01std_1_1declval_3_01V_01_4_07_08_8data_07_08_00_010_08_4.html',1,'tatami']]]
 ];

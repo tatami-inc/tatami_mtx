@@ -1,10 +1,6 @@
 var searchData=
 [
-  ['load_5fmatrix_0',['load_matrix',['../namespacetatami__mtx.html#a1fcd906f47d590820de01603952ccaf7',1,'tatami_mtx']]],
-  ['load_5fmatrix_5ffrom_5fgzip_5ffile_1',['load_matrix_from_gzip_file',['../namespacetatami__mtx.html#a808dd149a800b5a44942aa9512493569',1,'tatami_mtx']]],
-  ['load_5fmatrix_5ffrom_5fsome_5fbuffer_2',['load_matrix_from_some_buffer',['../namespacetatami__mtx.html#a6ec7f430bbe0be60bad1fd153885a4d2',1,'tatami_mtx']]],
-  ['load_5fmatrix_5ffrom_5fsome_5ffile_3',['load_matrix_from_some_file',['../namespacetatami__mtx.html#a1ac3e44af971b422abe83649126500ae',1,'tatami_mtx']]],
-  ['load_5fmatrix_5ffrom_5ftext_5fbuffer_4',['load_matrix_from_text_buffer',['../namespacetatami__mtx.html#aff65454320479c6923b24457bef24eb9',1,'tatami_mtx']]],
-  ['load_5fmatrix_5ffrom_5ftext_5ffile_5',['load_matrix_from_text_file',['../namespacetatami__mtx.html#a1dee73bfab76b328de9e18f0e02b35ab',1,'tatami_mtx']]],
-  ['load_5fmatrix_5ffrom_5fzlib_5fbuffer_6',['load_matrix_from_zlib_buffer',['../namespacetatami__mtx.html#a037e400b7ce118a67a5bcf26bfb76e11',1,'tatami_mtx']]]
+  ['indexsparsifiedwrapper_0',['IndexSparsifiedWrapper',['https://tatami-inc.github.io/tatami/structtatami_1_1IndexSparsifiedWrapper.html#ad90d16316f0c149f488f1ce78d3dcd81',1,'tatami::IndexSparsifiedWrapper']]],
+  ['is_5fsparse_1',['is_sparse',['https://tatami-inc.github.io/tatami/structtatami_1_1DelayedBinaryAdvancedMockHelper.html#a1811439f3c999f2cf98dee6633524d0a',1,'tatami::DelayedBinaryAdvancedMockHelper::is_sparse()'],['https://tatami-inc.github.io/tatami/structtatami_1_1DelayedUnaryAdvancedMockHelper.html#a2907274f16032deefe2bd9b3b1b08900',1,'tatami::DelayedUnaryAdvancedMockHelper::is_sparse()']]],
+  ['iterator_2',['Iterator',['https://tatami-inc.github.io/tatami/structtatami_1_1SomeNumericArray_1_1Iterator.html#aaec76c06dc4b04937e4c0e16233a7fdb',1,'tatami::SomeNumericArray::Iterator::Iterator()'],['https://tatami-inc.github.io/tatami/structtatami_1_1SomeNumericArray_1_1Iterator.html#a47aa875df6ad992824acccefb811c4d4',1,'tatami::SomeNumericArray::Iterator::Iterator(const SomeNumericArray *p, size_t i)']]]
 ];

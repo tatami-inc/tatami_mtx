@@ -1,9 +1,6 @@
 var searchData=
 [
-  ['somenumericarray_0',['SomeNumericArray',['https://tatami-inc.github.io/tatami/structtatami_1_1SomeNumericArray_1_1Iterator.html',1,'tatami']]],
-  ['tatami_1',['tatami',['https://tatami-inc.github.io/tatami/namespacetatami.html',1,'']]],
-  ['tatami_2ehpp_2',['tatami.hpp',['https://tatami-inc.github.io/tatami/tatami_8hpp.html',1,'']]],
-  ['tatami_5fmtx_3',['tatami_mtx',['../namespacetatami__mtx.html',1,'']]],
-  ['tatami_5fmtx_2ehpp_4',['tatami_mtx.hpp',['../tatami__mtx_8hpp.html',1,'']]],
-  ['type_5',['Type',['https://tatami-inc.github.io/tatami/structtatami_1_1SomeNumericArray.html#a6e23ba528d0302095fd423e7777455bd',1,'tatami::SomeNumericArray']]]
+  ['reference_0',['reference',['https://tatami-inc.github.io/tatami/structtatami_1_1SomeNumericArray_1_1Iterator.html#ab83a68ab47e92b1265fd043bc4351be9',1,'tatami::SomeNumericArray::Iterator']]],
+  ['retrieve_5fcompressed_5fsparse_5fcontents_1',['retrieve_compressed_sparse_contents',['https://tatami-inc.github.io/tatami/namespacetatami.html#ad1aee6313d02036d2f56703f372e1df6',1,'tatami']]],
+  ['retrieve_5ffragmented_5fsparse_5fcontents_2',['retrieve_fragmented_sparse_contents',['https://tatami-inc.github.io/tatami/namespacetatami.html#a012194aba94c37703f15555247e02155',1,'tatami']]]
 ];
