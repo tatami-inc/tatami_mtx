@@ -216,7 +216,7 @@ std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix(byteme::Reader& read
  * @return Pointer to a `tatami::Matrix` instance containing data from the Matrix Market file.
  */
 template<bool row_, typename Data_, typename Index_, bool parallel_ = false, typename StoredData_ = Automatic, typename StoredIndex_ = Automatic>
-std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_text_file(const char * filepath, size_t bufsize = 65536) {
+std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_text_file(const char* filepath, size_t bufsize = 65536) {
     byteme::RawFileReader reader(filepath, bufsize);
     return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_, parallel_>(reader);
 }
@@ -239,7 +239,7 @@ std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_text_file(const
  * @return Pointer to a `tatami::Matrix` instance containing data from the Matrix Market file.
  */
 template<bool row_, typename Data_, typename Index_, bool parallel_ = false, typename StoredData_ = Automatic, typename StoredIndex_ = Automatic>
-std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_gzip_file(const char * filepath, size_t bufsize = 65536) {
+std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_gzip_file(const char* filepath, size_t bufsize = 65536) {
     byteme::GzipFileReader reader(filepath, bufsize);
     return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_, parallel_>(reader);
 }
@@ -260,7 +260,7 @@ std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_gzip_file(const
  * @return Pointer to a `tatami::Matrix` instance containing data from the Matrix Market file.
  */
 template<bool row_, typename Data_, typename Index_, bool parallel_ = false, typename StoredData_ = Automatic, typename StoredIndex_ = Automatic>
-std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_some_file(const char * filepath, size_t bufsize = 65536) {
+std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_some_file(const char* filepath, size_t bufsize = 65536) {
     byteme::SomeFileReader reader(filepath, bufsize);
     return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_, parallel_>(reader);
 }
@@ -283,7 +283,7 @@ std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_some_file(const
  * @return Pointer to a `tatami::Matrix` instance containing data from the Matrix Market file.
  */
 template<bool row_, typename Data_, typename Index_, typename StoredData_ = Automatic, typename StoredIndex_ = Automatic, bool parallel_ = false>
-std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_text_buffer(const unsigned char * buffer, size_t n) {
+std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_text_buffer(const unsigned char* buffer, size_t n) {
     byteme::RawBufferReader reader(buffer, n);
     return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_, parallel_>(reader);
 }
@@ -309,7 +309,7 @@ std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_text_buffer(con
  * @return Pointer to a `tatami::Matrix` instance containing data from the Matrix Market file.
  */
 template<bool row_, typename Data_, typename Index_, typename StoredData_ = Automatic, typename StoredIndex_ = Automatic, bool parallel_ = false>
-std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_zlib_buffer(const unsigned char * buffer, size_t n, int compression = 3, size_t bufsize = 65536) {
+std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_zlib_buffer(const unsigned char* buffer, size_t n, int compression = 3, size_t bufsize = 65536) {
     byteme::ZlibBufferReader reader(buffer, n, compression, bufsize);
     return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_, parallel_>(reader);
 }
@@ -331,7 +331,7 @@ std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_zlib_buffer(con
  * @return Pointer to a `tatami::Matrix` instance containing data from the Matrix Market file.
  */
 template<bool row_, typename Data_, typename Index_, typename StoredData_ = Automatic, typename StoredIndex_ = Automatic, bool parallel_ = false>
-std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_some_buffer(const unsigned char * buffer, size_t n, size_t bufsize = 65536) {
+std::shared_ptr<tatami::Matrix<Data_, Index_> > load_matrix_from_some_buffer(const unsigned char* buffer, size_t n, size_t bufsize = 65536) {
     byteme::SomeBufferReader reader(buffer, n, bufsize);
     return load_matrix<row_, Data_, Index_, StoredData_, StoredIndex_, parallel_>(reader);
 }
