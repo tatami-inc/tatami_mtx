@@ -117,9 +117,12 @@ TEST_F(LoadMatrixInputTest, SimpleBuffer) {
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
+    tatami_mtx::Options opt;
+    opt.row = false;
+
     // Uncompressed.
     {
-        auto out = tatami_mtx::load_matrix_from_text_buffer<false, double, int>(buffer.data(), buffer.size());
+        auto out = tatami_mtx::load_matrix_from_text_buffer<double, int>(buffer.data(), buffer.size(), opt);
         EXPECT_FALSE(out->prefer_rows());
         EXPECT_TRUE(out->sparse());
         tatami_test::test_simple_row_access(out.get(), ref.get());
@@ -128,7 +131,7 @@ TEST_F(LoadMatrixInputTest, SimpleBuffer) {
 
     // Automatic.
     {
-        auto out = tatami_mtx::load_matrix_from_some_buffer<false, double, int>(buffer.data(), buffer.size());
+        auto out = tatami_mtx::load_matrix_from_some_buffer<double, int>(buffer.data(), buffer.size(), opt);
         EXPECT_FALSE(out->prefer_rows());
         EXPECT_TRUE(out->sparse());
         tatami_test::test_simple_row_access(out.get(), ref.get());
@@ -143,9 +146,12 @@ TEST_F(LoadMatrixInputTest, SimpleText) {
     byteme::RawFileWriter writer(path.c_str());
     write_coordinate(writer);
 
+    tatami_mtx::Options opt;
+    opt.row = true;
+
     // Uncompressed.
     {
-        auto out = tatami_mtx::load_matrix_from_text_file<true, double, int>(path.c_str());
+        auto out = tatami_mtx::load_matrix_from_text_file<double, int>(path.c_str(), opt);
         EXPECT_TRUE(out->prefer_rows());
         EXPECT_TRUE(out->sparse());
         tatami_test::test_simple_row_access(out.get(), ref.get());
@@ -154,7 +160,7 @@ TEST_F(LoadMatrixInputTest, SimpleText) {
 
     // Automatic.
     {
-        auto out = tatami_mtx::load_matrix_from_some_file<true, double, int>(path.c_str());
+        auto out = tatami_mtx::load_matrix_from_some_file<double, int>(path.c_str(), opt);
         EXPECT_TRUE(out->prefer_rows());
         EXPECT_TRUE(out->sparse());
         tatami_test::test_simple_row_access(out.get(), ref.get());
@@ -169,9 +175,12 @@ TEST_F(LoadMatrixInputTest, ZlibBuffer) {
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
+    tatami_mtx::Options opt;
+    opt.row = false;
+
     // Compressed.
     {
-        auto out = tatami_mtx::load_matrix_from_zlib_buffer<false, double, int>(buffer.data(), buffer.size());
+        auto out = tatami_mtx::load_matrix_from_zlib_buffer<double, int>(buffer.data(), buffer.size(), opt);
         EXPECT_FALSE(out->prefer_rows());
         EXPECT_TRUE(out->sparse());
         tatami_test::test_simple_row_access(out.get(), ref.get());
@@ -180,7 +189,7 @@ TEST_F(LoadMatrixInputTest, ZlibBuffer) {
 
     // Automatic.
     {
-        auto out = tatami_mtx::load_matrix_from_some_buffer<false, double, int>(buffer.data(), buffer.size());
+        auto out = tatami_mtx::load_matrix_from_some_buffer<double, int>(buffer.data(), buffer.size(), opt);
         EXPECT_FALSE(out->prefer_rows());
         EXPECT_TRUE(out->sparse());
         tatami_test::test_simple_row_access(out.get(), ref.get());
@@ -195,9 +204,12 @@ TEST_F(LoadMatrixInputTest, GzipFile) {
     byteme::GzipFileWriter writer(path.c_str());
     write_coordinate(writer);
 
+    tatami_mtx::Options opt;
+    opt.row = true;
+
     // Compressed.
     {
-        auto out = tatami_mtx::load_matrix_from_gzip_file<true, double, int>(path.c_str());
+        auto out = tatami_mtx::load_matrix_from_gzip_file<double, int>(path.c_str(), opt);
         EXPECT_TRUE(out->prefer_rows());
         EXPECT_TRUE(out->sparse());
         tatami_test::test_simple_row_access(out.get(), ref.get());
@@ -206,7 +218,7 @@ TEST_F(LoadMatrixInputTest, GzipFile) {
 
     // Automatic.
     {
-        auto out = tatami_mtx::load_matrix_from_some_file<true, double, int>(path.c_str());
+        auto out = tatami_mtx::load_matrix_from_some_file<double, int>(path.c_str(), opt);
         EXPECT_TRUE(out->prefer_rows());
         EXPECT_TRUE(out->sparse());
         tatami_test::test_simple_row_access(out.get(), ref.get());
@@ -227,7 +239,10 @@ TEST_F(LoadMatrixIndexTest, Index8) {
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
-    auto out = tatami_mtx::load_matrix_from_text_buffer<false, double, int>(buffer.data(), buffer.size());
+    tatami_mtx::Options opt;
+    opt.row = false;
+
+    auto out = tatami_mtx::load_matrix_from_text_buffer<double, int>(buffer.data(), buffer.size(), opt);
     EXPECT_FALSE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
     tatami_test::test_simple_row_access(out.get(), ref.get());
@@ -241,7 +256,10 @@ TEST_F(LoadMatrixIndexTest, Index16) {
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
-    auto out = tatami_mtx::load_matrix_from_text_buffer<false, double, int>(buffer.data(), buffer.size());
+    tatami_mtx::Options opt;
+    opt.row = false;
+
+    auto out = tatami_mtx::load_matrix_from_text_buffer<double, int>(buffer.data(), buffer.size(), opt);
     EXPECT_FALSE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
     tatami_test::test_simple_row_access(out.get(), ref.get());
@@ -255,7 +273,10 @@ TEST_F(LoadMatrixIndexTest, Index32) {
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
-    auto out = tatami_mtx::load_matrix_from_text_buffer<false, double, int>(buffer.data(), buffer.size());
+    tatami_mtx::Options opt;
+    opt.row = false;
+
+    auto out = tatami_mtx::load_matrix_from_text_buffer<double, int>(buffer.data(), buffer.size(), opt);
     EXPECT_FALSE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
     tatami_test::test_simple_row_access(out.get(), ref.get());
@@ -269,7 +290,10 @@ TEST_F(LoadMatrixIndexTest, IndexCustom) {
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
-    auto out = tatami_mtx::load_matrix_from_text_buffer<false, double, int, tatami_mtx::Automatic, uint32_t>(buffer.data(), buffer.size());
+    tatami_mtx::Options opt;
+    opt.row = false;
+
+    auto out = tatami_mtx::load_matrix_from_text_buffer<double, int, tatami_mtx::Automatic, uint32_t>(buffer.data(), buffer.size(), opt);
     EXPECT_FALSE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
     tatami_test::test_simple_row_access(out.get(), ref.get());
@@ -287,7 +311,10 @@ TEST_F(LoadMatrixIndexTest, TempIndex8) {
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
-    auto out = tatami_mtx::load_matrix_from_text_buffer<true, double, int>(buffer.data(), buffer.size());
+    tatami_mtx::Options opt;
+    opt.row = true;
+
+    auto out = tatami_mtx::load_matrix_from_text_buffer<double, int>(buffer.data(), buffer.size(), opt);
     EXPECT_TRUE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
     tatami_test::test_simple_row_access(out.get(), ref.get());
@@ -301,7 +328,10 @@ TEST_F(LoadMatrixIndexTest, TempIndex16) {
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
-    auto out = tatami_mtx::load_matrix_from_text_buffer<true, double, int>(buffer.data(), buffer.size());
+    tatami_mtx::Options opt;
+    opt.row = true;
+
+    auto out = tatami_mtx::load_matrix_from_text_buffer<double, int>(buffer.data(), buffer.size(), opt);
     EXPECT_TRUE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
     tatami_test::test_simple_row_access(out.get(), ref.get());
@@ -315,7 +345,10 @@ TEST_F(LoadMatrixIndexTest, TempIndex32) {
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
-    auto out = tatami_mtx::load_matrix_from_text_buffer<true, double, int>(buffer.data(), buffer.size());
+    tatami_mtx::Options opt;
+    opt.row = true;
+
+    auto out = tatami_mtx::load_matrix_from_text_buffer<double, int>(buffer.data(), buffer.size(), opt);
     EXPECT_TRUE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
     tatami_test::test_simple_row_access(out.get(), ref.get());
@@ -335,7 +368,10 @@ TEST_F(LoadMatrixIntegerTypeTest, CoordinateAutomatic) {
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
-    auto out = tatami_mtx::load_matrix_from_text_buffer<true, double, int>(buffer.data(), buffer.size());
+    tatami_mtx::Options opt;
+    opt.row = true;
+
+    auto out = tatami_mtx::load_matrix_from_text_buffer<double, int>(buffer.data(), buffer.size(), opt);
     EXPECT_TRUE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
     tatami_test::test_simple_row_access(out.get(), ref.get());
@@ -349,7 +385,10 @@ TEST_F(LoadMatrixIntegerTypeTest, CoordinateCustom) {
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
-    auto out = tatami_mtx::load_matrix_from_text_buffer<false, double, int, int32_t>(buffer.data(), buffer.size());
+    tatami_mtx::Options opt;
+    opt.row = false;
+
+    auto out = tatami_mtx::load_matrix_from_text_buffer<double, int, int32_t>(buffer.data(), buffer.size(), opt);
     EXPECT_FALSE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
     tatami_test::test_simple_row_access(out.get(), ref.get());
@@ -363,7 +402,10 @@ TEST_F(LoadMatrixIntegerTypeTest, ArrayAutomatic) {
     write_array(writer);
     const auto& buffer = writer.output;
 
-    auto out = tatami_mtx::load_matrix_from_text_buffer<true, double, int>(buffer.data(), buffer.size());
+    tatami_mtx::Options opt;
+    opt.row = true;
+
+    auto out = tatami_mtx::load_matrix_from_text_buffer<double, int>(buffer.data(), buffer.size(), opt);
     EXPECT_TRUE(out->prefer_rows());
     EXPECT_FALSE(out->sparse());
     tatami_test::test_simple_row_access(out.get(), ref.get());
@@ -377,7 +419,10 @@ TEST_F(LoadMatrixIntegerTypeTest, ArrayCustom) {
     write_array(writer);
     const auto& buffer = writer.output;
 
-    auto out = tatami_mtx::load_matrix_from_text_buffer<false, double, int, int32_t>(buffer.data(), buffer.size());
+    tatami_mtx::Options opt;
+    opt.row = false;
+
+    auto out = tatami_mtx::load_matrix_from_text_buffer<double, int, int32_t>(buffer.data(), buffer.size(), opt);
     EXPECT_FALSE(out->prefer_rows());
     EXPECT_FALSE(out->sparse());
     tatami_test::test_simple_row_access(out.get(), ref.get());
@@ -397,7 +442,10 @@ TEST_F(LoadMatrixFloatTypeTest, CoordinateAutomatic) {
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
-    auto out = tatami_mtx::load_matrix_from_text_buffer<true, double, int>(buffer.data(), buffer.size());
+    tatami_mtx::Options opt;
+    opt.row = true;
+
+    auto out = tatami_mtx::load_matrix_from_text_buffer<double, int>(buffer.data(), buffer.size(), opt);
     EXPECT_TRUE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
     tatami_test::test_simple_row_access(out.get(), ref.get());
@@ -411,7 +459,10 @@ TEST_F(LoadMatrixFloatTypeTest, CoordinateCustom) {
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
-    auto out = tatami_mtx::load_matrix_from_text_buffer<false, double, int, double>(buffer.data(), buffer.size());
+    tatami_mtx::Options opt;
+    opt.row = false;
+
+    auto out = tatami_mtx::load_matrix_from_text_buffer<double, int, double>(buffer.data(), buffer.size(), opt);
     EXPECT_FALSE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
     tatami_test::test_simple_row_access(out.get(), ref.get());
@@ -425,7 +476,10 @@ TEST_F(LoadMatrixFloatTypeTest, ArrayAutomatic) {
     write_array(writer);
     const auto& buffer = writer.output;
 
-    auto out = tatami_mtx::load_matrix_from_text_buffer<true, double, int>(buffer.data(), buffer.size());
+    tatami_mtx::Options opt;
+    opt.row = true;
+
+    auto out = tatami_mtx::load_matrix_from_text_buffer<double, int>(buffer.data(), buffer.size(), opt);
     EXPECT_TRUE(out->prefer_rows());
     EXPECT_FALSE(out->sparse());
     tatami_test::test_simple_row_access(out.get(), ref.get());
@@ -439,7 +493,10 @@ TEST_F(LoadMatrixFloatTypeTest, ArrayCustom) {
     write_array(writer);
     const auto& buffer = writer.output;
 
-    auto out = tatami_mtx::load_matrix_from_text_buffer<false, double, int, double>(buffer.data(), buffer.size());
+    tatami_mtx::Options opt;
+    opt.row = false;
+
+    auto out = tatami_mtx::load_matrix_from_text_buffer<double, int, double>(buffer.data(), buffer.size(), opt);
     EXPECT_FALSE(out->prefer_rows());
     EXPECT_FALSE(out->sparse());
     tatami_test::test_simple_row_access(out.get(), ref.get());
