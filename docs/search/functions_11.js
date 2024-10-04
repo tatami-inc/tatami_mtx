@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['wrap_5fshared_5fptr_0',['wrap_shared_ptr',['https://tatami-inc.github.io/tatami/namespacetatami.html#ab008bae4e33a408de29e9fc49d0f902c',1,'tatami']]]
+  ['valid_0',['valid',['https://ltla.github.io/byteme/classbyteme_1_1PerByte.html#a69828af5d6f2f64d8bf331066815917c',1,'byteme::PerByte::valid()'],['https://ltla.github.io/byteme/classbyteme_1_1PerByteParallel.html#adf2beca863938a062dc172b7c656a85c',1,'byteme::PerByteParallel::valid()']]]
 ];

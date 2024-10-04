@@ -1,5 +1,9 @@
 var searchData=
 [
-  ['retrieve_5fcompressed_5fsparse_5fcontents_0',['retrieve_compressed_sparse_contents',['https://tatami-inc.github.io/tatami/namespacetatami.html#a6b95eab5d7370f965e4d6a9b9a9f3393',1,'tatami']]],
-  ['retrieve_5ffragmented_5fsparse_5fcontents_1',['retrieve_fragmented_sparse_contents',['https://tatami-inc.github.io/tatami/namespacetatami.html#ab5688af2360372f1535d6d68b2c14de6',1,'tatami']]]
+  ['rawbufferreader_0',['rawbufferreader',['https://ltla.github.io/byteme/classbyteme_1_1RawBufferReader.html#a52edfb966cd7ce5db47ba2cbb3cd245d',1,'byteme::RawBufferReader::RawBufferReader(const unsigned char *buffer, size_t length)'],['https://ltla.github.io/byteme/classbyteme_1_1RawBufferReader.html#acb412b1fa76c1f74b4b9a1e34846d96c',1,'byteme::RawBufferReader::RawBufferReader(const char *buffer, size_t length)']]],
+  ['rawbufferwriter_1',['RawBufferWriter',['https://ltla.github.io/byteme/classbyteme_1_1RawBufferWriter.html#af52cf05755d5330d60813dc6ef9e5752',1,'byteme::RawBufferWriter']]],
+  ['rawfilereader_2',['rawfilereader',['https://ltla.github.io/byteme/classbyteme_1_1RawFileReader.html#a003ec82a4c79cc6baf05285da75acb9f',1,'byteme::RawFileReader::RawFileReader(const char *path, size_t buffer_size=65536)'],['https://ltla.github.io/byteme/classbyteme_1_1RawFileReader.html#a0754fa094b5fcfe96995288b06d21086',1,'byteme::RawFileReader::RawFileReader(const std::string &amp;path, size_t buffer_size=65536)']]],
+  ['rawfilewriter_3',['rawfilewriter',['https://ltla.github.io/byteme/classbyteme_1_1RawFileWriter.html#aec0092b0773fa4510ac45ad2e3612d71',1,'byteme::RawFileWriter::RawFileWriter(const char *path, size_t buffer_size=65536)'],['https://ltla.github.io/byteme/classbyteme_1_1RawFileWriter.html#a4702fdac7150872c7bf98618f5eb6372',1,'byteme::RawFileWriter::RawFileWriter(const std::string &amp;path, size_t buffer_size=65536)']]],
+  ['retrieve_5fcompressed_5fsparse_5fcontents_4',['retrieve_compressed_sparse_contents',['https://tatami-inc.github.io/tatami/namespacetatami.html#a6b95eab5d7370f965e4d6a9b9a9f3393',1,'tatami']]],
+  ['retrieve_5ffragmented_5fsparse_5fcontents_5',['retrieve_fragmented_sparse_contents',['https://tatami-inc.github.io/tatami/namespacetatami.html#ab5688af2360372f1535d6d68b2c14de6',1,'tatami']]]
 ];

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
-<tagfile doxygen_version="1.12.0">
+<tagfile doxygen_version="1.9.8">
   <compound kind="file">
     <name>load_matrix.hpp</name>
     <path>tatami_mtx/</path>

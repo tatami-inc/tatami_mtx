@@ -1,10 +1,11 @@
 var searchData=
 [
-  ['load_5fmatrix_0',['load_matrix',['../namespacetatami__mtx.html#a0ae14375d217b2c9a049317aa8209f05',1,'tatami_mtx']]],
-  ['load_5fmatrix_5ffrom_5fgzip_5ffile_1',['load_matrix_from_gzip_file',['../namespacetatami__mtx.html#ae9da28ce51cdff3c12e23d353663fc85',1,'tatami_mtx']]],
-  ['load_5fmatrix_5ffrom_5fsome_5fbuffer_2',['load_matrix_from_some_buffer',['../namespacetatami__mtx.html#a433952bcfcf1b74a8a90c2257ec54b4c',1,'tatami_mtx']]],
-  ['load_5fmatrix_5ffrom_5fsome_5ffile_3',['load_matrix_from_some_file',['../namespacetatami__mtx.html#a45af5d93e47b2c3c90582649fa4364ae',1,'tatami_mtx']]],
-  ['load_5fmatrix_5ffrom_5ftext_5fbuffer_4',['load_matrix_from_text_buffer',['../namespacetatami__mtx.html#a6af1bcb6033a43f7bd9fab5a3bc5b469',1,'tatami_mtx']]],
-  ['load_5fmatrix_5ffrom_5ftext_5ffile_5',['load_matrix_from_text_file',['../namespacetatami__mtx.html#af7f6bd31cf0ba74bb5a2d14180b66b16',1,'tatami_mtx']]],
-  ['load_5fmatrix_5ffrom_5fzlib_5fbuffer_6',['load_matrix_from_zlib_buffer',['../namespacetatami__mtx.html#adbb55dd4fc75380091bbb27447b2fede',1,'tatami_mtx']]]
+  ['load_0',['load',['https://ltla.github.io/byteme/classbyteme_1_1ChunkedBufferReader.html#ae5f68b4486a3346e6ae062bf1a105226',1,'byteme::ChunkedBufferReader::load()'],['https://ltla.github.io/byteme/classbyteme_1_1GzipFileReader.html#aa077d794ad9e305842adf83311906b8a',1,'byteme::GzipFileReader::load()'],['https://ltla.github.io/byteme/classbyteme_1_1IstreamReader.html#aa09922b5fa256cca3ced445206e9a6dd',1,'byteme::IstreamReader::load()'],['https://ltla.github.io/byteme/classbyteme_1_1RawBufferReader.html#a6405fcb9973d2836019db1d294a4d0cf',1,'byteme::RawBufferReader::load()'],['https://ltla.github.io/byteme/classbyteme_1_1RawFileReader.html#a1477482100fb90bc49d743ea0339d885',1,'byteme::RawFileReader::load()'],['https://ltla.github.io/byteme/classbyteme_1_1Reader.html#a60671d10f28ce83fa256d7342c769ba5',1,'byteme::Reader::load()'],['https://ltla.github.io/byteme/classbyteme_1_1SomeBufferReader.html#a12ae0af8ee14ca87e9e2fed95e3ed4ae',1,'byteme::SomeBufferReader::load()'],['https://ltla.github.io/byteme/classbyteme_1_1SomeFileReader.html#ac811bf5ceb6ee162201821403835b8bf',1,'byteme::SomeFileReader::load()'],['https://ltla.github.io/byteme/classbyteme_1_1ZlibBufferReader.html#ad7205cb26d279ca957ada858598a86a3',1,'byteme::ZlibBufferReader::load()']]],
+  ['load_5fmatrix_1',['load_matrix',['../namespacetatami__mtx.html#a0ae14375d217b2c9a049317aa8209f05',1,'tatami_mtx']]],
+  ['load_5fmatrix_5ffrom_5fgzip_5ffile_2',['load_matrix_from_gzip_file',['../namespacetatami__mtx.html#ae9da28ce51cdff3c12e23d353663fc85',1,'tatami_mtx']]],
+  ['load_5fmatrix_5ffrom_5fsome_5fbuffer_3',['load_matrix_from_some_buffer',['../namespacetatami__mtx.html#a433952bcfcf1b74a8a90c2257ec54b4c',1,'tatami_mtx']]],
+  ['load_5fmatrix_5ffrom_5fsome_5ffile_4',['load_matrix_from_some_file',['../namespacetatami__mtx.html#a45af5d93e47b2c3c90582649fa4364ae',1,'tatami_mtx']]],
+  ['load_5fmatrix_5ffrom_5ftext_5fbuffer_5',['load_matrix_from_text_buffer',['../namespacetatami__mtx.html#a6af1bcb6033a43f7bd9fab5a3bc5b469',1,'tatami_mtx']]],
+  ['load_5fmatrix_5ffrom_5ftext_5ffile_6',['load_matrix_from_text_file',['../namespacetatami__mtx.html#af7f6bd31cf0ba74bb5a2d14180b66b16',1,'tatami_mtx']]],
+  ['load_5fmatrix_5ffrom_5fzlib_5fbuffer_7',['load_matrix_from_zlib_buffer',['../namespacetatami__mtx.html#adbb55dd4fc75380091bbb27447b2fede',1,'tatami_mtx']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['new_5fextractor_2ehpp_0',['new_extractor.hpp',['https://tatami-inc.github.io/tatami/new__extractor_8hpp.html',1,'']]]
+  ['load_5fmatrix_2ehpp_0',['load_matrix.hpp',['../load__matrix_8hpp.html',1,'']]]
 ];
