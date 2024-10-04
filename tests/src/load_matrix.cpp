@@ -148,6 +148,7 @@ TEST_F(LoadMatrixInputTest, SimpleText) {
 
     tatami_mtx::Options opt;
     opt.row = true;
+    opt.parallel = true;
 
     // Uncompressed.
     {
@@ -241,6 +242,7 @@ TEST_F(LoadMatrixIndexTest, Index8) {
 
     tatami_mtx::Options opt;
     opt.row = false;
+    opt.parallel = true;
 
     auto out = tatami_mtx::load_matrix_from_text_buffer<double, int>(buffer.data(), buffer.size(), opt);
     EXPECT_FALSE(out->prefer_rows());
@@ -292,6 +294,7 @@ TEST_F(LoadMatrixIndexTest, IndexCustom) {
 
     tatami_mtx::Options opt;
     opt.row = false;
+    opt.parallel = true;
 
     auto out = tatami_mtx::load_matrix_from_text_buffer<double, int, tatami_mtx::Automatic, uint32_t>(buffer.data(), buffer.size(), opt);
     EXPECT_FALSE(out->prefer_rows());
@@ -330,6 +333,7 @@ TEST_F(LoadMatrixIndexTest, TempIndex16) {
 
     tatami_mtx::Options opt;
     opt.row = true;
+    opt.parallel = true;
 
     auto out = tatami_mtx::load_matrix_from_text_buffer<double, int>(buffer.data(), buffer.size(), opt);
     EXPECT_TRUE(out->prefer_rows());
@@ -370,6 +374,7 @@ TEST_F(LoadMatrixIntegerTypeTest, CoordinateAutomatic) {
 
     tatami_mtx::Options opt;
     opt.row = true;
+    opt.parallel = true;
 
     auto out = tatami_mtx::load_matrix_from_text_buffer<double, int>(buffer.data(), buffer.size(), opt);
     EXPECT_TRUE(out->prefer_rows());
@@ -421,6 +426,7 @@ TEST_F(LoadMatrixIntegerTypeTest, ArrayCustom) {
 
     tatami_mtx::Options opt;
     opt.row = false;
+    opt.parallel = true;
 
     auto out = tatami_mtx::load_matrix_from_text_buffer<double, int, int32_t>(buffer.data(), buffer.size(), opt);
     EXPECT_FALSE(out->prefer_rows());
@@ -478,6 +484,7 @@ TEST_F(LoadMatrixFloatTypeTest, ArrayAutomatic) {
 
     tatami_mtx::Options opt;
     opt.row = true;
+    opt.parallel = true;
 
     auto out = tatami_mtx::load_matrix_from_text_buffer<double, int>(buffer.data(), buffer.size(), opt);
     EXPECT_TRUE(out->prefer_rows());
@@ -495,6 +502,7 @@ TEST_F(LoadMatrixFloatTypeTest, ArrayCustom) {
 
     tatami_mtx::Options opt;
     opt.row = false;
+    opt.parallel = true;
 
     auto out = tatami_mtx::load_matrix_from_text_buffer<double, int, double>(buffer.data(), buffer.size(), opt);
     EXPECT_FALSE(out->prefer_rows());
