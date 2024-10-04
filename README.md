@@ -17,24 +17,26 @@ The `load_matrix_from_file()` function will create a `tatami::Matrix` from a Mat
 ```cpp
 #include "tatami_mtx/tatami_mtx.hpp"
 
-auto mat = tatami_mtx::load_matrix_from_file<false, double, int>("some_matrix.mtx");
+tatami_mtx::Options opt;
+opt.row = false;
+auto mat = tatami_mtx::load_matrix_from_text_file<double, int>("some_matrix.mtx", opt);
 
-// If compiled with Zlib support:
-auto mat2 = tatami_mtx::load_matrix_from_file<false, double, int>("some_matrix.mtx.gz", 1);
+// If compiled with Gzip support:
+auto mat2 = tatami_mtx::load_matrix_from_gzip_file<double, int>("some_matrix.mtx.gz", opt);
 
 // If the compression is unknown:
-auto mat3 = tatami_mtx::load_matrix_from_file<false, double, int>("some_matrix.mtx.??", -1);
+auto mat3 = tatami_mtx::load_matrix_from_some_file<double, int>("some_matrix.mtx.??", opt);
 ```
 
 This will return a compressed sparse column matrix for coordinate formats and a column-major dense matrix for array formats.
-If the first template argument is `true`, row-based matrices are returned instead.
+If `opt.row = true`, row-based matrices are returned instead.
 
-The next template arguments control the interface and storage types - for example, the above call will return a `tatami::Matrix<double, int>` interface
+The template arguments control the interface and storage types - for example, the above call will return a `tatami::Matrix<double, int>` interface
 The storage types are automatically chosen based on the Matrix Market field (for data) and the size of the matrix (for indices, only relevant for sparse outputs).
 Users can customize these by passing the desired types directly:
 
 ```cpp
-auto mat2 = tatami_mtx::load_matrix_from_file<
+auto mat4 = tatami_mtx::load_matrix_from_text_file<
     true, /* Row-based */
     double, /* Data interface */
     int, /* Index interface */

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
 
 project(tatami_mtx
-    VERSION 1.0.0
+    VERSION 2.0.0
     DESCRIPTION "Matrix Market to tatami matrices"
     LANGUAGES CXX)
 
