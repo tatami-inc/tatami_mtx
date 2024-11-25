@@ -1,22 +1,13 @@
 include(FetchContent)
 FetchContent_Declare(
-  googletest
-  URL https://github.com/google/googletest/archive/ec4fed93217bc2830959bb8e86798c1d86956949.zip
+    tatami_test
+    GIT_REPOSITORY https://github.com/tatami-inc/tatami_test
+    GIT_TAG master
 )
-
-# For Windows: Prevent overriding the parent project's compiler/linker settings
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-
-# Avoid installing GoogleTest when installing this project.
-option(INSTALL_GTEST "Enable installation of googletest." OFF)
-
-FetchContent_MakeAvailable(googletest)
-
-enable_testing()
+FetchContent_MakeAvailable(tatami_test)
 
 add_executable(libtest src/load_matrix.cpp)
-
-target_link_libraries(libtest gtest_main tatami_mtx)
+target_link_libraries(libtest tatami_mtx tatami_test)
 
 include(CheckIncludeFiles)
 check_include_files(filesystem HAVE_CXX_FS)

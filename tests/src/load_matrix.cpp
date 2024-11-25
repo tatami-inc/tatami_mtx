@@ -125,8 +125,8 @@ TEST_F(LoadMatrixInputTest, SimpleBuffer) {
         auto out = tatami_mtx::load_matrix_from_text_buffer<double, int>(buffer.data(), buffer.size(), opt);
         EXPECT_FALSE(out->prefer_rows());
         EXPECT_TRUE(out->sparse());
-        tatami_test::test_simple_row_access(out.get(), ref.get());
-        tatami_test::test_simple_column_access(out.get(), ref.get());
+        tatami_test::test_simple_row_access(*out, *ref);
+        tatami_test::test_simple_column_access(*out, *ref);
     }
 
     // Automatic.
@@ -134,8 +134,8 @@ TEST_F(LoadMatrixInputTest, SimpleBuffer) {
         auto out = tatami_mtx::load_matrix_from_some_buffer<double, int>(buffer.data(), buffer.size(), opt);
         EXPECT_FALSE(out->prefer_rows());
         EXPECT_TRUE(out->sparse());
-        tatami_test::test_simple_row_access(out.get(), ref.get());
-        tatami_test::test_simple_column_access(out.get(), ref.get());
+        tatami_test::test_simple_row_access(*out, *ref);
+        tatami_test::test_simple_column_access(*out, *ref);
     }
 }
 
@@ -155,8 +155,8 @@ TEST_F(LoadMatrixInputTest, SimpleText) {
         auto out = tatami_mtx::load_matrix_from_text_file<double, int>(path.c_str(), opt);
         EXPECT_TRUE(out->prefer_rows());
         EXPECT_TRUE(out->sparse());
-        tatami_test::test_simple_row_access(out.get(), ref.get());
-        tatami_test::test_simple_column_access(out.get(), ref.get());
+        tatami_test::test_simple_row_access(*out, *ref);
+        tatami_test::test_simple_column_access(*out, *ref);
     }
 
     // Automatic.
@@ -164,8 +164,8 @@ TEST_F(LoadMatrixInputTest, SimpleText) {
         auto out = tatami_mtx::load_matrix_from_some_file<double, int>(path.c_str(), opt);
         EXPECT_TRUE(out->prefer_rows());
         EXPECT_TRUE(out->sparse());
-        tatami_test::test_simple_row_access(out.get(), ref.get());
-        tatami_test::test_simple_column_access(out.get(), ref.get());
+        tatami_test::test_simple_row_access(*out, *ref);
+        tatami_test::test_simple_column_access(*out, *ref);
     }
 }
 
@@ -184,8 +184,8 @@ TEST_F(LoadMatrixInputTest, ZlibBuffer) {
         auto out = tatami_mtx::load_matrix_from_zlib_buffer<double, int>(buffer.data(), buffer.size(), opt);
         EXPECT_FALSE(out->prefer_rows());
         EXPECT_TRUE(out->sparse());
-        tatami_test::test_simple_row_access(out.get(), ref.get());
-        tatami_test::test_simple_column_access(out.get(), ref.get());
+        tatami_test::test_simple_row_access(*out, *ref);
+        tatami_test::test_simple_column_access(*out, *ref);
     }
 
     // Automatic.
@@ -193,8 +193,8 @@ TEST_F(LoadMatrixInputTest, ZlibBuffer) {
         auto out = tatami_mtx::load_matrix_from_some_buffer<double, int>(buffer.data(), buffer.size(), opt);
         EXPECT_FALSE(out->prefer_rows());
         EXPECT_TRUE(out->sparse());
-        tatami_test::test_simple_row_access(out.get(), ref.get());
-        tatami_test::test_simple_column_access(out.get(), ref.get());
+        tatami_test::test_simple_row_access(*out, *ref);
+        tatami_test::test_simple_column_access(*out, *ref);
     }
 }
 
@@ -213,8 +213,8 @@ TEST_F(LoadMatrixInputTest, GzipFile) {
         auto out = tatami_mtx::load_matrix_from_gzip_file<double, int>(path.c_str(), opt);
         EXPECT_TRUE(out->prefer_rows());
         EXPECT_TRUE(out->sparse());
-        tatami_test::test_simple_row_access(out.get(), ref.get());
-        tatami_test::test_simple_column_access(out.get(), ref.get());
+        tatami_test::test_simple_row_access(*out, *ref);
+        tatami_test::test_simple_column_access(*out, *ref);
     }
 
     // Automatic.
@@ -222,8 +222,8 @@ TEST_F(LoadMatrixInputTest, GzipFile) {
         auto out = tatami_mtx::load_matrix_from_some_file<double, int>(path.c_str(), opt);
         EXPECT_TRUE(out->prefer_rows());
         EXPECT_TRUE(out->sparse());
-        tatami_test::test_simple_row_access(out.get(), ref.get());
-        tatami_test::test_simple_column_access(out.get(), ref.get());
+        tatami_test::test_simple_row_access(*out, *ref);
+        tatami_test::test_simple_column_access(*out, *ref);
     }
 }
 
@@ -247,8 +247,8 @@ TEST_F(LoadMatrixIndexTest, Index8) {
     auto out = tatami_mtx::load_matrix_from_text_buffer<double, int>(buffer.data(), buffer.size(), opt);
     EXPECT_FALSE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
-    tatami_test::test_simple_row_access(out.get(), ref.get());
-    tatami_test::test_simple_column_access(out.get(), ref.get());
+    tatami_test::test_simple_row_access(*out, *ref);
+    tatami_test::test_simple_column_access(*out, *ref);
 }
 
 TEST_F(LoadMatrixIndexTest, Index16) {
@@ -264,8 +264,8 @@ TEST_F(LoadMatrixIndexTest, Index16) {
     auto out = tatami_mtx::load_matrix_from_text_buffer<double, int>(buffer.data(), buffer.size(), opt);
     EXPECT_FALSE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
-    tatami_test::test_simple_row_access(out.get(), ref.get());
-    tatami_test::test_simple_column_access(out.get(), ref.get());
+    tatami_test::test_simple_row_access(*out, *ref);
+    tatami_test::test_simple_column_access(*out, *ref);
 }
 
 TEST_F(LoadMatrixIndexTest, Index32) {
@@ -281,8 +281,8 @@ TEST_F(LoadMatrixIndexTest, Index32) {
     auto out = tatami_mtx::load_matrix_from_text_buffer<double, int>(buffer.data(), buffer.size(), opt);
     EXPECT_FALSE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
-    tatami_test::test_simple_row_access(out.get(), ref.get());
-    tatami_test::test_simple_column_access(out.get(), ref.get());
+    tatami_test::test_simple_row_access(*out, *ref);
+    tatami_test::test_simple_column_access(*out, *ref);
 }
 
 TEST_F(LoadMatrixIndexTest, IndexCustom) {
@@ -299,8 +299,8 @@ TEST_F(LoadMatrixIndexTest, IndexCustom) {
     auto out = tatami_mtx::load_matrix_from_text_buffer<double, int, tatami_mtx::Automatic, uint32_t>(buffer.data(), buffer.size(), opt);
     EXPECT_FALSE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
-    tatami_test::test_simple_row_access(out.get(), ref.get());
-    tatami_test::test_simple_column_access(out.get(), ref.get());
+    tatami_test::test_simple_row_access(*out, *ref);
+    tatami_test::test_simple_column_access(*out, *ref);
 }
 
 /*********************************************
@@ -320,8 +320,8 @@ TEST_F(LoadMatrixIndexTest, TempIndex8) {
     auto out = tatami_mtx::load_matrix_from_text_buffer<double, int>(buffer.data(), buffer.size(), opt);
     EXPECT_TRUE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
-    tatami_test::test_simple_row_access(out.get(), ref.get());
-    tatami_test::test_simple_column_access(out.get(), ref.get());
+    tatami_test::test_simple_row_access(*out, *ref);
+    tatami_test::test_simple_column_access(*out, *ref);
 }
 
 TEST_F(LoadMatrixIndexTest, TempIndex16) {
@@ -338,8 +338,8 @@ TEST_F(LoadMatrixIndexTest, TempIndex16) {
     auto out = tatami_mtx::load_matrix_from_text_buffer<double, int>(buffer.data(), buffer.size(), opt);
     EXPECT_TRUE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
-    tatami_test::test_simple_row_access(out.get(), ref.get());
-    tatami_test::test_simple_column_access(out.get(), ref.get());
+    tatami_test::test_simple_row_access(*out, *ref);
+    tatami_test::test_simple_column_access(*out, *ref);
 }
 
 TEST_F(LoadMatrixIndexTest, TempIndex32) {
@@ -355,8 +355,8 @@ TEST_F(LoadMatrixIndexTest, TempIndex32) {
     auto out = tatami_mtx::load_matrix_from_text_buffer<double, int>(buffer.data(), buffer.size(), opt);
     EXPECT_TRUE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
-    tatami_test::test_simple_row_access(out.get(), ref.get());
-    tatami_test::test_simple_column_access(out.get(), ref.get());
+    tatami_test::test_simple_row_access(*out, *ref);
+    tatami_test::test_simple_column_access(*out, *ref);
 }
 
 /******************************************
@@ -379,8 +379,8 @@ TEST_F(LoadMatrixIntegerTypeTest, CoordinateAutomatic) {
     auto out = tatami_mtx::load_matrix_from_text_buffer<double, int>(buffer.data(), buffer.size(), opt);
     EXPECT_TRUE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
-    tatami_test::test_simple_row_access(out.get(), ref.get());
-    tatami_test::test_simple_column_access(out.get(), ref.get());
+    tatami_test::test_simple_row_access(*out, *ref);
+    tatami_test::test_simple_column_access(*out, *ref);
 }
 
 TEST_F(LoadMatrixIntegerTypeTest, CoordinateCustom) {
@@ -396,8 +396,8 @@ TEST_F(LoadMatrixIntegerTypeTest, CoordinateCustom) {
     auto out = tatami_mtx::load_matrix_from_text_buffer<double, int, int32_t>(buffer.data(), buffer.size(), opt);
     EXPECT_FALSE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
-    tatami_test::test_simple_row_access(out.get(), ref.get());
-    tatami_test::test_simple_column_access(out.get(), ref.get());
+    tatami_test::test_simple_row_access(*out, *ref);
+    tatami_test::test_simple_column_access(*out, *ref);
 }
 
 TEST_F(LoadMatrixIntegerTypeTest, ArrayAutomatic) {
@@ -413,8 +413,8 @@ TEST_F(LoadMatrixIntegerTypeTest, ArrayAutomatic) {
     auto out = tatami_mtx::load_matrix_from_text_buffer<double, int>(buffer.data(), buffer.size(), opt);
     EXPECT_TRUE(out->prefer_rows());
     EXPECT_FALSE(out->sparse());
-    tatami_test::test_simple_row_access(out.get(), ref.get());
-    tatami_test::test_simple_column_access(out.get(), ref.get());
+    tatami_test::test_simple_row_access(*out, *ref);
+    tatami_test::test_simple_column_access(*out, *ref);
 }
 
 TEST_F(LoadMatrixIntegerTypeTest, ArrayCustom) {
@@ -431,8 +431,8 @@ TEST_F(LoadMatrixIntegerTypeTest, ArrayCustom) {
     auto out = tatami_mtx::load_matrix_from_text_buffer<double, int, int32_t>(buffer.data(), buffer.size(), opt);
     EXPECT_FALSE(out->prefer_rows());
     EXPECT_FALSE(out->sparse());
-    tatami_test::test_simple_row_access(out.get(), ref.get());
-    tatami_test::test_simple_column_access(out.get(), ref.get());
+    tatami_test::test_simple_row_access(*out, *ref);
+    tatami_test::test_simple_column_access(*out, *ref);
 }
 
 /****************************************
@@ -454,8 +454,8 @@ TEST_F(LoadMatrixFloatTypeTest, CoordinateAutomatic) {
     auto out = tatami_mtx::load_matrix_from_text_buffer<double, int>(buffer.data(), buffer.size(), opt);
     EXPECT_TRUE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
-    tatami_test::test_simple_row_access(out.get(), ref.get());
-    tatami_test::test_simple_column_access(out.get(), ref.get());
+    tatami_test::test_simple_row_access(*out, *ref);
+    tatami_test::test_simple_column_access(*out, *ref);
 }
 
 TEST_F(LoadMatrixFloatTypeTest, CoordinateCustom) {
@@ -471,8 +471,8 @@ TEST_F(LoadMatrixFloatTypeTest, CoordinateCustom) {
     auto out = tatami_mtx::load_matrix_from_text_buffer<double, int, double>(buffer.data(), buffer.size(), opt);
     EXPECT_FALSE(out->prefer_rows());
     EXPECT_TRUE(out->sparse());
-    tatami_test::test_simple_row_access(out.get(), ref.get());
-    tatami_test::test_simple_column_access(out.get(), ref.get());
+    tatami_test::test_simple_row_access(*out, *ref);
+    tatami_test::test_simple_column_access(*out, *ref);
 }
 
 TEST_F(LoadMatrixFloatTypeTest, ArrayAutomatic) {
@@ -489,8 +489,8 @@ TEST_F(LoadMatrixFloatTypeTest, ArrayAutomatic) {
     auto out = tatami_mtx::load_matrix_from_text_buffer<double, int>(buffer.data(), buffer.size(), opt);
     EXPECT_TRUE(out->prefer_rows());
     EXPECT_FALSE(out->sparse());
-    tatami_test::test_simple_row_access(out.get(), ref.get());
-    tatami_test::test_simple_column_access(out.get(), ref.get());
+    tatami_test::test_simple_row_access(*out, *ref);
+    tatami_test::test_simple_column_access(*out, *ref);
 }
 
 TEST_F(LoadMatrixFloatTypeTest, ArrayCustom) {
@@ -507,6 +507,6 @@ TEST_F(LoadMatrixFloatTypeTest, ArrayCustom) {
     auto out = tatami_mtx::load_matrix_from_text_buffer<double, int, double>(buffer.data(), buffer.size(), opt);
     EXPECT_FALSE(out->prefer_rows());
     EXPECT_FALSE(out->sparse());
-    tatami_test::test_simple_row_access(out.get(), ref.get());
-    tatami_test::test_simple_column_access(out.get(), ref.get());
+    tatami_test::test_simple_row_access(*out, *ref);
+    tatami_test::test_simple_column_access(*out, *ref);
 }
