@@ -1,11 +1,11 @@
 #include <gtest/gtest.h>
 
 #include "byteme/byteme.hpp"
-#include "byteme/temp_file_path.hpp"
 #include "eminem/eminem.hpp"
 #include "tatami_test/tatami_test.hpp"
 
 #include "tatami_mtx/tatami_mtx.hpp"
+#include "temp_file_path.h"
 
 #include <limits>
 #include <fstream>
@@ -142,7 +142,7 @@ TEST_F(LoadMatrixInputTest, SimpleBuffer) {
 TEST_F(LoadMatrixInputTest, SimpleText) {
     initialize(100, 99, 59);
 
-    auto path = byteme::temp_file_path("tatami-tests-ext-MatrixMarket", ".mtx");
+    auto path = temp_file_path("tatami-tests-ext-MatrixMarket");
     byteme::RawFileWriter writer(path.c_str());
     write_coordinate(writer);
 
@@ -201,7 +201,7 @@ TEST_F(LoadMatrixInputTest, ZlibBuffer) {
 TEST_F(LoadMatrixInputTest, GzipFile) {
     initialize(102, 200, 100);
 
-    auto path = byteme::temp_file_path("tatami-tests-ext-MatrixMarket", ".mtx.gz");
+    auto path = temp_file_path("tatami-tests-ext-MatrixMarket");
     byteme::GzipFileWriter writer(path.c_str());
     write_coordinate(writer);
 
