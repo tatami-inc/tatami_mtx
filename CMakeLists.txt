@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
 
 project(tatami_mtx
-    VERSION 2.0.0
+    VERSION 2.1.0
     DESCRIPTION "Matrix Market to tatami matrices"
     LANGUAGES CXX)
 
@@ -14,8 +14,10 @@ option(TATAMI_MTX_FETCH_EXTERN "Automatically fetch tatami_mtx's external depend
 if(TATAMI_MTX_FETCH_EXTERN)
     add_subdirectory(extern)
 else()
-    find_package(tatami_tatami CONFIG REQUIRED)
-    find_package(tatami_eminem CONFIG REQUIRED)
+    find_package(tatami_tatami 4.0.3 CONFIG REQUIRED)
+    find_package(tatami_eminem 1.2.0 CONFIG REQUIRED)
+    find_package(ltla_byteme 2.0.0 CONFIG REQUIRED)
+    find_package(ltla_sanisizer 0.1.0 CONFIG REQUIRED)
 endif()
 
 target_link_libraries(tatami_mtx INTERFACE tatami::tatami tatami::eminem)

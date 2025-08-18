@@ -113,7 +113,7 @@ class LoadMatrixInputTest : public LoadMatrixTestMethods<int>, public ::testing:
 TEST_F(LoadMatrixInputTest, SimpleBuffer) {
     initialize(99, 100, 200);
 
-    byteme::RawBufferWriter writer;
+    byteme::RawBufferWriter writer({});
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
@@ -143,12 +143,12 @@ TEST_F(LoadMatrixInputTest, SimpleText) {
     initialize(100, 99, 59);
 
     auto path = temp_file_path("tatami-tests-ext-MatrixMarket");
-    byteme::RawFileWriter writer(path.c_str());
+    byteme::RawFileWriter writer(path.c_str(), {});
     write_coordinate(writer);
 
     tatami_mtx::Options opt;
     opt.row = true;
-    opt.parallel = true;
+    opt.num_threads = 3;
 
     // Uncompressed.
     {
@@ -172,7 +172,7 @@ TEST_F(LoadMatrixInputTest, SimpleText) {
 TEST_F(LoadMatrixInputTest, ZlibBuffer) {
     initialize(101, 205, 80);
 
-    byteme::ZlibBufferWriter writer(1);
+    byteme::ZlibBufferWriter writer({});
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
@@ -202,7 +202,7 @@ TEST_F(LoadMatrixInputTest, GzipFile) {
     initialize(102, 200, 100);
 
     auto path = temp_file_path("tatami-tests-ext-MatrixMarket");
-    byteme::GzipFileWriter writer(path.c_str());
+    byteme::GzipFileWriter writer(path.c_str(), {});
     write_coordinate(writer);
 
     tatami_mtx::Options opt;
@@ -236,13 +236,13 @@ class LoadMatrixIndexTest : public LoadMatrixTestMethods<int>, public ::testing:
 TEST_F(LoadMatrixIndexTest, Index8) {
     initialize(1000, 240, 210); // allow automatic 8-bit representation of row indices for CSC matrix.
 
-    byteme::RawBufferWriter writer;
+    byteme::RawBufferWriter writer({});
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
     tatami_mtx::Options opt;
     opt.row = false;
-    opt.parallel = true;
+    opt.num_threads = 2;
 
     auto out = tatami_mtx::load_matrix_from_text_buffer<double, int>(buffer.data(), buffer.size(), opt);
     EXPECT_FALSE(out->prefer_rows());
@@ -254,7 +254,7 @@ TEST_F(LoadMatrixIndexTest, Index8) {
 TEST_F(LoadMatrixIndexTest, Index16) {
     initialize(1001, 2000, 10); // force automatic 16-bit representation
 
-    byteme::RawBufferWriter writer;
+    byteme::RawBufferWriter writer({});
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
@@ -271,7 +271,7 @@ TEST_F(LoadMatrixIndexTest, Index16) {
 TEST_F(LoadMatrixIndexTest, Index32) {
     initialize(1002, 100000, 2); // force automatic 32-bit representation
 
-    byteme::RawBufferWriter writer;
+    byteme::RawBufferWriter writer({});
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
@@ -288,13 +288,13 @@ TEST_F(LoadMatrixIndexTest, Index32) {
 TEST_F(LoadMatrixIndexTest, IndexCustom) {
     initialize(1003, 100, 200); 
 
-    byteme::RawBufferWriter writer;
+    byteme::RawBufferWriter writer({});
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
     tatami_mtx::Options opt;
     opt.row = false;
-    opt.parallel = true;
+    opt.num_threads = 2;
 
     auto out = tatami_mtx::load_matrix_from_text_buffer<double, int, tatami_mtx::Automatic, uint32_t>(buffer.data(), buffer.size(), opt);
     EXPECT_FALSE(out->prefer_rows());
@@ -310,7 +310,7 @@ TEST_F(LoadMatrixIndexTest, IndexCustom) {
 TEST_F(LoadMatrixIndexTest, TempIndex8) {
     initialize(2000, 10, 2000); // use 8-bit temporary indices for CSR matrix.
 
-    byteme::RawBufferWriter writer;
+    byteme::RawBufferWriter writer({});
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
@@ -327,13 +327,13 @@ TEST_F(LoadMatrixIndexTest, TempIndex8) {
 TEST_F(LoadMatrixIndexTest, TempIndex16) {
     initialize(2001, 1000, 200); // automatically use 16-bit indices.
 
-    byteme::RawBufferWriter writer;
+    byteme::RawBufferWriter writer({});
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
     tatami_mtx::Options opt;
     opt.row = true;
-    opt.parallel = true;
+    opt.num_threads = 3;
 
     auto out = tatami_mtx::load_matrix_from_text_buffer<double, int>(buffer.data(), buffer.size(), opt);
     EXPECT_TRUE(out->prefer_rows());
@@ -345,7 +345,7 @@ TEST_F(LoadMatrixIndexTest, TempIndex16) {
 TEST_F(LoadMatrixIndexTest, TempIndex32) {
     initialize(2002, 100000, 2); // automatically use 32-bit indices.
 
-    byteme::RawBufferWriter writer;
+    byteme::RawBufferWriter writer({});
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
@@ -368,13 +368,13 @@ class LoadMatrixIntegerTypeTest : public LoadMatrixTestMethods<int>, public ::te
 TEST_F(LoadMatrixIntegerTypeTest, CoordinateAutomatic) {
     initialize(10001, 100, 200); 
 
-    byteme::RawBufferWriter writer;
+    byteme::RawBufferWriter writer({});
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
     tatami_mtx::Options opt;
     opt.row = true;
-    opt.parallel = true;
+    opt.num_threads = 3;
 
     auto out = tatami_mtx::load_matrix_from_text_buffer<double, int>(buffer.data(), buffer.size(), opt);
     EXPECT_TRUE(out->prefer_rows());
@@ -386,7 +386,7 @@ TEST_F(LoadMatrixIntegerTypeTest, CoordinateAutomatic) {
 TEST_F(LoadMatrixIntegerTypeTest, CoordinateCustom) {
     initialize(10002, 100, 200); 
 
-    byteme::RawBufferWriter writer;
+    byteme::RawBufferWriter writer({});
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
@@ -403,7 +403,7 @@ TEST_F(LoadMatrixIntegerTypeTest, CoordinateCustom) {
 TEST_F(LoadMatrixIntegerTypeTest, ArrayAutomatic) {
     initialize(10003, 100, 200); 
 
-    byteme::RawBufferWriter writer;
+    byteme::RawBufferWriter writer({});
     write_array(writer);
     const auto& buffer = writer.output;
 
@@ -420,13 +420,13 @@ TEST_F(LoadMatrixIntegerTypeTest, ArrayAutomatic) {
 TEST_F(LoadMatrixIntegerTypeTest, ArrayCustom) {
     initialize(10004, 100, 200); 
 
-    byteme::RawBufferWriter writer;
+    byteme::RawBufferWriter writer({});
     write_array(writer);
     const auto& buffer = writer.output;
 
     tatami_mtx::Options opt;
     opt.row = false;
-    opt.parallel = true;
+    opt.num_threads = 2;
 
     auto out = tatami_mtx::load_matrix_from_text_buffer<double, int, int32_t>(buffer.data(), buffer.size(), opt);
     EXPECT_FALSE(out->prefer_rows());
@@ -444,7 +444,7 @@ class LoadMatrixFloatTypeTest : public LoadMatrixTestMethods<double>, public ::t
 TEST_F(LoadMatrixFloatTypeTest, CoordinateAutomatic) {
     initialize(20001, 100, 200); 
 
-    byteme::RawBufferWriter writer;
+    byteme::RawBufferWriter writer({});
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
@@ -461,7 +461,7 @@ TEST_F(LoadMatrixFloatTypeTest, CoordinateAutomatic) {
 TEST_F(LoadMatrixFloatTypeTest, CoordinateCustom) {
     initialize(20002, 100, 200); 
 
-    byteme::RawBufferWriter writer;
+    byteme::RawBufferWriter writer({});
     write_coordinate(writer);
     const auto& buffer = writer.output;
 
@@ -478,13 +478,13 @@ TEST_F(LoadMatrixFloatTypeTest, CoordinateCustom) {
 TEST_F(LoadMatrixFloatTypeTest, ArrayAutomatic) {
     initialize(20003, 100, 200); 
 
-    byteme::RawBufferWriter writer;
+    byteme::RawBufferWriter writer({});
     write_array(writer);
     const auto& buffer = writer.output;
 
     tatami_mtx::Options opt;
     opt.row = true;
-    opt.parallel = true;
+    opt.num_threads = 2;
 
     auto out = tatami_mtx::load_matrix_from_text_buffer<double, int>(buffer.data(), buffer.size(), opt);
     EXPECT_TRUE(out->prefer_rows());
@@ -496,13 +496,13 @@ TEST_F(LoadMatrixFloatTypeTest, ArrayAutomatic) {
 TEST_F(LoadMatrixFloatTypeTest, ArrayCustom) {
     initialize(20004, 100, 200); 
 
-    byteme::RawBufferWriter writer;
+    byteme::RawBufferWriter writer({});
     write_array(writer);
     const auto& buffer = writer.output;
 
     tatami_mtx::Options opt;
     opt.row = false;
-    opt.parallel = true;
+    opt.num_threads = 2;
 
     auto out = tatami_mtx::load_matrix_from_text_buffer<double, int, double>(buffer.data(), buffer.size(), opt);
     EXPECT_FALSE(out->prefer_rows());

@@ -36,12 +36,14 @@ The storage types are automatically chosen based on the Matrix Market field (for
 Users can customize these by passing the desired types directly:
 
 ```cpp
+#include <cstdint>
+
 auto mat4 = tatami_mtx::load_matrix_from_text_file<
     true, /* Row-based */
     double, /* Data interface */
     int, /* Index interface */
-    int32_t, /* Data storage */
-    uint16_t /* Index storage */
+    std::int32_t, /* Data storage */
+    std::uint16_t /* Index storage */
 >("some_matrix.mtx");
 ```
 
@@ -96,5 +98,4 @@ target_link_libraries(mylib INTERFACE tatami::tatami_mtx)
 
 If you're not using CMake, the simple approach is to just copy the files the `include/` subdirectory -
 either directly or with Git submodules - and include their path during compilation with, e.g., GCC's `-I`.
-You'll also need to link to the [**tatami**](https://github.com/tatami-inc/tatami) and [**eminem**](https://github.com/tatami-inc/eminem) libraries (and their dependencies).
-
+You'll also need to link to the various dependencies listed in [`extern/CMakeLists.txt`](extern/CMakeLists.txt).

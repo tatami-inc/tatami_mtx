@@ -1,9 +1,16 @@
 #ifndef TATAMI_MTX_SIMPLE_HPP
 #define TATAMI_MTX_SIMPLE_HPP
 
+#include <cstddef>
+#include <vector>
+#include <limits>
+#include <type_traits>
+#include <cstdint>
+
 #include "tatami/tatami.hpp"
 #include "eminem/eminem.hpp"
 #include "byteme/byteme.hpp"
+#include "sanisizer/sanisizer.hpp"
 
 /**
  * @file load_matrix.hpp
@@ -34,13 +41,13 @@ struct Options {
      * This buffer size is also used for Gzip/Zlib decompression.
      * Ignored for `load_matrix_from_text_buffer()`.
      */
-    size_t buffer_size = 65536;
+    std::size_t buffer_size = sanisizer::cap<std::size_t>(65536);
 
     /**
-     * Whether to parallelize the reading and parsing.
-     * If true, chunks of the file are read (and decompressed) in one thread while the contents are parsed in another thread.
+     * Number of threads to use for Matrix Market parsing.
+     * If greater than 1, chunks of the file are read (and decompressed) in one thread while the contents are parsed in another thread.
      */
-    bool parallel = false;
+    int num_threads = 1;
 
     /**
      * Compression of a Zlib-compressed buffer in `load_matrix_from_zlib_buffer()`.
@@ -54,155 +61,127 @@ struct Options {
  */
 namespace internal {
 
-template<bool row_, typename Value_, typename Index_, typename StoredValue_, typename StoredIndex_, typename TempIndex_, typename Parser_>
-std::shared_ptr<tatami::Matrix<Value_, Index_> > load_sparse_matrix_basic(Parser_& parser, eminem::Field field, size_t NR, size_t NC, size_t NL) {
-    std::vector<typename std::conditional<row_, TempIndex_, StoredIndex_>::type> rows;
-    std::vector<typename std::conditional<!row_, TempIndex_, StoredIndex_>::type> columns;
-    rows.reserve(NL), columns.reserve(NL);
+template<typename Value_, typename Index_, typename StoredValue_, typename StoredIndex_, typename TempIndex_, typename Parser_>
+std::shared_ptr<tatami::Matrix<Value_, Index_> > load_sparse_matrix_basic(Parser_& parser, eminem::Field field, Index_ NR, Index_ NC, eminem::LineIndex NL, bool row) {
+    std::vector<TempIndex_> primary;
+    primary.reserve(NL);
+    std::vector<StoredIndex_> secondary;
+    secondary.reserve(NL);
     std::vector<StoredValue_> values;
     values.reserve(NL);
 
     if (field == eminem::Field::INTEGER) {
-        parser.scan_integer([&](size_t r, size_t c, int v) -> void {
-            values.push_back(v);
-            rows.push_back(r - 1);
-            columns.push_back(c - 1);
-        });
+        typedef typename std::conditional<std::is_integral<StoredValue_>::value, StoredValue_, int>::type ParseType;
+        if (row) {
+            parser.template scan_integer<ParseType>([&](Index_ r, Index_ c, ParseType v) -> void {
+                values.push_back(v);
+                primary.push_back(r - 1);
+                secondary.push_back(c - 1);
+            });
+        } else {
+            parser.template scan_integer<ParseType>([&](Index_ r, Index_ c, ParseType v) -> void {
+                values.push_back(v);
+                primary.push_back(c - 1);
+                secondary.push_back(r - 1);
+            });
+        }
 
     } else if (field == eminem::Field::REAL || field == eminem::Field::DOUBLE) {
-        parser.scan_real([&](size_t r, size_t c, double v) -> void {
-            values.push_back(v);
-            rows.push_back(r - 1);
-            columns.push_back(c - 1);
-        });
+        typedef typename std::conditional<std::is_floating_point<StoredValue_>::value, StoredValue_, double>::type ParseType;
+        if (row) {
+            parser.template scan_real<ParseType>([&](Index_ r, Index_ c, ParseType v) -> void {
+                values.push_back(v);
+                primary.push_back(r - 1);
+                secondary.push_back(c - 1);
+            });
+        } else {
+            parser.template scan_real<ParseType>([&](Index_ r, Index_ c, ParseType v) -> void {
+                values.push_back(v);
+                primary.push_back(c - 1);
+                secondary.push_back(r - 1);
+            });
+        }
 
     } else {
         throw std::runtime_error("unsupported Matrix Market field type");
     }
 
-    auto ptr = tatami::compress_sparse_triplets<row_>(NR, NC, values, rows, columns);
-    std::vector<StoredIndex_> indices;
-    if constexpr(row_) {
-        indices.swap(columns);
-    } else {
-        indices.swap(rows);
-    }
-
+    auto indptr = tatami::compress_sparse_triplets((row ? NR : NC), values, primary, secondary);
     return std::shared_ptr<tatami::Matrix<Value_, Index_> >(
-        new tatami::CompressedSparseMatrix<Value_, Index_, decltype(values), decltype(indices), decltype(ptr)>(
-            NR, NC, std::move(values), std::move(indices), std::move(ptr), row_, false
+        new tatami::CompressedSparseMatrix<Value_, Index_, decltype(values), decltype(secondary), decltype(indptr)>(
+            NR, NC, std::move(values), std::move(secondary), std::move(indptr), row, false
         )
     );
 }
 
-template<bool row_, typename Value_, typename Index_, typename StoredValue_, typename StoredIndex_, typename TempIndex_, typename Parser_>
-std::shared_ptr<tatami::Matrix<Value_, Index_> > load_sparse_matrix_data(Parser_& parser, eminem::Field field, size_t NR, size_t NC, size_t NL) {
+template<typename Value_, typename Index_, typename StoredValue_, typename StoredIndex_, typename TempIndex_, typename Parser_>
+std::shared_ptr<tatami::Matrix<Value_, Index_> > load_sparse_matrix_data(Parser_& parser, eminem::Field field, Index_ NR, Index_ NC, eminem::LineIndex NL, bool row) {
     if constexpr(std::is_same<StoredValue_, Automatic>::value) {
         if (field == eminem::Field::REAL || field == eminem::Field::DOUBLE) {
-            return load_sparse_matrix_basic<row_, Value_, Index_, double, StoredIndex_, TempIndex_>(parser, field, NR, NC, NL);
+            return load_sparse_matrix_basic<Value_, Index_, double, StoredIndex_, TempIndex_>(parser, field, NR, NC, NL, row);
         }
         if (field != eminem::Field::INTEGER) {
             throw std::runtime_error("unsupported Matrix Market field type");
         }
-        return load_sparse_matrix_basic<row_, Value_, Index_, int, StoredIndex_, TempIndex_>(parser, field, NR, NC, NL);
+        return load_sparse_matrix_basic<Value_, Index_, int, StoredIndex_, TempIndex_>(parser, field, NR, NC, NL, row);
     } else {
-        return load_sparse_matrix_basic<row_, Value_, Index_, StoredValue_, StoredIndex_, TempIndex_>(parser, field, NR, NC, NL);
+        return load_sparse_matrix_basic<Value_, Index_, StoredValue_, StoredIndex_, TempIndex_>(parser, field, NR, NC, NL, row);
     }
 }
 
-template<bool row_, typename Value_, typename Index_, typename StoredValue_, typename StoredIndex_, typename TempIndex_, typename Parser_>
-std::shared_ptr<tatami::Matrix<Value_, Index_> > load_sparse_matrix_index(Parser_& parser, eminem::Field field, size_t NR, size_t NC, size_t NL) {
+template<typename Value_, typename Index_, typename StoredValue_, typename StoredIndex_, typename TempIndex_, typename Parser_>
+std::shared_ptr<tatami::Matrix<Value_, Index_> > load_sparse_matrix_index(Parser_& parser, eminem::Field field, Index_ NR, Index_ NC, eminem::LineIndex NL, bool row) {
     if constexpr(std::is_same<StoredIndex_, Automatic>::value) {
         // Automatically choosing a smaller integer type, if it fits.
-        constexpr size_t limit8 = std::numeric_limits<uint8_t>::max(), limit16 = std::numeric_limits<uint16_t>::max();
-        size_t target = (row_ ? NC : NR);
+        constexpr Index_ limit8 = std::numeric_limits<std::uint8_t>::max(), limit16 = std::numeric_limits<std::uint16_t>::max();
+        auto target = (row ? NC : NR);
 
         if (target <= limit8) {
-            return load_sparse_matrix_data<row_, Value_, Index_, StoredValue_, uint8_t, TempIndex_>(parser, field, NR, NC, NL);
+            return load_sparse_matrix_data<Value_, Index_, StoredValue_, std::uint8_t, TempIndex_>(parser, field, NR, NC, NL, row);
         } else if (target <= limit16) {
-            return load_sparse_matrix_data<row_, Value_, Index_, StoredValue_, uint16_t, TempIndex_>(parser, field, NR, NC, NL);
+            return load_sparse_matrix_data<Value_, Index_, StoredValue_, std::uint16_t, TempIndex_>(parser, field, NR, NC, NL, row);
         } else {
-            return load_sparse_matrix_data<row_, Value_, Index_, StoredValue_, uint32_t, TempIndex_>(parser, field, NR, NC, NL);
+            return load_sparse_matrix_data<Value_, Index_, StoredValue_, std::uint32_t, TempIndex_>(parser, field, NR, NC, NL, row);
         }
 
     } else {
-        return load_sparse_matrix_data<row_, Value_, Index_, StoredValue_, StoredIndex_, TempIndex_>(parser, field, NR, NC, NL);
+        return load_sparse_matrix_data<Value_, Index_, StoredValue_, StoredIndex_, TempIndex_>(parser, field, NR, NC, NL, row);
     }
 }
 
-template<bool row_, typename Value_, typename Index_, typename StoredValue_, typename Parser_>
-std::shared_ptr<tatami::Matrix<Value_, Index_> > load_dense_matrix_basic(Parser_& parser, eminem::Field field, size_t NR, size_t NC) {
+template<typename Value_, typename Index_, typename StoredValue_, typename Parser_>
+std::shared_ptr<tatami::Matrix<Value_, Index_> > load_dense_matrix_basic(Parser_& parser, eminem::Field field, Index_ NR, Index_ NC, bool row) {
     std::vector<StoredValue_> values;
-    if constexpr(row_) {
-        values.resize(NR * NC);
+    auto full_size = sanisizer::product<decltype(values.size())>(NR, NC);
+    if (row) {
+        values.resize(full_size);
     } else {
-        values.reserve(NR * NC);
+        values.reserve(full_size);
     }
 
     if (field == eminem::Field::INTEGER) {
-        parser.scan_integer([&](size_t r, size_t c, int v) -> void {
-            if constexpr(row_) {
-                values[(r - 1) * NC + (c - 1)] = v;
-            } else {
-                values.push_back(v); // Matrix Market ARRAY format is already column-major
-            }
-        });
+        typedef typename std::conditional<std::is_integral<StoredValue_>::value, StoredValue_, int>::type ParseType;
+        if (row) {
+            parser.template scan_integer<ParseType>([&](Index_ r, Index_ c, ParseType v) -> void { values[sanisizer::nd_offset<decltype(values.size())>(c - 1, NC, r - 1)] = v; });
+        } else {
+            parser.template scan_integer<ParseType>([&](Index_, Index_, ParseType v) -> void { values.push_back(v); }); // Matrix Market ARRAY format is already column-major
+        }
 
     } else if (field == eminem::Field::REAL || field == eminem::Field::DOUBLE) {
-        parser.scan_real([&](size_t r, size_t c, double v) -> void {
-            if constexpr(row_) {
-                values[(r - 1) * NC + (c - 1)] = v;
-            } else {
-                values.push_back(v);
-            }
-        });
+        typedef typename std::conditional<std::is_floating_point<StoredValue_>::value, StoredValue_, double>::type ParseType;
+        if (row) {
+            parser.template scan_real<ParseType>([&](Index_ r, Index_ c, ParseType v) -> void { values[sanisizer::nd_offset<decltype(values.size())>(c - 1, NC, r - 1)] = v; });
+        } else {
+            parser.template scan_real<ParseType>([&](Index_, Index_, ParseType v) -> void { values.push_back(v); });
+        }
 
     } else {
         throw std::runtime_error("unsupported Matrix Market field type");
     }
 
     return std::shared_ptr<tatami::Matrix<Value_, Index_> >(
-        new tatami::DenseMatrix<Value_, Index_, decltype(values)>(NR, NC, std::move(values), row_)
+        new tatami::DenseMatrix<Value_, Index_, decltype(values)>(NR, NC, std::move(values), row)
     );
-}
-
-template<bool row_, bool parallel_, typename Value_, typename Index_, typename StoredValue_, typename StoredIndex_>
-std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix(byteme::Reader& reader) {
-    eminem::Parser<parallel_> parser(&reader);
-    parser.scan_preamble();
-
-    const auto& banner = parser.get_banner();
-    auto field = banner.field;
-    auto format = banner.format;
-    size_t NR = parser.get_nrows(), NC = parser.get_ncols(), NL = parser.get_nlines();
-
-    if (format == eminem::Format::COORDINATE) {
-        // Automatically choosing a smaller integer type for the temporary index.
-        constexpr size_t limit8 = std::numeric_limits<uint8_t>::max(), limit16 = std::numeric_limits<uint16_t>::max();
-        auto primary = (row_ ? NR : NC);
-
-        if (primary <= limit8) {
-            return load_sparse_matrix_index<row_, Value_, Index_, StoredValue_, StoredIndex_, uint8_t>(parser, field, NR, NC, NL);
-        } else if (primary <= limit16) {
-            return load_sparse_matrix_index<row_, Value_, Index_, StoredValue_, StoredIndex_, uint16_t>(parser, field, NR, NC, NL);
-        } else {
-            return load_sparse_matrix_index<row_, Value_, Index_, StoredValue_, StoredIndex_, uint32_t>(parser, field, NR, NC, NL);
-        }
-
-    } else {
-        if constexpr(std::is_same<StoredValue_, Automatic>::value) {
-            if (field == eminem::Field::REAL || field == eminem::Field::DOUBLE) {
-                return load_dense_matrix_basic<row_, Value_, Index_, double>(parser, field, NR, NC);
-            }
-            if (field != eminem::Field::INTEGER) {
-                throw std::runtime_error("unsupported Matrix Market field type");
-            }
-            return load_dense_matrix_basic<row_, Value_, Index_, int>(parser, field, NR, NC);
-
-        } else {
-            return load_dense_matrix_basic<row_, Value_, Index_, StoredValue_>(parser, field, NR, NC);
-        }
-    }
 }
 
 }
@@ -229,17 +208,46 @@ std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix(byteme::Reader& rea
  */
 template<typename Value_, typename Index_, typename StoredValue_ = Automatic, typename StoredIndex_ = Automatic>
 std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix(byteme::Reader& reader, const Options& options) {
-    if (options.row) {
-        if (options.parallel) {
-            return internal::load_matrix<true, true, Value_, Index_, StoredValue_, StoredIndex_>(reader);
+    byteme::PerByteSerial<char, byteme::Reader*> pb(&reader);
+    eminem::Parser<decltype(&pb), Index_> parser(&pb, [&]{
+        eminem::ParserOptions eopt;
+        eopt.num_threads = options.num_threads;
+        return eopt;
+    }());
+
+    parser.scan_preamble();
+    const auto& banner = parser.get_banner();
+    auto field = banner.field;
+    auto format = banner.format;
+    auto NR = parser.get_nrows(), NC = parser.get_ncols();
+    auto NL = parser.get_nlines();
+
+    if (format == eminem::Format::COORDINATE) {
+        // Automatically choosing a smaller integer type for the temporary index.
+        constexpr auto limit8 = std::numeric_limits<uint8_t>::max();
+        constexpr auto limit16 = std::numeric_limits<std::uint16_t>::max();
+        auto primary = (options.row ? NR : NC);
+
+        if (sanisizer::is_less_than_or_equal(primary, limit8)) {
+            return internal::load_sparse_matrix_index<Value_, Index_, StoredValue_, StoredIndex_, std::uint8_t>(parser, field, NR, NC, NL, options.row);
+        } else if (sanisizer::is_less_than_or_equal(primary, limit16)) {
+            return internal::load_sparse_matrix_index<Value_, Index_, StoredValue_, StoredIndex_, std::uint16_t>(parser, field, NR, NC, NL, options.row);
         } else {
-            return internal::load_matrix<true, false, Value_, Index_, StoredValue_, StoredIndex_>(reader);
+            return internal::load_sparse_matrix_index<Value_, Index_, StoredValue_, StoredIndex_, std::uint32_t>(parser, field, NR, NC, NL, options.row);
         }
+
     } else {
-        if (options.parallel) {
-            return internal::load_matrix<false, true, Value_, Index_, StoredValue_, StoredIndex_>(reader);
+        if constexpr(std::is_same<StoredValue_, Automatic>::value) {
+            if (field == eminem::Field::REAL || field == eminem::Field::DOUBLE) {
+                return internal::load_dense_matrix_basic<Value_, Index_, double>(parser, field, NR, NC, options.row);
+            }
+            if (field != eminem::Field::INTEGER) {
+                throw std::runtime_error("unsupported Matrix Market field type");
+            }
+            return internal::load_dense_matrix_basic<Value_, Index_, int>(parser, field, NR, NC, options.row);
+
         } else {
-            return internal::load_matrix<false, false, Value_, Index_, StoredValue_, StoredIndex_>(reader);
+            return internal::load_dense_matrix_basic<Value_, Index_, StoredValue_>(parser, field, NR, NC, options.row);
         }
     }
 }
@@ -260,7 +268,11 @@ std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix(byteme::Reader& rea
  */
 template<typename Value_, typename Index_, typename StoredValue_ = Automatic, typename StoredIndex_ = Automatic>
 std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_text_file(const char* filepath, const Options& options) {
-    byteme::RawFileReader reader(filepath, options.buffer_size);
+    byteme::RawFileReader reader(filepath, [&]{
+        byteme::RawFileReaderOptions opt;
+        opt.buffer_size = options.buffer_size;
+        return opt;
+    }());
     return load_matrix<Value_, Index_, StoredValue_, StoredIndex_>(reader, options);
 }
 
@@ -281,7 +293,11 @@ std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_text_file(cons
  */
 template<typename Value_, typename Index_, typename StoredValue_ = Automatic, typename StoredIndex_ = Automatic>
 std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_gzip_file(const char* filepath, const Options& options) {
-    byteme::GzipFileReader reader(filepath, options.buffer_size);
+    byteme::GzipFileReader reader(filepath, [&]{
+        byteme::GzipFileReaderOptions opt;
+        opt.buffer_size = options.buffer_size;
+        return opt;
+    }());
     return load_matrix<Value_, Index_, StoredValue_, StoredIndex_>(reader, options);
 }
 
@@ -300,7 +316,11 @@ std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_gzip_file(cons
  */
 template<typename Value_, typename Index_, typename StoredValue_ = Automatic, typename StoredIndex_ = Automatic>
 std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_some_file(const char* filepath, const Options& options) {
-    byteme::SomeFileReader reader(filepath, options.buffer_size);
+    byteme::SomeFileReader reader(filepath, [&]{
+        byteme::SomeFileReaderOptions opt;
+        opt.buffer_size = options.buffer_size;
+        return opt;
+    }());
     return load_matrix<Value_, Index_, StoredValue_, StoredIndex_>(reader, options);
 }
 
@@ -321,7 +341,7 @@ std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_some_file(cons
  * @return Pointer to a `tatami::Matrix` instance containing data from the Matrix Market file.
  */
 template<typename Value_, typename Index_, typename StoredValue_ = Automatic, typename StoredIndex_ = Automatic>
-std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_text_buffer(const unsigned char* buffer, size_t n, const Options& options) {
+std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_text_buffer(const unsigned char* buffer, std::size_t n, const Options& options) {
     byteme::RawBufferReader reader(buffer, n);
     return load_matrix<Value_, Index_, StoredValue_, StoredIndex_>(reader, options);
 }
@@ -343,8 +363,13 @@ std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_text_buffer(co
  * @return Pointer to a `tatami::Matrix` instance containing data from the Matrix Market file.
  */
 template<typename Value_, typename Index_, typename StoredValue_ = Automatic, typename StoredIndex_ = Automatic>
-std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_zlib_buffer(const unsigned char* buffer, size_t n, const Options& options) {
-    byteme::ZlibBufferReader reader(buffer, n, options.compression, options.buffer_size);
+std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_zlib_buffer(const unsigned char* buffer, std::size_t n, const Options& options) {
+    byteme::ZlibBufferReader reader(buffer, n, [&]{
+        byteme::ZlibBufferReaderOptions opt;
+        opt.mode = options.compression;
+        opt.buffer_size = options.buffer_size;
+        return opt;
+    }());
     return load_matrix<Value_, Index_, StoredValue_, StoredIndex_>(reader, options);
 }
 
@@ -363,8 +388,12 @@ std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_zlib_buffer(co
  * @return Pointer to a `tatami::Matrix` instance containing data from the Matrix Market file.
  */
 template<typename Value_, typename Index_, typename StoredValue_ = Automatic, typename StoredIndex_ = Automatic>
-std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_some_buffer(const unsigned char* buffer, size_t n, const Options& options) {
-    byteme::SomeBufferReader reader(buffer, n, options.buffer_size);
+std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_some_buffer(const unsigned char* buffer, std::size_t n, const Options& options) {
+    byteme::SomeBufferReader reader(buffer, n, [&]{
+        byteme::SomeBufferReaderOptions opt;
+        opt.buffer_size = options.buffer_size;
+        return opt;
+    }());
     return load_matrix<Value_, Index_, StoredValue_, StoredIndex_>(reader, options);
 }
 
