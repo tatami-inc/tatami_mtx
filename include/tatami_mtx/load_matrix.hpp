@@ -72,35 +72,31 @@ std::shared_ptr<tatami::Matrix<Value_, Index_> > load_sparse_matrix_basic(Parser
 
     if (field == eminem::Field::INTEGER) {
         typedef typename std::conditional<std::is_integral<StoredValue_>::value, StoredValue_, int>::type ParseType;
-        if (row) {
-            parser.template scan_integer<ParseType>([&](Index_ r, Index_ c, ParseType v) -> void {
+        parser.template scan_integer<ParseType>([&](Index_ r, Index_ c, ParseType v) -> void {
+            if (row) {
                 values.push_back(v);
                 primary.push_back(r - 1);
                 secondary.push_back(c - 1);
-            });
-        } else {
-            parser.template scan_integer<ParseType>([&](Index_ r, Index_ c, ParseType v) -> void {
+            } else {
                 values.push_back(v);
                 primary.push_back(c - 1);
                 secondary.push_back(r - 1);
-            });
-        }
+            }
+        });
 
     } else if (field == eminem::Field::REAL || field == eminem::Field::DOUBLE) {
         typedef typename std::conditional<std::is_floating_point<StoredValue_>::value, StoredValue_, double>::type ParseType;
-        if (row) {
-            parser.template scan_real<ParseType>([&](Index_ r, Index_ c, ParseType v) -> void {
+        parser.template scan_real<ParseType>([&](Index_ r, Index_ c, ParseType v) -> void {
+            if (row) {
                 values.push_back(v);
                 primary.push_back(r - 1);
                 secondary.push_back(c - 1);
-            });
-        } else {
-            parser.template scan_real<ParseType>([&](Index_ r, Index_ c, ParseType v) -> void {
+            } else {
                 values.push_back(v);
                 primary.push_back(c - 1);
                 secondary.push_back(r - 1);
-            });
-        }
+            }
+        });
 
     } else {
         throw std::runtime_error("unsupported Matrix Market field type");
@@ -161,19 +157,23 @@ std::shared_ptr<tatami::Matrix<Value_, Index_> > load_dense_matrix_basic(Parser_
 
     if (field == eminem::Field::INTEGER) {
         typedef typename std::conditional<std::is_integral<StoredValue_>::value, StoredValue_, int>::type ParseType;
-        if (row) {
-            parser.template scan_integer<ParseType>([&](Index_ r, Index_ c, ParseType v) -> void { values[sanisizer::nd_offset<decltype(values.size())>(c - 1, NC, r - 1)] = v; });
-        } else {
-            parser.template scan_integer<ParseType>([&](Index_, Index_, ParseType v) -> void { values.push_back(v); }); // Matrix Market ARRAY format is already column-major
-        }
+        parser.template scan_integer<ParseType>([&](Index_ r, Index_ c, ParseType v) -> void {
+            if (row) {
+                values[sanisizer::nd_offset<decltype(values.size())>(c - 1, NC, r - 1)] = v;
+            } else {
+                values.push_back(v); // Matrix Market ARRAY format is already column-major
+            }
+        });
 
     } else if (field == eminem::Field::REAL || field == eminem::Field::DOUBLE) {
         typedef typename std::conditional<std::is_floating_point<StoredValue_>::value, StoredValue_, double>::type ParseType;
-        if (row) {
-            parser.template scan_real<ParseType>([&](Index_ r, Index_ c, ParseType v) -> void { values[sanisizer::nd_offset<decltype(values.size())>(c - 1, NC, r - 1)] = v; });
-        } else {
-            parser.template scan_real<ParseType>([&](Index_, Index_, ParseType v) -> void { values.push_back(v); });
-        }
+        parser.template scan_real<ParseType>([&](Index_ r, Index_ c, ParseType v) -> void {
+            if (row) {
+                values[sanisizer::nd_offset<decltype(values.size())>(c - 1, NC, r - 1)] = v;
+            } else {
+                values.push_back(v);
+            }
+        });
 
     } else {
         throw std::runtime_error("unsupported Matrix Market field type");
