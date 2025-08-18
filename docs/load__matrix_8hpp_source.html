@@ -226,7 +226,7 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>            <span class="keywordflow">if</span> (row) {</div>
 <div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>                values[sanisizer::nd_offset&lt;<span class="keyword">decltype</span>(values.size())&gt;(c - 1, NC, r - 1)] = v;</div>
 <div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>            } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>                parser.template scan_integer&lt;ParseType&gt;([&amp;](Index_, Index_, ParseType v) -&gt; <span class="keywordtype">void</span> { values.push_back(v); }); <span class="comment">// Matrix Market ARRAY format is already column-major</span></div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>                values.push_back(v); <span class="comment">// Matrix Market ARRAY format is already column-major</span></div>
 <div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>            }</div>
 <div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>        });</div>
 <div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> </div>
@@ -236,7 +236,7 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>            <span class="keywordflow">if</span> (row) {</div>
 <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>                values[sanisizer::nd_offset&lt;<span class="keyword">decltype</span>(values.size())&gt;(c - 1, NC, r - 1)] = v;</div>
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>            } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>                parser.template scan_real&lt;ParseType&gt;([&amp;](Index_, Index_, ParseType v) -&gt; <span class="keywordtype">void</span> { values.push_back(v);</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>                values.push_back(v);</div>
 <div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>            }</div>
 <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>        });</div>
 <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span> </div>
@@ -306,7 +306,7 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>        opt.<a class="code hl_variableRef" href="https://ltla.github.io/byteme/structbyteme_1_1RawFileReaderOptions.html#af6ef3890a745687b993cd2d1651ba373">buffer_size</a> = options.<a class="code hl_variable" href="structtatami__mtx_1_1Options.html#a9779feed4e6337798bfefa6edf2f34ee">buffer_size</a>;</div>
 <div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>        <span class="keywordflow">return</span> opt;</div>
 <div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>    }());</div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>    <span class="keywordflow">return</span> load_matrix&lt;Value_, Index_, StoredValue_, StoredIndex_&gt;(reader, options);</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="namespacetatami__mtx.html#a0ae14375d217b2c9a049317aa8209f05">load_matrix&lt;Value_, Index_, StoredValue_, StoredIndex_&gt;</a>(reader, options);</div>
 <div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>}</div>
 </div>
 <div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span> </div>
@@ -320,7 +320,7 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>        opt.<a class="code hl_variableRef" href="https://ltla.github.io/byteme/structbyteme_1_1GzipFileReaderOptions.html#a17fe61919194f8e5fcb43e9c7be8ec26">buffer_size</a> = options.<a class="code hl_variable" href="structtatami__mtx_1_1Options.html#a9779feed4e6337798bfefa6edf2f34ee">buffer_size</a>;</div>
 <div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>        <span class="keywordflow">return</span> opt;</div>
 <div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>    }());</div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>    <span class="keywordflow">return</span> load_matrix&lt;Value_, Index_, StoredValue_, StoredIndex_&gt;(reader, options);</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="namespacetatami__mtx.html#a0ae14375d217b2c9a049317aa8209f05">load_matrix&lt;Value_, Index_, StoredValue_, StoredIndex_&gt;</a>(reader, options);</div>
 <div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>}</div>
 </div>
 <div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span> </div>
@@ -332,7 +332,7 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>        opt.<a class="code hl_variableRef" href="https://ltla.github.io/byteme/structbyteme_1_1SomeFileReaderOptions.html#a307bfd8881766ecfb0f1ae6d6348b971">buffer_size</a> = options.<a class="code hl_variable" href="structtatami__mtx_1_1Options.html#a9779feed4e6337798bfefa6edf2f34ee">buffer_size</a>;</div>
 <div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>        <span class="keywordflow">return</span> opt;</div>
 <div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>    }());</div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>    <span class="keywordflow">return</span> load_matrix&lt;Value_, Index_, StoredValue_, StoredIndex_&gt;(reader, options);</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="namespacetatami__mtx.html#a0ae14375d217b2c9a049317aa8209f05">load_matrix&lt;Value_, Index_, StoredValue_, StoredIndex_&gt;</a>(reader, options);</div>
 <div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>}</div>
 </div>
 <div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span> </div>
@@ -342,7 +342,7 @@ $(function(){ initResizable(false); });
 <div class="foldopen" id="foldopen00344" data-start="{" data-end="}">
 <div class="line"><a id="l00344" name="l00344"></a><span class="lineno"><a class="line" href="namespacetatami__mtx.html#ace364b8467215cee90da8215d8e27971">  344</a></span>std::shared_ptr&lt;tatami::Matrix&lt;Value_, Index_&gt; &gt; <a class="code hl_function" href="namespacetatami__mtx.html#ace364b8467215cee90da8215d8e27971">load_matrix_from_text_buffer</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>* buffer, std::size_t n, <span class="keyword">const</span> <a class="code hl_struct" href="structtatami__mtx_1_1Options.html">Options</a>&amp; options) {</div>
 <div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>    <a class="code hl_classRef" href="https://ltla.github.io/byteme/classbyteme_1_1RawBufferReader.html">byteme::RawBufferReader</a> reader(buffer, n);</div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>    <span class="keywordflow">return</span> load_matrix&lt;Value_, Index_, StoredValue_, StoredIndex_&gt;(reader, options);</div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="namespacetatami__mtx.html#a0ae14375d217b2c9a049317aa8209f05">load_matrix&lt;Value_, Index_, StoredValue_, StoredIndex_&gt;</a>(reader, options);</div>
 <div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>}</div>
 </div>
 <div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span> </div>
@@ -357,7 +357,7 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>        opt.<a class="code hl_variableRef" href="https://ltla.github.io/byteme/structbyteme_1_1ZlibBufferReaderOptions.html#ac5780ce7c036cc541c644241d307bf0a">buffer_size</a> = options.<a class="code hl_variable" href="structtatami__mtx_1_1Options.html#a9779feed4e6337798bfefa6edf2f34ee">buffer_size</a>;</div>
 <div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>        <span class="keywordflow">return</span> opt;</div>
 <div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>    }());</div>
-<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>    <span class="keywordflow">return</span> load_matrix&lt;Value_, Index_, StoredValue_, StoredIndex_&gt;(reader, options);</div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="namespacetatami__mtx.html#a0ae14375d217b2c9a049317aa8209f05">load_matrix&lt;Value_, Index_, StoredValue_, StoredIndex_&gt;</a>(reader, options);</div>
 <div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>}</div>
 </div>
 <div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span> </div>
@@ -369,7 +369,7 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>        opt.<a class="code hl_variableRef" href="https://ltla.github.io/byteme/structbyteme_1_1SomeBufferReaderOptions.html#a99f4b826d6ef07cd7be11e92f17e4193">buffer_size</a> = options.<a class="code hl_variable" href="structtatami__mtx_1_1Options.html#a9779feed4e6337798bfefa6edf2f34ee">buffer_size</a>;</div>
 <div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>        <span class="keywordflow">return</span> opt;</div>
 <div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>    }());</div>
-<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>    <span class="keywordflow">return</span> load_matrix&lt;Value_, Index_, StoredValue_, StoredIndex_&gt;(reader, options);</div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="namespacetatami__mtx.html#a0ae14375d217b2c9a049317aa8209f05">load_matrix&lt;Value_, Index_, StoredValue_, StoredIndex_&gt;</a>(reader, options);</div>
 <div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>}</div>
 </div>
 <div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span> </div>
