@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['number_0',['number',['https://tatami-inc.github.io/tatami/structtatami_1_1SparseRange.html#a8b959e01323bdbe112a6432b3c51a038',1,'tatami::SparseRange']]]
+  ['gzbuffer_5fsize_0',['gzbuffer_size',['https://ltla.github.io/byteme/structbyteme_1_1GzipFileReaderOptions.html#a2b0db9ad5b08145bb99cab97d94bc716',1,'byteme::GzipFileReaderOptions::gzbuffer_size'],['https://ltla.github.io/byteme/structbyteme_1_1GzipFileWriterOptions.html#ad3ae50598f977a1063e4cd9b438d2dcc',1,'byteme::GzipFileWriterOptions::gzbuffer_size']]]
 ];

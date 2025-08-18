@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['parallel_0',['parallel',['../structtatami__mtx_1_1Options.html#abe6fc86b8b6b6c4c09f39bd3637d41cf',1,'tatami_mtx::Options']]],
-  ['pointers_1',['pointers',['https://tatami-inc.github.io/tatami/structtatami_1_1CompressedSparseContents.html#ad9410e8d3b32bc97086bebf2322c0ef8',1,'tatami::CompressedSparseContents']]]
+  ['index_0',['index',['https://tatami-inc.github.io/tatami/structtatami_1_1CompressedSparseContents.html#a5b30cd6415c0e3cfd91b31590f16bc58',1,'tatami::CompressedSparseContents::index'],['https://tatami-inc.github.io/tatami/structtatami_1_1FragmentedSparseContents.html#a8c1a2bebb066b64451576dc356877091',1,'tatami::FragmentedSparseContents::index'],['https://tatami-inc.github.io/tatami/structtatami_1_1SparseRange.html#af61bafe43fadb90cee6162ac79bfdd3d',1,'tatami::SparseRange::index']]]
 ];
