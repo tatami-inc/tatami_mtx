@@ -87,22 +87,22 @@
       <type>std::shared_ptr&lt; tatami::Matrix&lt; Value_, Index_ &gt; &gt;</type>
       <name>load_matrix_from_text_buffer</name>
       <anchorfile>namespacetatami__mtx.html</anchorfile>
-      <anchor>ace364b8467215cee90da8215d8e27971</anchor>
-      <arglist>(const unsigned char *buffer, std::size_t n, const Options &amp;options)</arglist>
+      <anchor>a4fd9293aaf935a568f486315c023294e</anchor>
+      <arglist>(const unsigned char *buffer, const std::size_t n, const Options &amp;options)</arglist>
     </member>
     <member kind="function">
       <type>std::shared_ptr&lt; tatami::Matrix&lt; Value_, Index_ &gt; &gt;</type>
       <name>load_matrix_from_zlib_buffer</name>
       <anchorfile>namespacetatami__mtx.html</anchorfile>
-      <anchor>a411e8bcc894e16c84084c22a873c21b5</anchor>
-      <arglist>(const unsigned char *buffer, std::size_t n, const Options &amp;options)</arglist>
+      <anchor>aaa8944889aca7c4a0065aed6840b9ff3</anchor>
+      <arglist>(const unsigned char *buffer, const std::size_t n, const Options &amp;options)</arglist>
     </member>
     <member kind="function">
       <type>std::shared_ptr&lt; tatami::Matrix&lt; Value_, Index_ &gt; &gt;</type>
       <name>load_matrix_from_some_buffer</name>
       <anchorfile>namespacetatami__mtx.html</anchorfile>
-      <anchor>aff7278ee57c8b8881b1bc44ef304bc1b</anchor>
-      <arglist>(const unsigned char *buffer, std::size_t n, const Options &amp;options)</arglist>
+      <anchor>a453811d87eb263b236c5c59caf0307c1</anchor>
+      <arglist>(const unsigned char *buffer, const std::size_t n, const Options &amp;options)</arglist>
     </member>
   </compound>
   <compound kind="page">
