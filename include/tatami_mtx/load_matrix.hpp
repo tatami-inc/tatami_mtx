@@ -31,7 +31,7 @@ struct Automatic {};
 /**
  * @brief Options for `load_matrix()` and friends.
  */
-struct Options {
+struct LoadMatrixOptions {
     /**
      * Whether to produce a dense row-major or compressed sparse row matrix.
      * If false, column-based matrices are returned instead.
@@ -61,6 +61,9 @@ struct Options {
 /**
  * @cond
  */
+// For back-compatibility.
+typedef LoadMatrixOptions Options;
+
 namespace internal {
 
 template<typename Value_, typename Index_, typename StoredValue_, typename StoredIndex_, typename TempIndex_, typename Parser_>
@@ -209,7 +212,7 @@ std::shared_ptr<tatami::Matrix<Value_, Index_> > load_dense_matrix_basic(Parser_
  * @return Pointer to a `tatami::Matrix` instance containing data from the Matrix Market file.
  */
 template<typename Value_, typename Index_, typename StoredValue_ = Automatic, typename StoredIndex_ = Automatic>
-std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix(byteme::Reader& reader, const Options& options) {
+std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix(byteme::Reader& reader, const LoadMatrixOptions& options) {
     byteme::PerByteSerial<char, byteme::Reader*> pb(&reader);
     eminem::Parser<I<decltype(&pb)>, Index_> parser(&pb, [&]{
         eminem::ParserOptions eopt;
@@ -268,7 +271,7 @@ std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix(byteme::Reader& rea
  * @return Pointer to a `tatami::Matrix` instance containing data from the Matrix Market file.
  */
 template<typename Value_, typename Index_, typename StoredValue_ = Automatic, typename StoredIndex_ = Automatic>
-std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_text_file(const char* filepath, const Options& options) {
+std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_text_file(const char* filepath, const LoadMatrixOptions& options) {
     byteme::RawFileReader reader(filepath, [&]{
         byteme::RawFileReaderOptions opt;
         opt.buffer_size = options.buffer_size;
@@ -293,7 +296,7 @@ std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_text_file(cons
  * @return Pointer to a `tatami::Matrix` instance containing data from the Matrix Market file.
  */
 template<typename Value_, typename Index_, typename StoredValue_ = Automatic, typename StoredIndex_ = Automatic>
-std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_gzip_file(const char* filepath, const Options& options) {
+std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_gzip_file(const char* filepath, const LoadMatrixOptions& options) {
     byteme::GzipFileReader reader(filepath, [&]{
         byteme::GzipFileReaderOptions opt;
         opt.buffer_size = options.buffer_size;
@@ -316,7 +319,7 @@ std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_gzip_file(cons
  * @return Pointer to a `tatami::Matrix` instance containing data from the Matrix Market file.
  */
 template<typename Value_, typename Index_, typename StoredValue_ = Automatic, typename StoredIndex_ = Automatic>
-std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_some_file(const char* filepath, const Options& options) {
+std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_some_file(const char* filepath, const LoadMatrixOptions& options) {
     byteme::SomeFileReader reader(filepath, [&]{
         byteme::SomeFileReaderOptions opt;
         opt.buffer_size = options.buffer_size;
@@ -342,7 +345,7 @@ std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_some_file(cons
  * @return Pointer to a `tatami::Matrix` instance containing data from the Matrix Market file.
  */
 template<typename Value_, typename Index_, typename StoredValue_ = Automatic, typename StoredIndex_ = Automatic>
-std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_text_buffer(const unsigned char* buffer, const std::size_t n, const Options& options) {
+std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_text_buffer(const unsigned char* buffer, const std::size_t n, const LoadMatrixOptions& options) {
     byteme::RawBufferReader reader(buffer, n);
     return load_matrix<Value_, Index_, StoredValue_, StoredIndex_>(reader, options);
 }
@@ -364,7 +367,7 @@ std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_text_buffer(co
  * @return Pointer to a `tatami::Matrix` instance containing data from the Matrix Market file.
  */
 template<typename Value_, typename Index_, typename StoredValue_ = Automatic, typename StoredIndex_ = Automatic>
-std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_zlib_buffer(const unsigned char* buffer, const std::size_t n, const Options& options) {
+std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_zlib_buffer(const unsigned char* buffer, const std::size_t n, const LoadMatrixOptions& options) {
     byteme::ZlibBufferReader reader(buffer, n, [&]{
         byteme::ZlibBufferReaderOptions opt;
         opt.mode = options.compression;
@@ -389,7 +392,7 @@ std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_zlib_buffer(co
  * @return Pointer to a `tatami::Matrix` instance containing data from the Matrix Market file.
  */
 template<typename Value_, typename Index_, typename StoredValue_ = Automatic, typename StoredIndex_ = Automatic>
-std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_some_buffer(const unsigned char* buffer, const std::size_t n, const Options& options) {
+std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_some_buffer(const unsigned char* buffer, const std::size_t n, const LoadMatrixOptions& options) {
     byteme::SomeBufferReader reader(buffer, n, [&]{
         byteme::SomeBufferReaderOptions opt;
         opt.buffer_size = options.buffer_size;
