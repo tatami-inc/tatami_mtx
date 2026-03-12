@@ -21,5 +21,5 @@ var searchData=
   ['retrieve_5ffragmented_5fsparse_5fcontents_18',['retrieve_fragmented_sparse_contents',['https://tatami-inc.github.io/tatami/namespacetatami.html#a4b4feed54780ff0d6ec18a38a5752f22',1,'tatami']]],
   ['retrievecompressedsparsecontentsoptions_19',['RetrieveCompressedSparseContentsOptions',['https://tatami-inc.github.io/tatami/structtatami_1_1RetrieveCompressedSparseContentsOptions.html',1,'tatami']]],
   ['retrievefragmentedsparsecontentsoptions_20',['RetrieveFragmentedSparseContentsOptions',['https://tatami-inc.github.io/tatami/structtatami_1_1RetrieveFragmentedSparseContentsOptions.html',1,'tatami']]],
-  ['row_21',['row',['../structtatami__mtx_1_1Options.html#ab8c5093ae706e577282bf477fe72c737',1,'tatami_mtx::Options']]]
+  ['row_21',['row',['../structtatami__mtx_1_1LoadMatrixOptions.html#af152ee1d02c76bf45fc792d7749ab7cd',1,'tatami_mtx::LoadMatrixOptions']]]
 ];

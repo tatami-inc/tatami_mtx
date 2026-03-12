@@ -5,7 +5,7 @@
     <path>tatami_mtx/</path>
     <filename>load__matrix_8hpp.html</filename>
     <class kind="struct">tatami_mtx::Automatic</class>
-    <class kind="struct">tatami_mtx::Options</class>
+    <class kind="struct">tatami_mtx::LoadMatrixOptions</class>
     <namespace>tatami_mtx</namespace>
   </compound>
   <compound kind="file">
@@ -26,34 +26,34 @@
     <filename>structtatami__mtx_1_1Automatic.html</filename>
   </compound>
   <compound kind="struct">
-    <name>tatami_mtx::Options</name>
-    <filename>structtatami__mtx_1_1Options.html</filename>
+    <name>tatami_mtx::LoadMatrixOptions</name>
+    <filename>structtatami__mtx_1_1LoadMatrixOptions.html</filename>
     <member kind="variable">
       <type>bool</type>
       <name>row</name>
-      <anchorfile>structtatami__mtx_1_1Options.html</anchorfile>
-      <anchor>ab8c5093ae706e577282bf477fe72c737</anchor>
+      <anchorfile>structtatami__mtx_1_1LoadMatrixOptions.html</anchorfile>
+      <anchor>af152ee1d02c76bf45fc792d7749ab7cd</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
       <type>std::size_t</type>
       <name>buffer_size</name>
-      <anchorfile>structtatami__mtx_1_1Options.html</anchorfile>
-      <anchor>a9779feed4e6337798bfefa6edf2f34ee</anchor>
+      <anchorfile>structtatami__mtx_1_1LoadMatrixOptions.html</anchorfile>
+      <anchor>a40e8e6b35775ff806897d1165d49fbcb</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
       <type>int</type>
       <name>num_threads</name>
-      <anchorfile>structtatami__mtx_1_1Options.html</anchorfile>
-      <anchor>acb6b79e5f8ddd47f38a3a2f393ac24a5</anchor>
+      <anchorfile>structtatami__mtx_1_1LoadMatrixOptions.html</anchorfile>
+      <anchor>a0633b427f4a4a2ba642bf4306d0496bc</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
       <type>int</type>
       <name>compression</name>
-      <anchorfile>structtatami__mtx_1_1Options.html</anchorfile>
-      <anchor>aa9832489c1d2d8a697f5d822219e4738</anchor>
+      <anchorfile>structtatami__mtx_1_1LoadMatrixOptions.html</anchorfile>
+      <anchor>a875ab24a34c434ae6472aa70cbe5e449</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -107,56 +107,56 @@
     <name>tatami_mtx</name>
     <filename>namespacetatami__mtx.html</filename>
     <class kind="struct">tatami_mtx::Automatic</class>
-    <class kind="struct">tatami_mtx::Options</class>
+    <class kind="struct">tatami_mtx::LoadMatrixOptions</class>
     <class kind="struct">tatami_mtx::WriteMatrixOptions</class>
     <member kind="function">
       <type>std::shared_ptr&lt; tatami::Matrix&lt; Value_, Index_ &gt; &gt;</type>
       <name>load_matrix</name>
       <anchorfile>namespacetatami__mtx.html</anchorfile>
-      <anchor>a0ae14375d217b2c9a049317aa8209f05</anchor>
-      <arglist>(byteme::Reader &amp;reader, const Options &amp;options)</arglist>
+      <anchor>a4e16806a54f17fd96c2c404dbdba88ce</anchor>
+      <arglist>(byteme::Reader &amp;reader, const LoadMatrixOptions &amp;options)</arglist>
     </member>
     <member kind="function">
       <type>std::shared_ptr&lt; tatami::Matrix&lt; Value_, Index_ &gt; &gt;</type>
       <name>load_matrix_from_text_file</name>
       <anchorfile>namespacetatami__mtx.html</anchorfile>
-      <anchor>af7f6bd31cf0ba74bb5a2d14180b66b16</anchor>
-      <arglist>(const char *filepath, const Options &amp;options)</arglist>
+      <anchor>ad30a74ea0b689749b0bfe1d346038792</anchor>
+      <arglist>(const char *filepath, const LoadMatrixOptions &amp;options)</arglist>
     </member>
     <member kind="function">
       <type>std::shared_ptr&lt; tatami::Matrix&lt; Value_, Index_ &gt; &gt;</type>
       <name>load_matrix_from_gzip_file</name>
       <anchorfile>namespacetatami__mtx.html</anchorfile>
-      <anchor>ae9da28ce51cdff3c12e23d353663fc85</anchor>
-      <arglist>(const char *filepath, const Options &amp;options)</arglist>
+      <anchor>acd682d0c2b376eadbe3e54c5f3adee95</anchor>
+      <arglist>(const char *filepath, const LoadMatrixOptions &amp;options)</arglist>
     </member>
     <member kind="function">
       <type>std::shared_ptr&lt; tatami::Matrix&lt; Value_, Index_ &gt; &gt;</type>
       <name>load_matrix_from_some_file</name>
       <anchorfile>namespacetatami__mtx.html</anchorfile>
-      <anchor>a45af5d93e47b2c3c90582649fa4364ae</anchor>
-      <arglist>(const char *filepath, const Options &amp;options)</arglist>
+      <anchor>acf204b49245947b19d1b842743bf9329</anchor>
+      <arglist>(const char *filepath, const LoadMatrixOptions &amp;options)</arglist>
     </member>
     <member kind="function">
       <type>std::shared_ptr&lt; tatami::Matrix&lt; Value_, Index_ &gt; &gt;</type>
       <name>load_matrix_from_text_buffer</name>
       <anchorfile>namespacetatami__mtx.html</anchorfile>
-      <anchor>a4fd9293aaf935a568f486315c023294e</anchor>
-      <arglist>(const unsigned char *buffer, const std::size_t n, const Options &amp;options)</arglist>
+      <anchor>a81126d06ea0867eeab913b546adb332b</anchor>
+      <arglist>(const unsigned char *buffer, const std::size_t n, const LoadMatrixOptions &amp;options)</arglist>
     </member>
     <member kind="function">
       <type>std::shared_ptr&lt; tatami::Matrix&lt; Value_, Index_ &gt; &gt;</type>
       <name>load_matrix_from_zlib_buffer</name>
       <anchorfile>namespacetatami__mtx.html</anchorfile>
-      <anchor>aaa8944889aca7c4a0065aed6840b9ff3</anchor>
-      <arglist>(const unsigned char *buffer, const std::size_t n, const Options &amp;options)</arglist>
+      <anchor>a1079725e7a2591883a99af6e46d745ae</anchor>
+      <arglist>(const unsigned char *buffer, const std::size_t n, const LoadMatrixOptions &amp;options)</arglist>
     </member>
     <member kind="function">
       <type>std::shared_ptr&lt; tatami::Matrix&lt; Value_, Index_ &gt; &gt;</type>
       <name>load_matrix_from_some_buffer</name>
       <anchorfile>namespacetatami__mtx.html</anchorfile>
-      <anchor>a453811d87eb263b236c5c59caf0307c1</anchor>
-      <arglist>(const unsigned char *buffer, const std::size_t n, const Options &amp;options)</arglist>
+      <anchor>aabc483a3cc6cd0d6e25f3aa43e5ed2af</anchor>
+      <arglist>(const unsigned char *buffer, const std::size_t n, const LoadMatrixOptions &amp;options)</arglist>
     </member>
     <member kind="function">
       <type>void</type>

@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['zlibbufferreader_0',['ZlibBufferReader',['https://ltla.github.io/byteme/classbyteme_1_1ZlibBufferReader.html',1,'byteme']]],
-  ['zlibbufferreaderoptions_1',['ZlibBufferReaderOptions',['https://ltla.github.io/byteme/structbyteme_1_1ZlibBufferReaderOptions.html',1,'byteme']]],
-  ['zlibbufferwriter_2',['ZlibBufferWriter',['https://ltla.github.io/byteme/classbyteme_1_1ZlibBufferWriter.html',1,'byteme']]],
-  ['zlibbufferwriteroptions_3',['ZlibBufferWriterOptions',['https://ltla.github.io/byteme/structbyteme_1_1ZlibBufferWriterOptions.html',1,'byteme']]]
+  ['writematrixoptions_0',['WriteMatrixOptions',['../structtatami__mtx_1_1WriteMatrixOptions.html',1,'tatami_mtx']]],
+  ['writer_1',['Writer',['https://ltla.github.io/byteme/classbyteme_1_1Writer.html',1,'byteme']]]
 ];

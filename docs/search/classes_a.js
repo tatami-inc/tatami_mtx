@@ -1,9 +1,11 @@
 var searchData=
 [
-  ['perbyteinterface_0',['PerByteInterface',['https://ltla.github.io/byteme/classbyteme_1_1PerByteInterface.html',1,'byteme']]],
-  ['perbyteinterface_3c_20type_5f_20_3e_1',['PerByteInterface&lt; Type_ &gt;',['https://ltla.github.io/byteme/classbyteme_1_1PerByteInterface.html',1,'byteme']]],
-  ['perbyteparallel_2',['PerByteParallel',['https://ltla.github.io/byteme/classbyteme_1_1PerByteParallel.html',1,'byteme']]],
-  ['perbyteserial_3',['PerByteSerial',['https://ltla.github.io/byteme/classbyteme_1_1PerByteSerial.html',1,'byteme']]],
-  ['pseudooraculardenseextractor_4',['PseudoOracularDenseExtractor',['https://tatami-inc.github.io/tatami/structtatami_1_1PseudoOracularDenseExtractor.html',1,'tatami']]],
-  ['pseudooracularsparseextractor_5',['PseudoOracularSparseExtractor',['https://tatami-inc.github.io/tatami/structtatami_1_1PseudoOracularSparseExtractor.html',1,'tatami']]]
+  ['options_0',['Options',['https://tatami-inc.github.io/tatami/structtatami_1_1Options.html',1,'tatami']]],
+  ['oracle_1',['Oracle',['https://tatami-inc.github.io/tatami/classtatami_1_1Oracle.html',1,'tatami']]],
+  ['oracle_3c_20index_5f_20_3e_2',['Oracle&lt; Index_ &gt;',['https://tatami-inc.github.io/tatami/classtatami_1_1Oracle.html',1,'tatami']]],
+  ['oraculardenseextractor_3',['OracularDenseExtractor',['https://tatami-inc.github.io/tatami/classtatami_1_1OracularDenseExtractor.html',1,'tatami']]],
+  ['oraculardenseextractor_3c_20value_5f_2c_20index_5f_20_3e_4',['OracularDenseExtractor&lt; Value_, Index_ &gt;',['https://tatami-inc.github.io/tatami/classtatami_1_1OracularDenseExtractor.html',1,'tatami']]],
+  ['oracularsparseextractor_5',['OracularSparseExtractor',['https://tatami-inc.github.io/tatami/classtatami_1_1OracularSparseExtractor.html',1,'tatami']]],
+  ['oracularsparseextractor_3c_20value_5f_2c_20index_5f_20_3e_6',['OracularSparseExtractor&lt; Value_, Index_ &gt;',['https://tatami-inc.github.io/tatami/classtatami_1_1OracularSparseExtractor.html',1,'tatami']]],
+  ['ostreamwriter_7',['OstreamWriter',['https://ltla.github.io/byteme/classbyteme_1_1OstreamWriter.html',1,'byteme']]]
 ];
