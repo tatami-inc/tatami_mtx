@@ -12,6 +12,8 @@
 #include "byteme/byteme.hpp"
 #include "sanisizer/sanisizer.hpp"
 
+#include "utils.hpp"
+
 /**
  * @file load_matrix.hpp
  * @brief Load a **tatami** matrix from a Matrix Market file.
@@ -61,11 +63,6 @@ struct Options {
  */
 namespace internal {
 
-template<typename Input_>
-std::remove_cv_t<std::remove_reference_t<Input_> > I(Input_ x) {
-    return x;
-}
-
 template<typename Value_, typename Index_, typename StoredValue_, typename StoredIndex_, typename TempIndex_, typename Parser_>
 std::shared_ptr<tatami::Matrix<Value_, Index_> > load_sparse_matrix_basic(Parser_& parser, const eminem::Field field, const Index_ NR, const Index_ NC, const eminem::LineIndex NL, const bool row) {
     std::vector<TempIndex_> primary;
@@ -109,7 +106,7 @@ std::shared_ptr<tatami::Matrix<Value_, Index_> > load_sparse_matrix_basic(Parser
 
     auto indptr = tatami::compress_sparse_triplets((row ? NR : NC), values, primary, secondary);
     return std::shared_ptr<tatami::Matrix<Value_, Index_> >(
-        new tatami::CompressedSparseMatrix<Value_, Index_, decltype(I(values)), decltype(I(secondary)), decltype(I(indptr))>(
+        new tatami::CompressedSparseMatrix<Value_, Index_, I<decltype(values)>, I<decltype(secondary)>, I<decltype(indptr)> >(
             NR, NC, std::move(values), std::move(secondary), std::move(indptr), row, false
         )
     );
@@ -153,7 +150,7 @@ std::shared_ptr<tatami::Matrix<Value_, Index_> > load_sparse_matrix_index(Parser
 template<typename Value_, typename Index_, typename StoredValue_, typename Parser_>
 std::shared_ptr<tatami::Matrix<Value_, Index_> > load_dense_matrix_basic(Parser_& parser, const eminem::Field field, const Index_ NR, const Index_ NC, const bool row) {
     std::vector<StoredValue_> values;
-    const auto full_size = sanisizer::product<decltype(I(values.size()))>(NR, NC);
+    const auto full_size = sanisizer::product<I<decltype(values.size())> >(NR, NC);
     if (row) {
         values.resize(full_size);
     } else {
@@ -164,7 +161,7 @@ std::shared_ptr<tatami::Matrix<Value_, Index_> > load_dense_matrix_basic(Parser_
         typedef typename std::conditional<std::is_integral<StoredValue_>::value, StoredValue_, int>::type ParseType;
         parser.template scan_integer<ParseType>([&](const Index_ r, const Index_ c, const ParseType v) -> void {
             if (row) {
-                values[sanisizer::nd_offset<decltype(I(values.size()))>(c - 1, NC, r - 1)] = v;
+                values[sanisizer::nd_offset<I<decltype(values.size())> >(c - 1, NC, r - 1)] = v;
             } else {
                 values.push_back(v); // Matrix Market ARRAY format is already column-major
             }
@@ -174,7 +171,7 @@ std::shared_ptr<tatami::Matrix<Value_, Index_> > load_dense_matrix_basic(Parser_
         typedef typename std::conditional<std::is_floating_point<StoredValue_>::value, StoredValue_, double>::type ParseType;
         parser.template scan_real<ParseType>([&](const Index_ r, const Index_ c, const ParseType v) -> void {
             if (row) {
-                values[sanisizer::nd_offset<decltype(I(values.size()))>(c - 1, NC, r - 1)] = v;
+                values[sanisizer::nd_offset<I<decltype(values.size())> >(c - 1, NC, r - 1)] = v;
             } else {
                 values.push_back(v);
             }
@@ -185,7 +182,7 @@ std::shared_ptr<tatami::Matrix<Value_, Index_> > load_dense_matrix_basic(Parser_
     }
 
     return std::shared_ptr<tatami::Matrix<Value_, Index_> >(
-        new tatami::DenseMatrix<Value_, Index_, decltype(I(values))>(NR, NC, std::move(values), row)
+        new tatami::DenseMatrix<Value_, Index_, I<decltype(values)> >(NR, NC, std::move(values), row)
     );
 }
 
@@ -214,7 +211,7 @@ std::shared_ptr<tatami::Matrix<Value_, Index_> > load_dense_matrix_basic(Parser_
 template<typename Value_, typename Index_, typename StoredValue_ = Automatic, typename StoredIndex_ = Automatic>
 std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix(byteme::Reader& reader, const Options& options) {
     byteme::PerByteSerial<char, byteme::Reader*> pb(&reader);
-    eminem::Parser<decltype(internal::I(&pb)), Index_> parser(&pb, [&]{
+    eminem::Parser<I<decltype(&pb)>, Index_> parser(&pb, [&]{
         eminem::ParserOptions eopt;
         eopt.num_threads = options.num_threads;
         return eopt;
@@ -264,7 +261,6 @@ std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix(byteme::Reader& rea
  * @tparam Index_ Integer index type for the `tatami::Matrix` interface.
  * @tparam StoredValue_ Matrix data type that is stored in memory, see `load_matrix()` for details.
  * @tparam StoredIndex_ Index data type that is stored in memory for sparse matrices,  see `load_matrix()` for details.
- * @tparam parallel_ Whether to parallelize the loading and parsing.
  *
  * @param filepath Path to a Matrix Market file.
  * @param options Options for loading the matrix.

@@ -12,6 +12,8 @@
 #include <type_traits>
 #include <cassert>
 
+#include "utils.hpp"
+
 /**
  * @file write_matrix.hpp
  * @brief Write a **tatami** matrix to a Matrix Market file.
@@ -22,9 +24,6 @@ namespace tatami_mtx {
 /**
  * @cond
  */
-template<typename Value_>
-using I = std::remove_cv_t<std::remove_reference_t<Value_> >;
-
 template<typename Value_>
 std::size_t convert(Value_ val, std::vector<unsigned char>& buffer, const std::optional<std::chars_format>& format, const std::optional<int>& precision) {
     std::size_t store;
