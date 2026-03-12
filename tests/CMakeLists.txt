@@ -6,7 +6,12 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(tatami_test)
 
-add_executable(libtest src/load_matrix.cpp)
+add_executable(
+    libtest
+    src/load_matrix.cpp
+    src/write_matrix.cpp
+)
+
 target_link_libraries(libtest tatami_mtx tatami_test)
 
 include(CheckIncludeFiles)

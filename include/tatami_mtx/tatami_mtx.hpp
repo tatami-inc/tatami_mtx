@@ -2,6 +2,7 @@
 #define TATAMI_MTX_TATAMI_MTX_HPP
 
 #include "load_matrix.hpp"
+#include "write_matrix.hpp"
 
 /**
  * @file tatami_mtx.hpp
