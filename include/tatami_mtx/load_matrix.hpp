@@ -39,23 +39,20 @@ struct LoadMatrixOptions {
     bool row = true;
 
     /**
-     * Size of the buffer (in bytes) to use when reading the file contents.
-     * This buffer size is also used for Gzip/Zlib decompression.
-     * Ignored for `load_matrix_from_text_buffer()`.
+     * @cond
      */
     std::size_t buffer_size = sanisizer::cap<std::size_t>(65536);
+
+    int compression = 3;
+    /**
+     * @endcond
+     */
 
     /**
      * Number of threads to use for Matrix Market parsing.
      * If greater than 1, chunks of the file are read (and decompressed) in one thread while the contents are parsed in another thread.
      */
     int num_threads = 1;
-
-    /**
-     * Compression of a Zlib-compressed buffer in `load_matrix_from_zlib_buffer()`.
-     * The default of 3 will auto-detect the compression method, see `byteme::ZlibBufferReader` for details.
-     */
-    int compression = 3;
 };
 
 /**
@@ -272,11 +269,7 @@ std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix(byteme::Reader& rea
  */
 template<typename Value_, typename Index_, typename StoredValue_ = Automatic, typename StoredIndex_ = Automatic>
 std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_text_file(const char* filepath, const LoadMatrixOptions& options) {
-    byteme::RawFileReader reader(filepath, [&]{
-        byteme::RawFileReaderOptions opt;
-        opt.buffer_size = options.buffer_size;
-        return opt;
-    }());
+    byteme::RawFileReader reader(filepath, {});
     return load_matrix<Value_, Index_, StoredValue_, StoredIndex_>(reader, options);
 }
 
@@ -297,11 +290,7 @@ std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_text_file(cons
  */
 template<typename Value_, typename Index_, typename StoredValue_ = Automatic, typename StoredIndex_ = Automatic>
 std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_gzip_file(const char* filepath, const LoadMatrixOptions& options) {
-    byteme::GzipFileReader reader(filepath, [&]{
-        byteme::GzipFileReaderOptions opt;
-        opt.buffer_size = options.buffer_size;
-        return opt;
-    }());
+    byteme::GzipFileReader reader(filepath, {});
     return load_matrix<Value_, Index_, StoredValue_, StoredIndex_>(reader, options);
 }
 
@@ -320,11 +309,7 @@ std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_gzip_file(cons
  */
 template<typename Value_, typename Index_, typename StoredValue_ = Automatic, typename StoredIndex_ = Automatic>
 std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_some_file(const char* filepath, const LoadMatrixOptions& options) {
-    byteme::SomeFileReader reader(filepath, [&]{
-        byteme::SomeFileReaderOptions opt;
-        opt.buffer_size = options.buffer_size;
-        return opt;
-    }());
+    byteme::SomeFileReader reader(filepath, {});
     return load_matrix<Value_, Index_, StoredValue_, StoredIndex_>(reader, options);
 }
 
@@ -368,12 +353,7 @@ std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_text_buffer(co
  */
 template<typename Value_, typename Index_, typename StoredValue_ = Automatic, typename StoredIndex_ = Automatic>
 std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_zlib_buffer(const unsigned char* buffer, const std::size_t n, const LoadMatrixOptions& options) {
-    byteme::ZlibBufferReader reader(buffer, n, [&]{
-        byteme::ZlibBufferReaderOptions opt;
-        opt.mode = options.compression;
-        opt.buffer_size = options.buffer_size;
-        return opt;
-    }());
+    byteme::ZlibBufferReader reader(buffer, n, {});
     return load_matrix<Value_, Index_, StoredValue_, StoredIndex_>(reader, options);
 }
 
@@ -393,11 +373,7 @@ std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_zlib_buffer(co
  */
 template<typename Value_, typename Index_, typename StoredValue_ = Automatic, typename StoredIndex_ = Automatic>
 std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_some_buffer(const unsigned char* buffer, const std::size_t n, const LoadMatrixOptions& options) {
-    byteme::SomeBufferReader reader(buffer, n, [&]{
-        byteme::SomeBufferReaderOptions opt;
-        opt.buffer_size = options.buffer_size;
-        return opt;
-    }());
+    byteme::SomeBufferReader reader(buffer, n, {});
     return load_matrix<Value_, Index_, StoredValue_, StoredIndex_>(reader, options);
 }
 
