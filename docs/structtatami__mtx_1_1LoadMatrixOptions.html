@@ -106,12 +106,8 @@ $(function(){ initResizable(false); });
 Public Attributes</h2></td></tr>
 <tr class="memitem:af152ee1d02c76bf45fc792d7749ab7cd" id="r_af152ee1d02c76bf45fc792d7749ab7cd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af152ee1d02c76bf45fc792d7749ab7cd">row</a> = true</td></tr>
 <tr class="separator:af152ee1d02c76bf45fc792d7749ab7cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a40e8e6b35775ff806897d1165d49fbcb" id="r_a40e8e6b35775ff806897d1165d49fbcb"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a40e8e6b35775ff806897d1165d49fbcb">buffer_size</a> = sanisizer::cap&lt;std::size_t&gt;(65536)</td></tr>
-<tr class="separator:a40e8e6b35775ff806897d1165d49fbcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0633b427f4a4a2ba642bf4306d0496bc" id="r_a0633b427f4a4a2ba642bf4306d0496bc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0633b427f4a4a2ba642bf4306d0496bc">num_threads</a> = 1</td></tr>
 <tr class="separator:a0633b427f4a4a2ba642bf4306d0496bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a875ab24a34c434ae6472aa70cbe5e449" id="r_a875ab24a34c434ae6472aa70cbe5e449"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a875ab24a34c434ae6472aa70cbe5e449">compression</a> = 3</td></tr>
-<tr class="separator:a875ab24a34c434ae6472aa70cbe5e449"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Options for <code><a class="el" href="namespacetatami__mtx.html#a4e16806a54f17fd96c2c404dbdba88ce">load_matrix()</a></code> and friends. </p>
@@ -131,21 +127,6 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a40e8e6b35775ff806897d1165d49fbcb" name="a40e8e6b35775ff806897d1165d49fbcb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a40e8e6b35775ff806897d1165d49fbcb">&#9670;&#160;</a></span>buffer_size</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::size_t tatami_mtx::LoadMatrixOptions::buffer_size = sanisizer::cap&lt;std::size_t&gt;(65536)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Size of the buffer (in bytes) to use when reading the file contents. This buffer size is also used for Gzip/Zlib decompression. Ignored for <code><a class="el" href="namespacetatami__mtx.html#a81126d06ea0867eeab913b546adb332b">load_matrix_from_text_buffer()</a></code>. </p>
-
-</div>
-</div>
 <a id="a0633b427f4a4a2ba642bf4306d0496bc" name="a0633b427f4a4a2ba642bf4306d0496bc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0633b427f4a4a2ba642bf4306d0496bc">&#9670;&#160;</a></span>num_threads</h2>
 
@@ -158,21 +139,6 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Number of threads to use for Matrix Market parsing. If greater than 1, chunks of the file are read (and decompressed) in one thread while the contents are parsed in another thread. </p>
-
-</div>
-</div>
-<a id="a875ab24a34c434ae6472aa70cbe5e449" name="a875ab24a34c434ae6472aa70cbe5e449"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a875ab24a34c434ae6472aa70cbe5e449">&#9670;&#160;</a></span>compression</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int tatami_mtx::LoadMatrixOptions::compression = 3</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Compression of a Zlib-compressed buffer in <code><a class="el" href="namespacetatami__mtx.html#a1079725e7a2591883a99af6e46d745ae">load_matrix_from_zlib_buffer()</a></code>. The default of 3 will auto-detect the compression method, see <code><a class="elRef" href="https://ltla.github.io/byteme/classbyteme_1_1ZlibBufferReader.html">byteme::ZlibBufferReader</a></code> for details. </p>
 
 </div>
 </div>
