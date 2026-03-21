@@ -7,5 +7,6 @@ var searchData=
   ['zlibbufferreaderoptions_4',['ZlibBufferReaderOptions',['https://ltla.github.io/byteme/structbyteme_1_1ZlibBufferReaderOptions.html',1,'byteme']]],
   ['zlibbufferwriter_5',['ZlibBufferWriter',['https://ltla.github.io/byteme/classbyteme_1_1ZlibBufferWriter.html',1,'byteme::ZlibBufferWriter'],['https://ltla.github.io/byteme/classbyteme_1_1ZlibBufferWriter.html#a09d7572eb0c546087fb66c13aa8e2d84',1,'byteme::ZlibBufferWriter::ZlibBufferWriter()']]],
   ['zlibbufferwriter_2ehpp_6',['ZlibBufferWriter.hpp',['https://ltla.github.io/byteme/ZlibBufferWriter_8hpp.html',1,'']]],
-  ['zlibbufferwriteroptions_7',['ZlibBufferWriterOptions',['https://ltla.github.io/byteme/structbyteme_1_1ZlibBufferWriterOptions.html',1,'byteme']]]
+  ['zlibbufferwriteroptions_7',['ZlibBufferWriterOptions',['https://ltla.github.io/byteme/structbyteme_1_1ZlibBufferWriterOptions.html',1,'byteme']]],
+  ['zlibcompressionmode_8',['ZlibCompressionMode',['https://ltla.github.io/byteme/namespacebyteme.html#a684463951a944a548255a6abe484ef2b',1,'byteme']]]
 ];

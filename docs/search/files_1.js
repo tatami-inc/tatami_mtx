@@ -2,5 +2,7 @@ var searchData=
 [
   ['boolean_5fhelpers_2ehpp_0',['boolean_helpers.hpp',['https://tatami-inc.github.io/tatami/binary_2boolean__helpers_8hpp.html',1,'(Global Namespace)'],['https://tatami-inc.github.io/tatami/unary_2boolean__helpers_8hpp.html',1,'(Global Namespace)']]],
   ['boolean_5futils_2ehpp_1',['boolean_utils.hpp',['https://tatami-inc.github.io/tatami/boolean__utils_8hpp.html',1,'']]],
-  ['byteme_2ehpp_2',['byteme.hpp',['https://ltla.github.io/byteme/byteme_8hpp.html',1,'']]]
+  ['bufferedreader_2ehpp_2',['BufferedReader.hpp',['https://ltla.github.io/byteme/BufferedReader_8hpp.html',1,'']]],
+  ['bufferedwriter_2ehpp_3',['BufferedWriter.hpp',['https://ltla.github.io/byteme/BufferedWriter_8hpp.html',1,'']]],
+  ['byteme_2ehpp_4',['byteme.hpp',['https://ltla.github.io/byteme/byteme_8hpp.html',1,'']]]
 ];

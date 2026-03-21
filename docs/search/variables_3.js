@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['format_0',['format',['../structtatami__mtx_1_1WriteMatrixOptions.html#a02d59ae99916f161fa1b0a5843b5c555',1,'tatami_mtx::WriteMatrixOptions']]]
+  ['gzbuffer_5fsize_0',['gzbuffer_size',['https://ltla.github.io/byteme/structbyteme_1_1GzipFileWriterOptions.html#ad3ae50598f977a1063e4cd9b438d2dcc',1,'byteme::GzipFileWriterOptions']]]
 ];

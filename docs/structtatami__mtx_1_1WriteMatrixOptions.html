@@ -114,6 +114,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a02d59ae99916f161fa1b0a5843b5c555"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3df0a3d85827f1434d7a5c6ebb874d7b" id="r_a3df0a3d85827f1434d7a5c6ebb874d7b"><td class="memItemLeft" align="right" valign="top">std::optional&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3df0a3d85827f1434d7a5c6ebb874d7b">precision</a></td></tr>
 <tr class="separator:a3df0a3d85827f1434d7a5c6ebb874d7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a602607c8da3e9334c21952b35bb0e8" id="r_a6a602607c8da3e9334c21952b35bb0e8"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6a602607c8da3e9334c21952b35bb0e8">buffer_size</a> = sanisizer::cap&lt;std::size_t&gt;(65536)</td></tr>
+<tr class="separator:a6a602607c8da3e9334c21952b35bb0e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25b45b67de6fdfa897d72afe7179fed6" id="r_a25b45b67de6fdfa897d72afe7179fed6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a25b45b67de6fdfa897d72afe7179fed6">num_threads</a> = 1</td></tr>
 <tr class="separator:a25b45b67de6fdfa897d72afe7179fed6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -192,6 +194,21 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Precision of floating-point values when converted to a string. If unset, the default behavior of <code>std::to_chars()</code> is used. </p>
+
+</div>
+</div>
+<a id="a6a602607c8da3e9334c21952b35bb0e8" name="a6a602607c8da3e9334c21952b35bb0e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a602607c8da3e9334c21952b35bb0e8">&#9670;&#160;</a></span>buffer_size</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t tatami_mtx::WriteMatrixOptions::buffer_size = sanisizer::cap&lt;std::size_t&gt;(65536)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Size of the buffer in which to cache written values before flushing them to the <code><a class="elRef" href="https://ltla.github.io/byteme/classbyteme_1_1Writer.html">byteme::Writer</a></code> instance. Larger values improve efficiency at the cost of increasing memory usage. </p>
 
 </div>
 </div>

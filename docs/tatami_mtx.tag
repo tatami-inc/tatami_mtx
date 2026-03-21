@@ -82,6 +82,13 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
+      <type>std::size_t</type>
+      <name>buffer_size</name>
+      <anchorfile>structtatami__mtx_1_1WriteMatrixOptions.html</anchorfile>
+      <anchor>a6a602607c8da3e9334c21952b35bb0e8</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
       <type>int</type>
       <name>num_threads</name>
       <anchorfile>structtatami__mtx_1_1WriteMatrixOptions.html</anchorfile>
@@ -176,8 +183,8 @@
       <type>std::vector&lt; unsigned char &gt;</type>
       <name>write_matrix_to_zlib_buffer</name>
       <anchorfile>namespacetatami__mtx.html</anchorfile>
-      <anchor>a5a89ea59a47c8bd4c3283bf75ae6a4bd</anchor>
-      <arglist>(const tatami::Matrix&lt; Value_, Index_ &gt; &amp;matrix, const int mode, const WriteMatrixOptions &amp;options)</arglist>
+      <anchor>a3e0d8fbf40c51f3147acf1e82d787a92</anchor>
+      <arglist>(const tatami::Matrix&lt; Value_, Index_ &gt; &amp;matrix, const byteme::ZlibCompressionMode mode, const WriteMatrixOptions &amp;options)</arglist>
     </member>
   </compound>
   <compound kind="page">
