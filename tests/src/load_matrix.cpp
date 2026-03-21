@@ -49,57 +49,61 @@ protected:
     }
 
     void write_coordinate(byteme::Writer& stream) const {
-        stream.write("%%MatrixMarket matrix coordinate ");
+        byteme::SerialBufferedWriter<char, byteme::Writer*> writer(&stream, 1000);
+
+        writer.write("%%MatrixMarket matrix coordinate ");
         if constexpr(std::numeric_limits<T>::is_integer) {
-            stream.write("integer");
+            writer.write("integer");
         } else {
-            stream.write("real");
+            writer.write("real");
         }
-        stream.write(" general\n");
-        stream.write(std::to_string(NR));
-        stream.write(' ');
-        stream.write(std::to_string(NC));
-        stream.write(' ');
-        stream.write(std::to_string(vals.size()));
+        writer.write(" general\n");
+        writer.write(std::to_string(NR));
+        writer.write(' ');
+        writer.write(std::to_string(NC));
+        writer.write(' ');
+        writer.write(std::to_string(vals.size()));
 
         for (size_t i = 0; i < vals.size(); ++i) {
-            stream.write('\n');
-            stream.write(std::to_string(rows[i] + 1));
-            stream.write(' ');
-            stream.write(std::to_string(cols[i] + 1));
-            stream.write(' ');
-            stream.write(std::to_string(vals[i]));
+            writer.write('\n');
+            writer.write(std::to_string(rows[i] + 1));
+            writer.write(' ');
+            writer.write(std::to_string(cols[i] + 1));
+            writer.write(' ');
+            writer.write(std::to_string(vals[i]));
         }
-        stream.write('\n');
+        writer.write('\n');
 
-        stream.finish();
+        writer.finish();
         return;
     }
 
     void write_array(byteme::Writer& stream) const {
-        stream.write("%%MatrixMarket matrix array ");
+        byteme::SerialBufferedWriter<char, byteme::Writer*> writer(&stream, 1000);
+
+        writer.write("%%MatrixMarket matrix array ");
         if constexpr(std::numeric_limits<T>::is_integer) {
-            stream.write("integer");
+            writer.write("integer");
         } else {
-            stream.write("real");
+            writer.write("real");
         }
-        stream.write(" general\n");
-        stream.write(std::to_string(NR));
-        stream.write(' ');
-        stream.write(std::to_string(NC));
+        writer.write(" general\n");
+        writer.write(std::to_string(NR));
+        writer.write(' ');
+        writer.write(std::to_string(NC));
 
         auto ext = ref->dense_column();
         std::vector<double> buffer(NR);
         for (size_t c = 0; c < NC; ++c) {
             auto col = ext->fetch(c, buffer.data());
             for (size_t r = 0; r < NR; ++r) {
-                stream.write('\n');
-                stream.write(std::to_string(static_cast<T>(col[r])));
+                writer.write('\n');
+                writer.write(std::to_string(static_cast<T>(col[r])));
             }
         }
-        stream.write('\n');
+        writer.write('\n');
 
-        stream.finish();
+        writer.finish();
         return;
     }
 };

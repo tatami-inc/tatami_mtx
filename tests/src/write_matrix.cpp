@@ -9,7 +9,7 @@
 #include <vector>
 
 TEST(WriteConvert, Integer) {
-    std::vector<unsigned char> buffer(1);
+    std::vector<char> buffer(1);
 
     {
         auto used = tatami_mtx::convert(10, buffer, {}, {});
@@ -35,7 +35,7 @@ TEST(WriteConvert, Integer) {
 }
 
 TEST(WriteConvert, Float) {
-    std::vector<unsigned char> buffer(1);
+    std::vector<char> buffer(1);
 
     {
         auto used = tatami_mtx::convert(10.0, buffer, {}, {});
@@ -78,8 +78,7 @@ TEST(WriteMatrix, DenseArray) {
 
     { 
         byteme::RawFileReader reader(path.c_str(), {});
-        byteme::PerByteSerial<char, byteme::Reader*> pb(&reader);
-        eminem::Parser<decltype(&pb), int> parser(&pb, {});
+        eminem::Parser<decltype(&reader), int> parser(&reader, {});
 
         parser.scan_preamble();
         const auto& banner = parser.get_banner();
@@ -122,8 +121,7 @@ TEST_P(WriteMatrixCoordinateTest, Dense) {
 
     { 
         byteme::RawFileReader reader(path.c_str(), {});
-        byteme::PerByteSerial<char, byteme::Reader*> pb(&reader);
-        eminem::Parser<decltype(&pb), int> parser(&pb, {});
+        eminem::Parser<decltype(&reader), int> parser(&reader, {});
 
         parser.scan_preamble();
         const auto& banner = parser.get_banner();
@@ -169,8 +167,7 @@ TEST_P(WriteMatrixCoordinateTest, Sparse) {
 
     { 
         byteme::RawFileReader reader(path.c_str(), {});
-        byteme::PerByteSerial<char, byteme::Reader*> pb(&reader);
-        eminem::Parser<decltype(&pb), int> parser(&pb, {});
+        eminem::Parser<decltype(&reader), int> parser(&reader, {});
 
         parser.scan_preamble();
         const auto& banner = parser.get_banner();
@@ -297,8 +294,7 @@ TEST(WriteMatrix, Integer) {
 
     { 
         byteme::RawFileReader reader(path.c_str(), {});
-        byteme::PerByteSerial<char, byteme::Reader*> pb(&reader);
-        eminem::Parser<decltype(&pb), int> parser(&pb, {});
+        eminem::Parser<decltype(&reader), int> parser(&reader, {});
 
         parser.scan_preamble();
         const auto& banner = parser.get_banner();
@@ -366,7 +362,7 @@ TEST(WriteMatrix, ZlibBuffer) {
     auto vec = tatami_test::simulate_vector<double>(NR * NC, {});
     tatami::DenseMatrix<double, int, std::vector<double> > mat(NR, NC, vec, true);
 
-    auto buf = tatami_mtx::write_matrix_to_zlib_buffer(mat, 2, {});
+    auto buf = tatami_mtx::write_matrix_to_zlib_buffer(mat, byteme::ZlibCompressionMode::ZLIB, {});
     auto reloaded = tatami_mtx::load_matrix_from_zlib_buffer<double, int>(buf.data(), buf.size(), {});
     EXPECT_FALSE(reloaded->is_sparse());
     EXPECT_EQ(reloaded->nrow(), NR);

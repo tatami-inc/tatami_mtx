@@ -210,8 +210,7 @@ std::shared_ptr<tatami::Matrix<Value_, Index_> > load_dense_matrix_basic(Parser_
  */
 template<typename Value_, typename Index_, typename StoredValue_ = Automatic, typename StoredIndex_ = Automatic>
 std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix(byteme::Reader& reader, const LoadMatrixOptions& options) {
-    byteme::PerByteSerial<char, byteme::Reader*> pb(&reader);
-    eminem::Parser<I<decltype(&pb)>, Index_> parser(&pb, [&]{
+    eminem::Parser<byteme::Reader*, Index_> parser(&reader, [&]{
         eminem::ParserOptions eopt;
         eopt.num_threads = options.num_threads;
         return eopt;
@@ -309,8 +308,13 @@ std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_gzip_file(cons
  */
 template<typename Value_, typename Index_, typename StoredValue_ = Automatic, typename StoredIndex_ = Automatic>
 std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_some_file(const char* filepath, const LoadMatrixOptions& options) {
-    byteme::SomeFileReader reader(filepath, {});
-    return load_matrix<Value_, Index_, StoredValue_, StoredIndex_>(reader, options);
+    std::unique_ptr<byteme::Reader> ptr;
+    if (byteme::is_gzip(filepath)) {
+        ptr.reset(new byteme::GzipFileReader(filepath, {}));
+    } else  {
+        ptr.reset(new byteme::RawFileReader(filepath, {}));
+    }
+    return load_matrix<Value_, Index_, StoredValue_, StoredIndex_>(*ptr, options);
 }
 
 #endif
@@ -373,8 +377,13 @@ std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_zlib_buffer(co
  */
 template<typename Value_, typename Index_, typename StoredValue_ = Automatic, typename StoredIndex_ = Automatic>
 std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_some_buffer(const unsigned char* buffer, const std::size_t n, const LoadMatrixOptions& options) {
-    byteme::SomeBufferReader reader(buffer, n, {});
-    return load_matrix<Value_, Index_, StoredValue_, StoredIndex_>(reader, options);
+    std::unique_ptr<byteme::Reader> ptr;
+    if (byteme::is_zlib(buffer, n) || byteme::is_gzip(buffer, n)) {
+        ptr.reset(new byteme::ZlibBufferReader(buffer, n, {}));
+    } else  {
+        ptr.reset(new byteme::RawBufferReader(buffer, n));
+    }
+    return load_matrix<Value_, Index_, StoredValue_, StoredIndex_>(*ptr, options);
 }
 
 #endif
