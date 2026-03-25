@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.14)
 
 project(tatami_mtx
     VERSION 2.1.1
-    DESCRIPTION "Matrix Market to tatami matrices"
+    DESCRIPTION "Matrix Market with tatami matrices"
     LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -16,7 +16,7 @@ if(TATAMI_MTX_FETCH_EXTERN)
 else()
     find_package(tatami_tatami 4.0.3 CONFIG REQUIRED)
     find_package(tatami_eminem 1.2.0 CONFIG REQUIRED)
-    find_package(ltla_byteme 2.1.1 CONFIG REQUIRED)
+    find_package(ltla_byteme 2.1.2 CONFIG REQUIRED)
     find_package(ltla_sanisizer 0.1.0 CONFIG REQUIRED)
 endif()
 

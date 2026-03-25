@@ -378,7 +378,7 @@ std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_zlib_buffer(co
 template<typename Value_, typename Index_, typename StoredValue_ = Automatic, typename StoredIndex_ = Automatic>
 std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix_from_some_buffer(const unsigned char* buffer, const std::size_t n, const LoadMatrixOptions& options) {
     std::unique_ptr<byteme::Reader> ptr;
-    if (byteme::is_zlib(buffer, n) || byteme::is_gzip(buffer, n)) {
+    if (byteme::is_zlib_or_gzip(buffer, n)) {
         ptr.reset(new byteme::ZlibBufferReader(buffer, n, {}));
     } else  {
         ptr.reset(new byteme::RawBufferReader(buffer, n));
