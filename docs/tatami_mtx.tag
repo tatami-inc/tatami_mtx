@@ -36,6 +36,13 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
+      <type>std::size_t</type>
+      <name>buffer_size</name>
+      <anchorfile>structtatami__mtx_1_1LoadMatrixOptions.html</anchorfile>
+      <anchor>a40e8e6b35775ff806897d1165d49fbcb</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
       <type>int</type>
       <name>num_threads</name>
       <anchorfile>structtatami__mtx_1_1LoadMatrixOptions.html</anchorfile>

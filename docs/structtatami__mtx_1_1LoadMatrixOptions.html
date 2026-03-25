@@ -106,6 +106,8 @@ $(function(){ initResizable(false); });
 Public Attributes</h2></td></tr>
 <tr class="memitem:af152ee1d02c76bf45fc792d7749ab7cd" id="r_af152ee1d02c76bf45fc792d7749ab7cd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af152ee1d02c76bf45fc792d7749ab7cd">row</a> = true</td></tr>
 <tr class="separator:af152ee1d02c76bf45fc792d7749ab7cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40e8e6b35775ff806897d1165d49fbcb" id="r_a40e8e6b35775ff806897d1165d49fbcb"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a40e8e6b35775ff806897d1165d49fbcb">buffer_size</a> = sanisizer::cap&lt;std::size_t&gt;(65536)</td></tr>
+<tr class="separator:a40e8e6b35775ff806897d1165d49fbcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0633b427f4a4a2ba642bf4306d0496bc" id="r_a0633b427f4a4a2ba642bf4306d0496bc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0633b427f4a4a2ba642bf4306d0496bc">num_threads</a> = 1</td></tr>
 <tr class="separator:a0633b427f4a4a2ba642bf4306d0496bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -124,6 +126,21 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Whether to produce a dense row-major or compressed sparse row matrix. If false, column-based matrices are returned instead. </p>
+
+</div>
+</div>
+<a id="a40e8e6b35775ff806897d1165d49fbcb" name="a40e8e6b35775ff806897d1165d49fbcb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40e8e6b35775ff806897d1165d49fbcb">&#9670;&#160;</a></span>buffer_size</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t tatami_mtx::LoadMatrixOptions::buffer_size = sanisizer::cap&lt;std::size_t&gt;(65536)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Size of the buffer in which to store bytes extracted from the <code><a class="elRef" href="https://ltla.github.io/byteme/classbyteme_1_1Reader.html">byteme::Reader</a></code> prior to parsing. Larger values improve speed at the cost of memory efficiency. </p>
 
 </div>
 </div>
