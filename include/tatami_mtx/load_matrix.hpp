@@ -39,14 +39,10 @@ struct LoadMatrixOptions {
     bool row = true;
 
     /**
-     * @cond
+     * Size of the buffer in which to store bytes extracted from the `byteme::Reader` prior to parsing.
+     * Larger values improve speed at the cost of memory efficiency.
      */
     std::size_t buffer_size = sanisizer::cap<std::size_t>(65536);
-
-    int compression = 3;
-    /**
-     * @endcond
-     */
 
     /**
      * Number of threads to use for Matrix Market parsing.
@@ -212,6 +208,7 @@ template<typename Value_, typename Index_, typename StoredValue_ = Automatic, ty
 std::shared_ptr<tatami::Matrix<Value_, Index_> > load_matrix(byteme::Reader& reader, const LoadMatrixOptions& options) {
     eminem::Parser<byteme::Reader*, Index_> parser(&reader, [&]{
         eminem::ParserOptions eopt;
+        eopt.buffer_size = options.buffer_size;
         eopt.num_threads = options.num_threads;
         return eopt;
     }());
