@@ -11,17 +11,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
 
     - name: Get latest CMake
       uses: lukka/get-cmake@latest
-
-    - name: Install eminem
-      run: |
-        git clone https://github.com/tatami-inc/eminem dep-eminem --depth=1
-        cd dep-eminem
-        cmake -S . -B build -DEMINEM_TESTS=OFF
-        sudo cmake --install build
 
     - name: Configure the build
       run: cmake -S . -B build -DTATAMI_MTX_TESTS=OFF
